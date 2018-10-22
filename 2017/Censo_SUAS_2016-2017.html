@@ -315,6 +315,47 @@ $(document).ready(function () {
 <p>Entre os anos de 2010 e 2016 observou-se aumento na proporção de Secretarias exclusivas em todas as regiões do país, sendo os maiores aumentos observados nas regiões Sul e Sudeste. No entanto, embora tenham concentrado o aumento mais expressivo, as regiões Sul e Sudeste tinham os menores percentuais de Secretarias exclusivas de assistência social tanto em 2010 quanto em 2016.</p>
 <p>Entre os anos de 2015 e 2016, é possível identificar redução nos percentuais de Secretarias exclusivas em todas as regiões, com exceção da região Norte (Gráfico 1).</p>
 <p><strong>Gráfico 1: Percentual de Secretarias Municipais exclusivas de Assistência Social segundo grandes regiões – Brasil, 2010 a 2016</strong></p>
+<pre><code>## Warning in read_fun(path = path, sheet_i = sheet, limits = limits, shim =
+## shim, : Expecting logical in CP1753 / R1753C94: got 'Ato Nº: 8782'</code></pre>
+<pre><code>## Warning in read_fun(path = path, sheet_i = sheet, limits = limits, shim =
+## shim, : Expecting logical in CP3507 / R3507C94: got 'não possuímos até o
+## momento'</code></pre>
+<pre><code>## Warning in read_fun(path = path, sheet_i = sheet, limits = limits, shim =
+## shim, : Expecting logical in CP5427 / R5427C94: got 'Lei Orçamentária'</code></pre>
+<pre><code>## # A tibble: 5,488 x 258
+##     IBGE6   IBGE Região uf    Município População2010 Porte_pop2010   area
+##     &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;
+##  1 110001 1.10e6 Regiã… RO    Alta Flo…         24221 Pequeno II     7067.
+##  2 110002 1.10e6 Regiã… RO    Ariquemes         88330 Médio          4427.
+##  3 110003 1.10e6 Regiã… RO    Cabixi             6297 Pequeno I      1314.
+##  4 110004 1.10e6 Regiã… RO    Cacoal            77982 Médio          3793.
+##  5 110005 1.10e6 Regiã… RO    Cerejeir…         17022 Pequeno I      2783.
+##  6 110006 1.10e6 Regiã… RO    Colorado…         18536 Pequeno I      1451.
+##  7 110007 1.10e6 Regiã… RO    Corumbia…          8802 Pequeno I      3060.
+##  8 110008 1.10e6 Regiã… RO    Costa Ma…         13600 Pequeno I     12722.
+##  9 110009 1.10e6 Regiã… RO    Espigão …         28426 Pequeno II     4518.
+## 10 110010 1.10e6 Regiã… RO    Guajará-…         41638 Pequeno II    24856.
+## # ... with 5,478 more rows, and 250 more variables:
+## #   nivel_gestao_09_20102 &lt;chr&gt;, CAD_familias &lt;dbl&gt;, familias &lt;dbl&gt;,
+## #   Nome &lt;chr&gt;, Tipo_log &lt;chr&gt;, Endereco &lt;chr&gt;, numero &lt;chr&gt;,
+## #   complemento &lt;chr&gt;, bairro &lt;chr&gt;, referencia &lt;chr&gt;, cep &lt;chr&gt;,
+## #   email &lt;chr&gt;, sitio &lt;chr&gt;, fone &lt;chr&gt;, ramal &lt;dbl&gt;, fax &lt;chr&gt;,
+## #   q1 &lt;chr&gt;, q2_1 &lt;chr&gt;, q2_2 &lt;chr&gt;, q2_3 &lt;chr&gt;, q2_4 &lt;chr&gt;, q2_5 &lt;chr&gt;,
+## #   q2_6 &lt;chr&gt;, q2_7 &lt;chr&gt;, q2_8 &lt;chr&gt;, q2_qual &lt;chr&gt;, q3_1 &lt;chr&gt;,
+## #   q3_2 &lt;chr&gt;, q3_3 &lt;chr&gt;, q3_4 &lt;chr&gt;, q3_5 &lt;chr&gt;, q3_6 &lt;chr&gt;,
+## #   q3_7 &lt;chr&gt;, q3_8 &lt;chr&gt;, q3_9 &lt;chr&gt;, q4 &lt;chr&gt;, q5 &lt;chr&gt;, q6_1 &lt;chr&gt;,
+## #   q6_2 &lt;chr&gt;, q6_3 &lt;chr&gt;, q6_4 &lt;chr&gt;, q6_5 &lt;chr&gt;, q6_6 &lt;chr&gt;,
+## #   q6_qual &lt;chr&gt;, q7 &lt;chr&gt;, q8 &lt;chr&gt;, q8_qual &lt;chr&gt;, q9 &lt;chr&gt;, q10 &lt;chr&gt;,
+## #   q11 &lt;chr&gt;, q12 &lt;chr&gt;, q13 &lt;chr&gt;, q14 &lt;dbl&gt;, q15_1 &lt;chr&gt;, q15_2 &lt;chr&gt;,
+## #   q15_3 &lt;chr&gt;, q15_4 &lt;chr&gt;, q15_5 &lt;chr&gt;, q15_6 &lt;chr&gt;, q15_7 &lt;chr&gt;,
+## #   q15_8 &lt;chr&gt;, q15_9 &lt;chr&gt;, q16 &lt;chr&gt;, q17 &lt;chr&gt;, q18_1 &lt;chr&gt;,
+## #   q18_2 &lt;chr&gt;, q18_3 &lt;chr&gt;, q18_4 &lt;chr&gt;, q18_5 &lt;chr&gt;, q18_6 &lt;chr&gt;,
+## #   q18_7 &lt;chr&gt;, q18_especifique &lt;chr&gt;, q19 &lt;chr&gt;, q20 &lt;chr&gt;, q21_1 &lt;chr&gt;,
+## #   q21_2 &lt;chr&gt;, q21_3 &lt;chr&gt;, q22 &lt;chr&gt;, q23 &lt;chr&gt;, q24 &lt;chr&gt;,
+## #   q25_1 &lt;chr&gt;, q25_2 &lt;chr&gt;, q25_3 &lt;chr&gt;, q26 &lt;chr&gt;, q27 &lt;chr&gt;,
+## #   q27_qual &lt;lgl&gt;, q28 &lt;chr&gt;, q28_cpf &lt;chr&gt;, q29 &lt;chr&gt;, q30 &lt;chr&gt;,
+## #   q31 &lt;chr&gt;, q32 &lt;dbl&gt;, q33 &lt;chr&gt;, q34 &lt;chr&gt;, q35 &lt;chr&gt;, q36 &lt;chr&gt;,
+## #   q37 &lt;chr&gt;, q38 &lt;dbl&gt;, q39 &lt;dbl&gt;, q40 &lt;chr&gt;, …</code></pre>
 <p>Fonte: MDS, Censo SUAS.</p>
 <p>Em 2016, os órgãos gestores municipais que tinham como subdivisão administrativa na estrutura do órgão gestor constituído/formalizado, em sua maioria, eram a Gestão de Benefícios Assistenciais, Proteção Social Básica, Gestão do SUAS e a Gestão financeira e orçamentária com 63,1%, 62,5%, 52,8% e 51,6% respectivamente. A Vigilância Socioassistencial estava constituída de modo informal em 36,9% dos órgãos gestores municipais. A Gestão do trabalho e a Regulação do SUAS não estavam constituídas em 39,2% e 34% dos órgãos municipais (Gráfico 2). Gráfico 2: Distribuição dos órgãos gestores municipais segundo constituição/formalização de subdivisões administrativas - Brasil, 2016 Fonte: MDS, Censo SUAS.</p>
 <p>Em 2016, 39,5% dos municípios respondentes possuíam Lei Municipal de regulamentação do Sistema Único de Assistência Social (SUAS). Desses, 6,1% dos municípios tinham atualizado sua Lei em 2016, 6,8% em 2015, 14,2% de 2 a 5 anos atrás, 6,1% de 5 a 10 anos atrás e 6,3% há mais de 10 anos.<br />

@@ -3,7 +3,15 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
+
+lista.de.pacotes = c("tidyverse","lubridate","janitor","readxl","stringr","repmis","survey","srvyr","scales") # escreva a lista de pacotes
+novos.pacotes <- lista.de.pacotes[!(lista.de.pacotes %in%
+                                      installed.packages()[,"Package"])]
+if(length(novos.pacotes) > 0) {install.packages(novos.pacotes)}
+lapply(lista.de.pacotes, require, character.only=T)
+rm(lista.de.pacotes,novos.pacotes)
+gc()
 ```
 
 # CENSO SUAS 2016, ANÁLISE DOS COMPONENTES SISTÊMICOS DA POLÍTICA NACIONAL DE ASSISTÊNCIA SOCIAL
@@ -180,6 +188,15 @@ Entre os anos de 2015 e 2016, é possível identificar redução nos percentuais
 
 **Gráfico 1: Percentual de Secretarias Municipais exclusivas de Assistência Social segundo grandes regiões – Brasil, 2010 a 2016**
 ```{r}
+regiao_q1_gm_2010 <- read_excel("../Censo SUAS 2010/Gestão Municipal/Censo SUAS 2010_Gestão Municipal_DIVULGAÇÃO.xlsx", sheet = "Censo SUAS 2010 GestãoMunicipal") %>% 
+  select(Região,q1) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum', na.rm = TRUE))) %>% 
+  mutate(percentual = percent(`Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região), na.rm = TRUE)))
+
 
 ```
 
