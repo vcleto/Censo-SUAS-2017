@@ -172,11 +172,139 @@ Espera-se que, a partir de uma avaliação com abordagem direcionada à análise
 
 ## Capítulo 2 – Gestão e Financiamento
 
+```{r, warning=FALSE}
+gm_2010 <- read_excel("../Censo SUAS 2010/Gestão Municipal/Censo SUAS 2010_Gestão Municipal_DIVULGAÇÃO.xlsx", sheet = "Censo SUAS 2010 GestãoMunicipal")
+
+gm_2011 <- read_excel("../Censo SUAS 2011/GESTÃO MUNICIPAL/Censo SUAS 2011_GestãoMunicipal_DIVULGAÇÃO.xlsx", sheet = "Censo SUAS 2011 GestãoMunicipal")
+
+gm_2012 <- read_excel("../Censo SUAS 2012/Gestão Municipal+DF/Censo SUAS 2012_GestaoMunicipal+DF_divulgação.xlsx", sheet = "Censo SUAS 2012 - Gestão Mun+DF")
+
+gm_2013 <- read_excel("../Censo SUAS 2013/Gestão Municipal/Censo_SUAS_2013_Gestão_Municipal_Dados_Gerais_Divulgação.xlsx", sheet = "Gestão Municipal 2013")
+
+gm_2014 <- read_excel("../Censo SUAS 2014/Gestão Municipal/Bases de Dados/CensoSUAS2014_GestãoMunicipal_Divulgação.xlsx", sheet = "Gestão Municipal 2014")
+
+gm_2015 <- read_excel("../Censo SUAS 2015/Gestão Municipal/CensoSUAS_2015_GestãoMunicipal_DIVULGAÇÃO.xlsx", sheet = "Dados_GM_2015")
+
+gm_2016 <- read_excel("../Censo SUAS 2016/Gestão Municipal/Censo_SUAS_2016_Gestao_Municipal_divulgacao.xlsx", sheet = "Censo Gestão Municipal 16")
+
+gm_2017 <- read_excel("../Censo SUAS 2017/Censo_SUAS_2017_Gestão_Municipal/Censo_SUAS_2017_Gestao_Municipal_divulgação.xlsx", sheet = "Base de Dados")
+
+```
+
 O Sistema Único de Assistência Social (SUAS) é definido pela Lei Orgânica da Assistência Social (LOAS)9 como um sistema descentralizado e participativo que organiza a gestão das ações na área de assistência social, a partir das diretrizes: descentralização político-administrativa, participação social e primazia da responsabilidade do Estado na condução da política de assistência social. Assim, tem como um de seus objetivos a consolidação da gestão compartilhada entre os três entes federados e do cofinanciamento.
 
 A LOAS, a NOB SUAS10 e outros normativos que regulam a assistência social definem as responsabilidades da União, Estados, Distrito Federal e Municípios no âmbito da gestão compartilhada, que incluem o cofinanciamento de serviços, programas e ações da assistência social. Estão previstas ainda instâncias de pactuação e interlocução entre os três entes federados: a Comissão Intergestores Bipartite (CIB), da qual participam representantes de estados e municípios, e a Comissão Intergestores Tripartite (CIT), da qual participam, além de estados e municípios, representantes do governo federal.
 
 A partir das informações contidas no Censo SUAS é possível ter um panorama geral da gestão e do financiamento em estados e municípios, com a observação de aspectos como a estrutura administrativa da gestão da assistência social, a atualização de normativos, o apoio de estados aos municípios, as atividades de cofinanciamento e transferência de recursos, funcionamento das instâncias de pactuação, entre outras. Nesse sentido, esta seção apresenta os principais resultados obtidos a partir das informações dos questionários de gestão municipal e gestão estadual.
+
+**Gráfico 1: Percentual de Secretarias Estaduais exclusivas de Assistência Social segundo grandes regiões – Brasil, 2010 a 2017**
+
+```{r, warning=FALSE}
+gm_2010_q1_regiao <- gm_2010 %>% 
+  select(Região,q1) %>% 
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum', na.rm = TRUE))) %>% 
+  mutate(`2010` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região), na.rm = TRUE))
+
+gm_2011_q1_regiao <- gm_2011 %>% 
+  select(Região,q1) %>% 
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum', na.rm = TRUE))) %>% 
+  mutate(`2011` = `Secretaria Municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região), na.rm = TRUE))
+
+gm_2012_q1_regiao <- gm_2012 %>% 
+  select(Região,q1) %>% 
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum', na.rm = TRUE))) %>% 
+  mutate(`2012` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região), na.rm = TRUE))
+
+gm_2013_q1_regiao <- gm_2013 %>% 
+  select(Região,q1) %>% 
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum', na.rm = TRUE))) %>% 
+  mutate(`2013` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região), na.rm = TRUE))
+
+gm_2014_q1_regiao <- gm_2014 %>% 
+  select(Região,q1) %>%
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum', na.rm = TRUE))) %>% 
+  mutate(`2014` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região), na.rm = TRUE))
+
+gm_2015_q1_regiao <- gm_2015 %>% 
+  select(Região,q1) %>%
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum', na.rm = TRUE))) %>% 
+  mutate(`2015` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região), na.rm = TRUE))
+
+gm_2016_q1_regiao <- gm_2016 %>% 
+  select(Região,q1) %>%
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum', na.rm = TRUE))) %>% 
+  mutate(`2016` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região), na.rm = TRUE))
+
+gm_2017_q1_regiao <- gm_2017 %>% 
+  select(Região,q1) %>%
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum', na.rm = TRUE))) %>% 
+  mutate(`2017` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região), na.rm = TRUE))
+
+gm_2010_q1_regiao %>%
+  left_join(gm_2011_q1_regiao, by = "Região") %>%
+  left_join(gm_2012_q1_regiao, by = "Região") %>%
+  left_join(gm_2013_q1_regiao, by = "Região") %>%
+  left_join(gm_2014_q1_regiao, by = "Região") %>%
+  left_join(gm_2015_q1_regiao, by = "Região") %>%
+  left_join(gm_2016_q1_regiao, by = "Região") %>%
+  left_join(gm_2017_q1_regiao, by = "Região") %>%
+  gather("Ano","Percentual",c(`2010`,`2011`,`2012`,`2013`,`2014`,`2015`,`2016`,`2017`)) %>%
+  mutate(Região = str_replace(Região, "Região ", "")) %>% 
+  ggplot(aes(x = Região, y = Percentual, group = Ano)) +
+  geom_col(aes(fill = Ano), position="dodge") +
+  geom_text(aes(label = percent(Percentual), y=Percentual+.07), position = position_dodge(width = 1), angle = 90) +
+  scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
+  theme(legend.position="bottom",
+        legend.title = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.y = element_blank(),
+        axis.line.x = element_line(),
+        panel.background = element_blank(),
+        plot.background = element_rect(colour = "black")) +
+  guides(fill=guide_legend(nrow=1,byrow=TRUE))
+
+```
 
 Em 2016, 78,5% das 5.481 Secretarias Municipais eram exclusivas da Assistência Social. Houve redução de 0,8 pontos percentuais em relação ao ano anterior.
 
@@ -186,17 +314,112 @@ Entre os anos de 2010 e 2016 observou-se aumento na proporção de Secretarias e
 
 Entre os anos de 2015 e 2016, é possível identificar redução nos percentuais de Secretarias exclusivas em todas as regiões, com exceção da região Norte (Gráfico 1).
 
-**Gráfico 1: Percentual de Secretarias Municipais exclusivas de Assistência Social segundo grandes regiões – Brasil, 2010 a 2016**
-```{r}
-regiao_q1_gm_2010 <- read_excel("../Censo SUAS 2010/Gestão Municipal/Censo SUAS 2010_Gestão Municipal_DIVULGAÇÃO.xlsx", sheet = "Censo SUAS 2010 GestãoMunicipal") %>% 
+**Gráfico 1: Percentual de Secretarias Municipais exclusivas de Assistência Social, segundo grandes regiões – Brasil, 2010 a 2017**
+
+```{r, warning=FALSE}
+gm_2010_q1_regiao <- gm_2010 %>% 
   select(Região,q1) %>% 
+  filter(!is.na(q1)) %>% 
   group_by(Região, q1) %>% 
   summarise(n=n()) %>% 
   spread(q1,n) %>% 
   ungroup() %>% 
   bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum', na.rm = TRUE))) %>% 
-  mutate(percentual = percent(`Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região), na.rm = TRUE)))
+  mutate(`2010` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região), na.rm = TRUE))
 
+gm_2011_q1_regiao <- gm_2011 %>% 
+  select(Região,q1) %>% 
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum', na.rm = TRUE))) %>% 
+  mutate(`2011` = `Secretaria Municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região), na.rm = TRUE))
+
+gm_2012_q1_regiao <- gm_2012 %>% 
+  select(Região,q1) %>% 
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum', na.rm = TRUE))) %>% 
+  mutate(`2012` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região), na.rm = TRUE))
+
+gm_2013_q1_regiao <- gm_2013 %>% 
+  select(Região,q1) %>% 
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum', na.rm = TRUE))) %>% 
+  mutate(`2013` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região), na.rm = TRUE))
+
+gm_2014_q1_regiao <- gm_2014 %>% 
+  select(Região,q1) %>%
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum', na.rm = TRUE))) %>% 
+  mutate(`2014` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região), na.rm = TRUE))
+
+gm_2015_q1_regiao <- gm_2015 %>% 
+  select(Região,q1) %>%
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum', na.rm = TRUE))) %>% 
+  mutate(`2015` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região), na.rm = TRUE))
+
+gm_2016_q1_regiao <- gm_2016 %>% 
+  select(Região,q1) %>%
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum', na.rm = TRUE))) %>% 
+  mutate(`2016` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região), na.rm = TRUE))
+
+gm_2017_q1_regiao <- gm_2017 %>% 
+  select(Região,q1) %>%
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum', na.rm = TRUE))) %>% 
+  mutate(`2017` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região), na.rm = TRUE))
+
+gm_2010_q1_regiao %>%
+  left_join(gm_2011_q1_regiao, by = "Região") %>%
+  left_join(gm_2012_q1_regiao, by = "Região") %>%
+  left_join(gm_2013_q1_regiao, by = "Região") %>%
+  left_join(gm_2014_q1_regiao, by = "Região") %>%
+  left_join(gm_2015_q1_regiao, by = "Região") %>%
+  left_join(gm_2016_q1_regiao, by = "Região") %>%
+  left_join(gm_2017_q1_regiao, by = "Região") %>%
+  gather("Ano","Percentual",c(`2010`,`2011`,`2012`,`2013`,`2014`,`2015`,`2016`,`2017`)) %>%
+  mutate(Região = str_replace(Região, "Região ", "")) %>% 
+  ggplot(aes(x = Região, y = Percentual, group = Ano)) +
+  geom_col(aes(fill = Ano), position="dodge") +
+  geom_text(aes(label = percent(Percentual), y=Percentual+.07), position = position_dodge(width = 1), angle = 90) +
+  scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
+  theme(legend.position="bottom",
+        legend.title = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.y = element_blank(),
+        axis.line.x = element_line(),
+        panel.background = element_blank(),
+        plot.background = element_rect(colour = "black")) +
+  guides(fill=guide_legend(nrow=1,byrow=TRUE))
 
 ```
 
