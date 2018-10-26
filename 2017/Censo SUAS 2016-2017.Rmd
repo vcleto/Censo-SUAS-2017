@@ -219,7 +219,7 @@ Em 2016, 19,2% dos Estados tinham Secretaria estadual exclusiva da área de Assi
 
 ```{r, warning=FALSE}
 
-x <- ge_2016 %>% 
+ge_2016_q1_q2 <- ge_2016 %>% 
   select(q1,q2_1,q2_2,q2_3,q2_4,q2_5,q2_6,q2_7,q2_99) %>% 
   filter(!is.na(q1)) %>% 
   mutate(q2_1=case_when(q2_1=="Não"~0,q2_1=="Sim"~1)) %>% 
@@ -241,13 +241,15 @@ x <- ge_2016 %>%
                       q2>=5~"Secretaria estadual em conjunto com cinco ou mais políticas setoriais",
                       TRUE ~ q1)) %>% 
   mutate(q2=case_when(is.na(q2)~0, TRUE~q2)) %>% 
+  group_by(q1,q2) %>% 
+  summarise(n=sum(n)) %>% 
   arrange(q2) %>% 
-  group_by(q1) %>% 
-  summarise(n=sum(n))
-#  ungroup() %>% 
-  mutate(per=`n`/sum(`n`)) %>% 
+  ungroup() %>% 
+  mutate(per=`n`/sum(`n`))
+
+ge_2016_q1_q2 %>% 
   ggplot() +
-  geom_bar(aes(x="", y=per, fill=q1), stat="identity", width = 1)+
+  geom_bar(aes(x="", y=per, fill=q1), stat="identity", width = 1)
   coord_polar("y", start=0)+
   theme_void()+
   geom_text(aes(x=1, y = cumsum(per) - per/2, label=percent(per)))
