@@ -1,0 +1,238 @@
+---
+title: "Trabalho Final da disciplina de Coleta e Análise de Dados Secundários"
+author: "Valdson Silva Cleto"
+date: "26 de outubro de 2018"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+lista.de.pacotes = c("tidyverse","lubridate","janitor","readxl","stringr","repmis","survey","srvyr","scales") # escreva a lista de pacotes
+novos.pacotes <- lista.de.pacotes[!(lista.de.pacotes %in%
+                                      installed.packages()[,"Package"])]
+if(length(novos.pacotes) > 0) {install.packages(novos.pacotes)}
+lapply(lista.de.pacotes, require, character.only=T)
+rm(lista.de.pacotes,novos.pacotes)
+gc()
+```
+
+## Objeto
+
+Apresentar a utilização do R e do R Markdown para a produção da publicação sobre o Censo do Sistema Único de Assistência Social (Censo SUAS), que é realizada anualmente desde 2007, e que apresenta os principais resultados do Censo SUAS de cada ano, bem como dados das séries históricas do Censo SUAS. Tal publicação é realizada conjuntamente pela Secretaria Nacional de Assistência Social (SNAS) e pela Secretaria de Avaliação e Gestão da Informação (SAGI), do Ministério do Desenvolvimento Social (MDS).
+
+## Objetivos
+
+- Reduzir o tempo para a geração dos dados e gráficos a cada nova edição anual do Censo SUAS.
+- Dar maior confiabilidade aos dados gerados, reduzindo erros cometidos na geração manual dos dados.
+- Ter documentado com precisão a metodologia utilizada para a geração dos dados, permitindo a reprodução do processo bem como facilitando a descoberta a qualquer momento de eventuais erros metodológicos.
+
+## Contexto
+
+Anualmente a SNAS realiza o Censo SUAS, coletando informações sobre serviços, programas e projetos de assistência social realizados pelas unidades públicas e pela Rede Socioassistencial Privada do SUAS. Em parceria da SNAS com a SAGI, as informações coletadas são analisadas e uma publicação anual é produzida. O processamento dos dados para geração das tabelas e gráficos que são apresentados na publicação era até então feito de maneira "artesanal", em planilhas do Excel, extraindo-se número por número através de uma análise manual das planilhas contendo as respostas dadas a diversos questionários pelas diferentes organizações que participam do Censo.
+
+## Contexto
+
+Esse processo manual é demorado e sujeito a muitas falhas. Além disso, não havia documentação sobre como cada dado era obtido, ou seja, quais respostas de quais questionários estavam sendo utilizados e como essas respostas estavam sendo trabalhadas. O servidor que fosse atualizar os dados para uma nova publicação, não tinha como saber exatamente como cada dado tinha sido calculado no ano anterior.
+Utilizando-se o R, o R Markdown e a ferramenta para controle de versionamento apresentada nesse curso, bem como utilizando a sintaxe do Tidyverse, será possível tornar o processo de produção dessa publicação mais rápido e consistente.
+
+## Método
+
+Os dados do Censo SUAS são coletados através de questionários preparados pela SNAS e respondidos pelos responsáveis pela gestão de diversos órgãos do SUAS: Centros de Referência de Assistência Social (CRAS), Centros de Referência Especializados de Assistência Social (CREAS), Centros de Referência Especializado para População em Situação de Rua (Centro POP), Conselhos Estaduais de Assistência Social (CEAS), Conselhos Municipais de Assistência Social (CMAS) e Conselho de Assistência Social do Distrito Federal (CAS/DF), Gestão Estadual, Gestão Municipal, Unidades de Acolhimento, Centros de Convivência e Centros Dia.
+
+## Método
+
+A SNAS faz a consolidação das respostas dadas aos questionários e disponibiliza esses dados em arquivos em diferentes formatos, como Excel, CSV e SAV. Para cada tipo de questionário é disponibilizado um arquivo (em um ou mais formatos). Também são disponibilizados os questionários utilizados e os dicionários de variáveis.
+
+A SAGI e a SNAS definem a cada ano quais informações serão apresentadas na publicação. A SAGI analisa os dados e produz tabelas, gráficos e textos para a publicação. A partir da publicação do Censo SUAS 2017, pretende-se fazer esse trabalho em um arquivo do R Markdown, que conterá os textos e os scripts para geração dos dados, gráficos e tabelas, trabalho que já foi iniciado. Os próximos slides contêm os 2 primeiros gráficos produzidos dessa forma.
+
+## Gráfico 1
+Percentual de estados segundo característica da Secretaria estadual de Assistência Social - Brasil, 2017
+```{r, warning=FALSE}
+ge_2017 <- read_excel("Censo SUAS 2017/Censo_SUAS_2017_Gestão_Estadual/Censo SUAS 2017_Gestão Estadual_divulgação.xlsx", sheet = "Base de dados")
+
+ge_2017 %>% 
+  select(q1,q2_1,q2_2,q2_3,q2_4,q2_5,q2_6,q2_7,q2_99) %>% 
+  filter(!is.na(q1)) %>% 
+  mutate(q2_1=case_when(q2_1=="Não"~0,q2_1=="Sim"~1)) %>% 
+  mutate(q2_2=case_when(q2_2=="Não"~0,q2_2=="Sim"~1)) %>% 
+  mutate(q2_3=case_when(q2_3=="Não"~0,q2_3=="Sim"~1)) %>% 
+  mutate(q2_4=case_when(q2_4=="Não"~0,q2_4=="Sim"~1)) %>% 
+  mutate(q2_5=case_when(q2_5=="Não"~0,q2_5=="Sim"~1)) %>% 
+  mutate(q2_6=case_when(q2_6=="Não"~0,q2_6=="Sim"~1)) %>% 
+  mutate(q2_7=case_when(q2_7=="Não"~0,q2_7=="Sim"~1)) %>% 
+  mutate(q2_99=case_when(q2_99=="Não"~0,q2_99=="Sim"~1)) %>% 
+  mutate(q2=q2_1+q2_2+q2_3+q2_4+q2_5+q2_6+q2_7+q2_99) %>% 
+  group_by(q1,q2) %>% 
+  summarise(n=n()) %>% 
+  ungroup() %>% 
+  mutate(q1=case_when(q2==1~"Secretaria estadual em conjunto com uma política setorial",
+                      q2==2~"Secretaria estadual em conjunto com duas políticas setoriais",
+                      q2==3~"Secretaria estadual em conjunto com três políticas setoriais",
+                      q2==4~"Secretaria estadual em conjunto com quatro políticas setoriais",
+                      q2>=5~"Secretaria estadual em conjunto com cinco ou mais políticas setoriais",
+                      TRUE ~ q1)) %>% 
+  mutate(q2=case_when(is.na(q2)~0, TRUE~q2)) %>% 
+  group_by(q1,q2) %>% 
+  summarise(n=sum(n)) %>% 
+  ungroup() %>% 
+  mutate(per=`n`/sum(`n`)) %>% 
+  arrange(q2) %>% 
+  mutate(q1=str_wrap(q1,width=35)) %>% 
+  mutate(q1=factor(q1, levels=q1)) %>% 
+  ggplot(aes(x="", y=per, fill=q1)) +
+  geom_bar(stat="identity", width = 1) +
+  geom_text(aes(label = percent(per)), position = position_stack(vjust = 0.5))  + 
+  coord_polar(theta = "y", direction = -1) +
+  theme_void() +
+  theme(legend.title = element_blank(),
+        legend.key = element_rect(size = 5),
+        legend.key.size = unit(1.5, 'lines'),
+        plot.background = element_rect(colour = "black"),
+        plot.margin = unit(c(1, 1, 1, 1), "cm")) #top, right, bottom, left
+```
+Fonte: MDS, Censo SUAS. 
+
+## Gráfico 2
+Percentual de Secretarias Municipais exclusivas de Assistência Social, segundo grandes regiões – Brasil, 2010 a 2017
+```{r, warning=FALSE}
+gm_2010 <- read_excel("Censo SUAS 2010/Gestão Municipal/Censo SUAS 2010_Gestão Municipal_DIVULGAÇÃO.xlsx", sheet = "Censo SUAS 2010 GestãoMunicipal")
+
+gm_2011 <- read_excel("Censo SUAS 2011/GESTÃO MUNICIPAL/Censo SUAS 2011_GestãoMunicipal_DIVULGAÇÃO.xlsx", sheet = "Censo SUAS 2011 GestãoMunicipal")
+
+gm_2012 <- read_excel("Censo SUAS 2012/Gestão Municipal+DF/Censo SUAS 2012_GestaoMunicipal+DF_divulgação.xlsx", sheet = "Censo SUAS 2012 - Gestão Mun+DF")
+
+gm_2013 <- read_excel("Censo SUAS 2013/Gestão Municipal/Censo_SUAS_2013_Gestão_Municipal_Dados_Gerais_Divulgação.xlsx", sheet = "Gestão Municipal 2013")
+
+gm_2014 <- read_excel("Censo SUAS 2014/Gestão Municipal/Bases de Dados/CensoSUAS2014_GestãoMunicipal_Divulgação.xlsx", sheet = "Gestão Municipal 2014")
+
+gm_2015 <- read_excel("Censo SUAS 2015/Gestão Municipal/CensoSUAS_2015_GestãoMunicipal_DIVULGAÇÃO.xlsx", sheet = "Dados_GM_2015")
+
+gm_2016 <- read_excel("Censo SUAS 2016/Gestão Municipal/Censo_SUAS_2016_Gestao_Municipal_divulgacao.xlsx", sheet = "Censo Gestão Municipal 16")
+
+gm_2017 <- read_excel("Censo SUAS 2017/Censo_SUAS_2017_Gestão_Municipal/Censo_SUAS_2017_Gestao_Municipal_divulgação.xlsx", sheet = "Base de Dados")
+
+gm_2010_q1_regiao <- gm_2010 %>% 
+  select(Região,q1) %>% 
+  mutate(Região = str_replace(Região, "Região ", "")) %>% 
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n, fill = 0) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum'))) %>% 
+  mutate(`2010` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região)))
+
+gm_2011_q1_regiao <- gm_2011 %>% 
+  select(Região,q1) %>% 
+  mutate(Região = str_replace(Região, "Região ", "")) %>% 
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n, fill = 0) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum'))) %>% 
+  mutate(`2011` = `Secretaria Municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região)))
+
+gm_2012_q1_regiao <- gm_2012 %>% 
+  select(Região,q1) %>% 
+  mutate(Região = str_replace(Região, "Região ", "")) %>% 
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n, fill = 0) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum'))) %>% 
+  mutate(`2012` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região)))
+
+gm_2013_q1_regiao <- gm_2013 %>% 
+  select(Região,q1) %>% 
+  mutate(Região = str_replace(Região, "Região ", "")) %>% 
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n, fill = 0) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum'))) %>% 
+  mutate(`2013` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região)))
+
+gm_2014_q1_regiao <- gm_2014 %>% 
+  select(Região,q1) %>%
+  mutate(Região = str_replace(Região, "Região ", "")) %>% 
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n, fill = 0) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum'))) %>% 
+  mutate(`2014` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região)))
+
+gm_2015_q1_regiao <- gm_2015 %>% 
+  select(Região,q1) %>%
+  mutate(Região = str_replace(Região, "Região ", "")) %>% 
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n, fill = 0) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum'))) %>% 
+  mutate(`2015` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região)))
+
+gm_2016_q1_regiao <- gm_2016 %>% 
+  select(Região,q1) %>%
+  mutate(Região = str_replace(Região, "Região ", "")) %>% 
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n, fill = 0) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum'))) %>% 
+  mutate(`2016` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região)))
+
+gm_2017_q1_regiao <- gm_2017 %>% 
+  select(Região,q1) %>%
+  mutate(Região = str_replace(Região, "Região ", "")) %>% 
+  filter(!is.na(q1)) %>% 
+  group_by(Região, q1) %>% 
+  summarise(n=n()) %>% 
+  spread(q1,n, fill = 0) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum'))) %>% 
+  mutate(`2017` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região)))
+
+gm_2010_q1_regiao %>%
+  left_join(gm_2011_q1_regiao, by = "Região") %>%
+  left_join(gm_2012_q1_regiao, by = "Região") %>%
+  left_join(gm_2013_q1_regiao, by = "Região") %>%
+  left_join(gm_2014_q1_regiao, by = "Região") %>%
+  left_join(gm_2015_q1_regiao, by = "Região") %>%
+  left_join(gm_2016_q1_regiao, by = "Região") %>%
+  left_join(gm_2017_q1_regiao, by = "Região") %>%
+  gather("Ano","Percentual",c(`2010`,`2011`,`2012`,`2013`,`2014`,`2015`,`2016`,`2017`)) %>%
+  ggplot(aes(x = Região, y = Percentual, group = Ano)) +
+  geom_col(aes(fill = Ano), position="dodge") +
+  geom_text(aes(label = percent(Percentual), y=Percentual+.07), position = position_dodge(width = 0.9), angle = 90) +
+  scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
+  theme(legend.position="bottom",
+        legend.title = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.y = element_blank(),
+        axis.line.x = element_line(),
+        panel.background = element_blank(),
+        plot.background = element_rect(colour = "black")) +
+  guides(fill=guide_legend(nrow=1,byrow=TRUE))
+```
+Fonte: MDS, Censo SUAS. 
+
+## Conclusões
+
+Cada um desses gráficos foi um desafio diferente para ser produzido e apresentado na formatação desejada. Espera-se que a produção de cada novo gráfico se torne cada vez mais fácil, aproveitando-se o que já foi feito e descoberto nos gráficos anteriores.
+ 
+Para o gráfico de pizza, que contém apenas as informações de 2017, reproduzimos inicialmente o gráfico da publicação de 2016, e assim verificamos que obtivemos o mesmo gráfico, com os mesmos valores já publicados. Para gerar o gráfico de 2017, bastou substituir a base de dados utilizada, o que pôde ser feito em poucos segundos, ficando evidenciado o ganho que teremos na produção das próximas publicações. 
+
+## Conclusões
+
+Para o gráfico de barras, que contém uma série histórica, já pudemos observar na prática o ganho em confiabilidade dos dados gerados, pois descobrimos que o percentual da região Sul para o ano de 2011 estava calculado errado na publicação de 2016 (e provavelmente nas publicações dos anos anteriores também).
+
+O acréscimo ao gráfico dos dados de 2017, uma vez pronto o gráfico com os dados de 2010 a 2016, também pôde ser feito em poucos segundos, o que mais uma vez evidenciou o enorme ganho de produtividade que teremos no preparo das publicações dos próximos anos.
