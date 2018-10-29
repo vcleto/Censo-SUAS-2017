@@ -172,7 +172,7 @@ Espera-se que, a partir de uma avaliação com abordagem direcionada à análise
 
 ## Capítulo 2 – Gestão e Financiamento
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, cache=TRUE}
 ge_2010 <- read_excel("../Censo SUAS 2010/Gestão Estadual/Censo SUAS 2010_Gestão Estadual_DIVULGAÇÃO.xlsx", sheet = "Censo SUAS 2010 Gestão Estadual")
 
 ge_2011 <- read_excel("../Censo SUAS 2011/GESTÃO ESTADUAL/Censo SUAS 2011_Gestão_Estadual_DIVULGAÇÃO.xlsx", sheet = "Censo SUAS 2011 Gestão Estadual")
@@ -414,11 +414,11 @@ A partir das informações contidas no Censo SUAS é possível ter um panorama g
 
 Em 2016, 19,2% dos Estados tinham Secretaria estadual exclusiva da área de Assistência Social os quais são: Acre, Amazonas, Paraíba, Piauí e Paraná. Nos demais 21 estados (80,8%) a Secretaria estadual estava associada a uma ou mais políticas setoriais (Gráfico 12).
 
-**Gráfico 1: Percentual de estados segundo característica da Secretaria estadual de Assistência Social - Brasil, 2016**
+**Gráfico 1: Percentual de estados segundo característica da Secretaria estadual de Assistência Social - Brasil, 2017**
 
 ```{r, warning=FALSE}
 
-x <- ge_2016 %>% 
+ge_2017 %>% 
   select(q1,q2_1,q2_2,q2_3,q2_4,q2_5,q2_6,q2_7,q2_99) %>% 
   filter(!is.na(q1)) %>% 
   mutate(q2_1=case_when(q2_1=="Não"~0,q2_1=="Sim"~1)) %>% 
@@ -440,77 +440,23 @@ x <- ge_2016 %>%
                       q2>=5~"Secretaria estadual em conjunto com cinco ou mais políticas setoriais",
                       TRUE ~ q1)) %>% 
   mutate(q2=case_when(is.na(q2)~0, TRUE~q2)) %>% 
+  group_by(q1,q2) %>% 
+  summarise(n=sum(n)) %>% 
+  ungroup() %>% 
+  mutate(per=`n`/sum(`n`)) %>% 
   arrange(q2) %>% 
-  group_by(q1) %>% 
-  summarise(n=sum(n))
-#  ungroup() %>% 
-  mutate(per=`n`/sum(`n`)) %>% 
-  ggplot() +
-  geom_bar(aes(x="", y=per, fill=q1), stat="identity", width = 1)+
-  coord_polar("y", start=0)+
-  theme_void()+
-  geom_text(aes(x=1, y = cumsum(per) - per/2, label=percent(per)))
-
-  geom_col(aes(fill = Ano), position="dodge") +
-  geom_text(aes(label = percent(Percentual), y=Percentual+.07), position = position_dodge(width = 0.9), angle = 90) +
-  scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
-  theme(legend.position="bottom",
-        legend.title = element_blank(),
-        axis.title = element_blank(),
-        axis.ticks = element_blank(),
-        axis.text.y = element_blank(),
-        axis.line.x = element_line(),
-        panel.background = element_blank(),
-        plot.background = element_rect(colour = "black")) +
-  guides(fill=guide_legend(nrow=1,byrow=TRUE))
-
-data <- data.frame(a=c("a1","a1","a2","a3","a1","a2","a3","a4","a2","a1","a5","a4","a3"),b=1:13)
-data <- data %>% 
-  group_by(a) %>% 
-  count() %>% 
-  ungroup() %>% 
-  mutate(per=`n`/sum(`n`)) %>% 
-  arrange(desc(a))
-ggplot(data=data)+
-  geom_bar(aes(x="", y=per, fill=a), stat="identity", width = 1)+
-  coord_polar("y", start=0)+
-  theme_void()+
-  geom_text(aes(x=1, y = cumsum(per) - per/2, label=percent(per)))
-
-ge_2017_q1_regiao <- ge_2017 %>% 
-  select(Região,q1) %>%
-  mutate(Região = str_replace(Região, "Região ", "")) %>% 
-  filter(!is.na(q1)) %>% 
-  group_by(Região, q1) %>% 
-  summarise(n=n()) %>% 
-  spread(q1,n, fill = 0) %>% 
-  ungroup() %>% 
-  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum'))) %>% 
-  mutate(`2017` = `Secretaria estadual exclusiva da área de Assistência Social`/rowSums(select(.,-Região)))
-
-ge_2010_q1_regiao %>%
-  left_join(ge_2011_q1_regiao, by = "Região") %>%
-  left_join(ge_2012_q1_regiao, by = "Região") %>%
-  left_join(ge_2013_q1_regiao, by = "Região") %>% 
-  left_join(ge_2014_q1_regiao, by = "Região") %>% 
-  left_join(ge_2015_q1_regiao, by = "Região") %>%
-  left_join(ge_2016_q1_regiao, by = "Região") %>%
-  left_join(ge_2017_q1_regiao, by = "Região") %>%
-  gather("Ano","Percentual",c(`2010`,`2011`,`2012`,`2013`,`2014`,`2015`,`2016`,`2017`)) %>%
-  ggplot(aes(x = Região, y = Percentual, group = Ano)) +
-  geom_col(aes(fill = Ano), position="dodge") +
-  geom_text(aes(label = percent(Percentual), y=Percentual+.07), position = position_dodge(width = 0.9), angle = 90) +
-  scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
-  theme(legend.position="bottom",
-        legend.title = element_blank(),
-        axis.title = element_blank(),
-        axis.ticks = element_blank(),
-        axis.text.y = element_blank(),
-        axis.line.x = element_line(),
-        panel.background = element_blank(),
-        plot.background = element_rect(colour = "black")) +
-  guides(fill=guide_legend(nrow=1,byrow=TRUE))
-
+  mutate(q1=str_wrap(q1,width=35)) %>% 
+  mutate(q1=factor(q1, levels=q1)) %>% 
+  ggplot(aes(x="", y=per, fill=q1)) +
+  geom_bar(stat="identity", width = 1) +
+  geom_text(aes(label = percent(per)), position = position_stack(vjust = 0.5))  + 
+  coord_polar(theta = "y", direction = -1) +
+  theme_void() +
+  theme(legend.title = element_blank(),
+        legend.key = element_rect(size = 5),
+        legend.key.size = unit(1.5, 'lines'),
+        plot.background = element_rect(colour = "black"),
+        plot.margin = unit(c(1, 1, 1, 1), "cm")) #top, right, bottom, left
 ```
 
 Fonte: MDS, Censo SUAS. 
