@@ -5,7 +5,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 
-lista.de.pacotes = c("tidyverse","lubridate","janitor","readxl","stringr","repmis","survey","srvyr","scales") # escreva a lista de pacotes
+lista.de.pacotes = c("tidyverse","lubridate","janitor","readxl","stringr","repmis","survey","srvyr","scales","export") # escreva a lista de pacotes
 novos.pacotes <- lista.de.pacotes[!(lista.de.pacotes %in%
                                       installed.packages()[,"Package"])]
 if(length(novos.pacotes) > 0) {install.packages(novos.pacotes)}
@@ -416,9 +416,9 @@ Em 2016, 19,2% dos Estados tinham Secretaria estadual exclusiva da área de Assi
 
 **Gráfico 1: Percentual de estados segundo característica da Secretaria estadual de Assistência Social - Brasil, 2017**
 
-```{r, warning=FALSE}
+```{r, message=FALSE, warning=FALSE}
 
-ge_2017 %>% 
+grafico <- ge_2017 %>% 
   select(q1,q2_1,q2_2,q2_3,q2_4,q2_5,q2_6,q2_7,q2_99) %>% 
   filter(!is.na(q1)) %>% 
   mutate(q2_1=case_when(q2_1=="Não"~0,q2_1=="Sim"~1)) %>% 
@@ -457,6 +457,10 @@ ge_2017 %>%
         legend.key.size = unit(1.5, 'lines'),
         plot.background = element_rect(colour = "black"),
         plot.margin = unit(c(1, 1, 1, 1), "cm")) #top, right, bottom, left
+
+grafico
+grafico %>% 
+  graph2office(file="graficos")
 ```
 
 Fonte: MDS, Censo SUAS. 
@@ -471,7 +475,7 @@ Entre os anos de 2015 e 2016, é possível identificar redução nos percentuais
 
 **Gráfico 1: Percentual de Secretarias Municipais exclusivas de Assistência Social, segundo grandes regiões – Brasil, 2010 a 2017**
 
-```{r, warning=FALSE}
+```{r, message=FALSE, warning=FALSE}
 gm_2010_q1_regiao <- gm_2010 %>% 
   select(Região,q1) %>% 
   mutate(Região = str_replace(Região, "Região ", "")) %>% 
@@ -560,7 +564,7 @@ gm_2017_q1_regiao <- gm_2017 %>%
   bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum'))) %>% 
   mutate(`2017` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região)))
 
-gm_2010_q1_regiao %>%
+grafico <- gm_2010_q1_regiao %>%
   left_join(gm_2011_q1_regiao, by = "Região") %>%
   left_join(gm_2012_q1_regiao, by = "Região") %>%
   left_join(gm_2013_q1_regiao, by = "Região") %>%
@@ -583,6 +587,9 @@ gm_2010_q1_regiao %>%
         plot.background = element_rect(colour = "black")) +
   guides(fill=guide_legend(nrow=1,byrow=TRUE))
 
+grafico
+grafico %>% 
+  graph2office(file="graficos", append = TRUE)
 ```
 
 Fonte: MDS, Censo SUAS. 
