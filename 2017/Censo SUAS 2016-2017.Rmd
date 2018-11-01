@@ -1,5 +1,6 @@
 ---
 output: html_document
+#output: word_document
 ---
 
 ```{r setup, include=FALSE}
@@ -412,7 +413,7 @@ A LOAS, a NOB SUAS10 e outros normativos que regulam a assistência social defin
 
 A partir das informações contidas no Censo SUAS é possível ter um panorama geral da gestão e do financiamento em estados e municípios, com a observação de aspectos como a estrutura administrativa da gestão da assistência social, a atualização de normativos, o apoio de estados aos municípios, as atividades de cofinanciamento e transferência de recursos, funcionamento das instâncias de pactuação, entre outras. Nesse sentido, esta seção apresenta os principais resultados obtidos a partir das informações dos questionários de gestão municipal e gestão estadual.
 
-Em 2016, 19,2% dos Estados tinham Secretaria estadual exclusiva da área de Assistência Social os quais são: Acre, Amazonas, Paraíba, Piauí e Paraná. Nos demais 21 estados (80,8%) a Secretaria estadual estava associada a uma ou mais políticas setoriais (Gráfico 12).
+Em 2016, 19,2% dos Estados tinham Secretaria estadual exclusiva da área de Assistência Social os quais são: Acre, Amazonas, Paraíba, Piauí e Paraná. Nos demais 21 estados (80,8%) a Secretaria estadual estava associada a uma ou mais políticas setoriais (Gráfico 1).
 
 **Gráfico 1: Percentual de estados segundo característica da Secretaria estadual de Assistência Social - Brasil, 2017**
 
@@ -461,6 +462,78 @@ grafico <- ge_2017 %>%
 grafico
 grafico %>% 
   graph2office(file="graficos")
+```
+
+Fonte: MDS, Censo SUAS. 
+
+Alguns órgãos gestores estaduais constituíram as áreas de assistência social como subdivisões administrativas em sua estrutura, como superintendências, departamentos, gerências, coordenações, dentre outras.
+
+Em 65,4% dos estados, as subdivisões administrativas das áreas de Proteção Social Básica, Proteção Social Especial e Gestão do SUAS estavam constituídas formalmente.
+
+O maior índice de formalização, por sua vez, foi identificado na área de Gestão Financeira e Orçamentária, com 69,2%.
+A área de Regulação do SUAS é a que apesenta menor percentual de formalização, sendo 11,5% subdivisões constituídas formalmente, 38,5% constituídas informalmente e 50% não constituídas (Gráfico 2).
+
+**Gráfico 2: Distribuição dos órgãos gestores estaduais segundo constituição/formalização de subdivisões administrativas - Brasil, 2017**
+
+```{r, message=FALSE, warning=FALSE}
+
+tabela<-ge_2017 %>%
+#Questionários 2015:
+#  select("Proteção Social Básica"=q3_1,
+#         "Proteção Social Especial"=q3_2,
+#         "Gestão de Benefícios Assistenciais (Bolsa Família, BPC, Benefícios Eventuais)"=q3_3,
+#         "Gestão do SUAS"=q3_4,
+#         "Vigilância Socioassistencial (inclusive áreas de monitoramento e avaliação)"=q3_5,
+#         "Gestão do Trabalho"=q3_6,
+#         "Regulação do SUAS"=q3_7,
+#         "Gestão Financeira e Orçamentária"=q3_8) %>% 
+#Questionário 2017:
+  select("Gestão do SUAS"=q3_1,
+         "Vigilância Socioassistencial (inclusive áreas de monitoramento e avaliação)"=q3_2,
+         "Gestão do Trabalho"=q3_3,
+         "Regulação do SUAS"=q3_4,
+         "Gestão Financeira e Orçamentária"=q3_5,
+         "Proteção Social Básica"=q3_6,
+         "Proteção Social Especial"=q3_7,
+         "Gestão do Cadastro Único e Programa Bolsa Família"=q3_8,
+         "Gestão de Benefícios Assistenciais (BPC, Benefícios Eventuais)"=q3_9) %>% 
+  gather("Area","Constituição") %>% 
+  mutate(Area=str_wrap(Area,width=39)) %>% 
+  mutate(Constituição = case_when(Constituição=="Sim, na estrutura formal do órgão gestor"~"Constituída formalmente",
+                                  Constituição=="Sim, de maneira informal"~"Constituída informalmente",
+                                  TRUE ~ Constituição)) %>% 
+  group_by(Area, Constituição) %>% 
+  summarise(n=n()) %>% 
+  group_by(Area) %>% 
+  mutate(Percentual = n/sum(n), Posição = (cumsum(n/sum(n)) - 0.5 * n/sum(n)))
+
+ordenado<-tabela %>% 
+  filter(Constituição == "Constituída formalmente") %>% 
+  arrange(Percentual) %>% 
+  select(Area)
+
+ordenado<-factor(ordenado, levels = ordenado$Area)
+
+grafico<-tabela %>% 
+  ungroup() %>% 
+  mutate(Area = factor(Area, levels = levels(ordenado))) %>% 
+  ggplot(aes(x = Area, y = Percentual)) +
+  geom_col(aes(fill = Constituição), position = position_stack(reverse = TRUE)) +
+  geom_text(aes(y=Posição, label = percent(Percentual))) +
+  scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
+  coord_flip() +
+  theme(legend.position="bottom",
+        legend.title = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.x = element_blank(),
+        axis.line.y = element_line(),
+        panel.background = element_blank(),
+        plot.background = element_rect(colour = "black"))
+
+grafico
+grafico %>% 
+  graph2office(file="graficos", append = TRUE)
 ```
 
 Fonte: MDS, Censo SUAS. 
