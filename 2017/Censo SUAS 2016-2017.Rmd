@@ -626,10 +626,10 @@ Quando se observa a distribuição dos estados que realizam cofinanciamento aos 
 ```{r, message=FALSE, warning=FALSE}
 ge_cofinanciamento = function(df, q, ano){
   q <- enquo(q)
-  ano_name <- quo_name(ano)
+  ano <- quo_name(ano)
 
   df %>%
-    select(!! ano_name := !! q) %>% 
+    select(!! ano := !! q) %>% 
     gather("Categoria","Nível") %>% 
     mutate(Nível = case_when(Nível == "Sim, fundo-a-fundo"~"Realiza apenas fundo-a-fundo",
                              Nível == "Sim, apenas fundo-a-fundo"~"Realiza apenas fundo-a-fundo",
@@ -669,6 +669,238 @@ grafico <- ge_cofinanciamento_2013 %>%
         axis.ticks = element_blank(),
         axis.text.y = element_blank(),
         axis.line.x = element_line(),
+        panel.background = element_blank(),
+        plot.background = element_rect(colour = "black"))+
+  guides(fill=guide_legend(nrow=1,byrow=TRUE))
+
+grafico
+grafico %>% 
+  graph2office(file="graficos", append = TRUE)
+```
+
+Fonte: MDS, Censo SUAS.
+
+Dos 23 estados que realizavam cofinanciamento em 2016, 22 (95,7%) destinavam os recursos para o serviço de proteção social básica e 21 (91,3%) para o serviço de proteção social especial de média complexidade. Quatro estados (17,4% dos estados que realizavam cofinanciamento em 2016) destinavam o cofinanciamento ao incentivo financeiro para gestão do SUAS.
+
+Quando comparado aos anos anteriores, 2016 foi o ano em que mais estados destinavam os recursos do cofinanciamento para serviços de proteção social básica, especial de média complexidade e incentivo financeiro para gestão do SUAS. Entre 2015 e 2016 houve redução de um estado entre aqueles que destinavam recursos do cofinanciamento para benefícios eventuais (Gráfico 5).
+
+**Gráfico 5: Número de estados segundo a destinação dos recursos transferidos aos municípios - Brasil, 2013 a 2017**
+
+```{r, message=FALSE, warning=FALSE}
+ge_destinacao_recursos = function(df, q, ano, cod_categoria){
+  q <- enquo(q)
+  ano <- quo_name(ano)
+  cod_categoria <- quo_name(cod_categoria)
+
+  df %>%
+    select(!! ano := !! q) %>% 
+    gather("Ano","Categoria") %>% 
+    mutate(Categoria = case_when(Categoria == "Sim"~!! cod_categoria,
+                                 TRUE ~ "")) %>% 
+    mutate(Categoria = case_when(Categoria == "1"~"Serviço de Proteção Social Básica",
+                                 Categoria == "2"~"Serviço de Proteção Social Especial de Média Complexidade",
+                                 Categoria == "3"~"Serviço de Proteção Social Especial de Alta Complexidade",
+                                 Categoria == "4"~"Benefícios Eventuais",
+                                 Categoria == "5"~"Incentivo financeiro para Gestão do SUAS",
+                                 TRUE ~ "")) %>% 
+    filter(Categoria != "") %>% 
+    group_by(Ano, Categoria) %>% 
+    summarise(n=n())
+}
+
+ge_destinacao_recursos_2013_1 <- ge_destinacao_recursos(ge_2013, q75a, "2013", "1")
+ge_destinacao_recursos_2013_2 <- ge_destinacao_recursos(ge_2013, q75b, "2013", "2")
+ge_destinacao_recursos_2013_3 <- ge_destinacao_recursos(ge_2013, q75c, "2013", "3")
+ge_destinacao_recursos_2013_4 <- ge_destinacao_recursos(ge_2013, q75d, "2013", "4")
+ge_destinacao_recursos_2013_5 <- ge_destinacao_recursos(ge_2013, q75e, "2013", "5")
+
+ge_destinacao_recursos_2014_1 <- ge_destinacao_recursos(ge_2014, q45_1, "2014", "1")
+ge_destinacao_recursos_2014_2 <- ge_destinacao_recursos(ge_2014, q45_2, "2014", "2")
+ge_destinacao_recursos_2014_3 <- ge_destinacao_recursos(ge_2014, q45_3, "2014", "3")
+ge_destinacao_recursos_2014_4 <- ge_destinacao_recursos(ge_2014, q45_4, "2014", "4")
+ge_destinacao_recursos_2014_5 <- ge_destinacao_recursos(ge_2014, q45_5, "2014", "5")
+
+ge_destinacao_recursos_2015_1 <- ge_destinacao_recursos(ge_2015, q37_1, "2015", "1")
+ge_destinacao_recursos_2015_2 <- ge_destinacao_recursos(ge_2015, q37_2, "2015", "2")
+ge_destinacao_recursos_2015_3 <- ge_destinacao_recursos(ge_2015, q37_3, "2015", "3")
+ge_destinacao_recursos_2015_4 <- ge_destinacao_recursos(ge_2015, q37_4, "2015", "4")
+ge_destinacao_recursos_2015_5 <- ge_destinacao_recursos(ge_2015, q37_5, "2015", "5")
+
+ge_destinacao_recursos_2016_1 <- ge_destinacao_recursos(ge_2016, q34_1, "2016", "1")
+ge_destinacao_recursos_2016_2 <- ge_destinacao_recursos(ge_2016, q34_2, "2016", "2")
+ge_destinacao_recursos_2016_3 <- ge_destinacao_recursos(ge_2016, q34_3, "2016", "3")
+ge_destinacao_recursos_2016_4 <- ge_destinacao_recursos(ge_2016, q34_4, "2016", "4")
+ge_destinacao_recursos_2016_5 <- ge_destinacao_recursos(ge_2016, q34_5, "2016", "5")
+
+ge_destinacao_recursos_2017_1 <- ge_destinacao_recursos(ge_2017, q43_1, "2017", "1")
+ge_destinacao_recursos_2017_2 <- ge_destinacao_recursos(ge_2017, q43_2, "2017", "2")
+ge_destinacao_recursos_2017_3 <- ge_destinacao_recursos(ge_2017, q43_3, "2017", "3")
+ge_destinacao_recursos_2017_4 <- ge_destinacao_recursos(ge_2017, q43_4, "2017", "4")
+ge_destinacao_recursos_2017_5 <- ge_destinacao_recursos(ge_2017, q43_5, "2017", "5")
+
+grafico <- ge_destinacao_recursos_2013_1 %>%
+  bind_rows(ge_destinacao_recursos_2013_2) %>% 
+  bind_rows(ge_destinacao_recursos_2013_3) %>% 
+  bind_rows(ge_destinacao_recursos_2013_4) %>% 
+  bind_rows(ge_destinacao_recursos_2013_5) %>%
+  bind_rows(ge_destinacao_recursos_2014_1) %>%
+  bind_rows(ge_destinacao_recursos_2014_2) %>% 
+  bind_rows(ge_destinacao_recursos_2014_3) %>% 
+  bind_rows(ge_destinacao_recursos_2014_4) %>% 
+  bind_rows(ge_destinacao_recursos_2014_5) %>%
+  bind_rows(ge_destinacao_recursos_2015_1) %>%
+  bind_rows(ge_destinacao_recursos_2015_2) %>% 
+  bind_rows(ge_destinacao_recursos_2015_3) %>% 
+  bind_rows(ge_destinacao_recursos_2015_4) %>% 
+  bind_rows(ge_destinacao_recursos_2015_5) %>%
+  bind_rows(ge_destinacao_recursos_2016_1) %>%
+  bind_rows(ge_destinacao_recursos_2016_2) %>% 
+  bind_rows(ge_destinacao_recursos_2016_3) %>% 
+  bind_rows(ge_destinacao_recursos_2016_4) %>% 
+  bind_rows(ge_destinacao_recursos_2016_5) %>%
+  bind_rows(ge_destinacao_recursos_2017_1) %>%
+  bind_rows(ge_destinacao_recursos_2017_2) %>% 
+  bind_rows(ge_destinacao_recursos_2017_3) %>% 
+  bind_rows(ge_destinacao_recursos_2017_4) %>% 
+  bind_rows(ge_destinacao_recursos_2017_5) %>%
+  ggplot(aes(x = Categoria, y = n, group = Ano)) +
+  geom_col(aes(fill = Ano), position = "dodge") +
+  geom_text(aes(label = n, y=n+0.7), position = position_dodge(width = 0.9)) +
+  scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
+  coord_flip() +
+  theme(legend.position="bottom",
+        legend.title = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.x = element_blank(),
+        axis.line.y = element_line(),
+        panel.background = element_blank(),
+        plot.background = element_rect(colour = "black"))+
+  guides(fill=guide_legend(nrow=1,byrow=TRUE))
+
+grafico
+grafico %>% 
+  graph2office(file="graficos", append = TRUE)
+```
+
+Fonte: MDS, Censo SUAS.
+
+Em 2016, todos os estados informaram prestar alguma modalidade de apoio técnico aos municípios. Os maiores percentuais observados referiam-se ao assessoramento técnico de forma presencial no município, ofertado por 96,2% dos estados (25). Os menores percentuais eram referentes a capacitações à distância, realizadas por 26,9% dos estados. Outras formas além das discriminadas eram ofertadas por 15,4% dos estados.
+
+Entre 2013 e 2016 o percentual de estados que prestavam assessoramento técnico a distância aumentou, passando de 61,5% em 2013 para 92,3% em 2016. O percentual de estados que prestava capacitações à distância, por sua vez, diminuiu, passando de 42,3% em 2013 para 26,9% em 2016 (Gráfico 6).
+
+**Gráfico 6: Percentual de estados segundo formas de apoio técnico aos municípios - Brasil, 2013 a 2016**
+
+```{r, message=FALSE, warning=FALSE}
+ge_apoio_tecnico = function(df, q, ano, cod_categoria){
+  q <- enquo(q)
+  ano <- quo_name(ano)
+  cod_categoria <- quo_name(cod_categoria)
+
+  categoria <- case_when(!! cod_categoria == "1"~"Produção e distribuição de material técnico",
+                         !! cod_categoria == "2"~"Elaboração, pelo Estado, de normativas e instruções operacionais para orientação dos municípios",
+                         !! cod_categoria == "3"~"Capacitações presenciais",
+                         !! cod_categoria == "4"~"Capacitações à distância",
+                         !! cod_categoria == "5"~"Assessoramento técnico de forma presencial no município",
+                         !! cod_categoria == "6"~"Assessoramento técnico à distância",
+                         !! cod_categoria == "7"~"Outras formas")
+  df %>%
+    select("Sim_Não" = !! q) %>% 
+    mutate("Categoria" = categoria, "Ano" = !! ano) %>% 
+    group_by(Categoria, Ano, Sim_Não) %>% 
+    summarise(n=n()) %>% 
+    mutate(Percentual = n/sum(n)) %>% 
+    filter(Sim_Não == "Sim") 
+}
+
+ge_apoio_tecnico_2013_1 <- ge_apoio_tecnico(ge_2013, q83a, "2013", "1")
+ge_apoio_tecnico_2013_2 <- ge_apoio_tecnico(ge_2013, q83b, "2013", "2")
+ge_apoio_tecnico_2013_3 <- ge_apoio_tecnico(ge_2013, q83c, "2013", "3")
+ge_apoio_tecnico_2013_4 <- ge_apoio_tecnico(ge_2013, q83d, "2013", "4")
+ge_apoio_tecnico_2013_5 <- ge_apoio_tecnico(ge_2013, q83e, "2013", "5")
+ge_apoio_tecnico_2013_6 <- ge_apoio_tecnico(ge_2013, q83f, "2013", "6")
+ge_apoio_tecnico_2013_7 <- ge_apoio_tecnico(ge_2013, q83g, "2013", "7")
+
+ge_apoio_tecnico_2014_1 <- ge_apoio_tecnico(ge_2014, q28_1, "2014", "1")
+ge_apoio_tecnico_2014_2 <- ge_apoio_tecnico(ge_2014, q28_2, "2014", "2")
+ge_apoio_tecnico_2014_3 <- ge_apoio_tecnico(ge_2014, q28_3, "2014", "3")
+ge_apoio_tecnico_2014_4 <- ge_apoio_tecnico(ge_2014, q28_4, "2014", "4")
+ge_apoio_tecnico_2014_5 <- ge_apoio_tecnico(ge_2014, q28_5, "2014", "5")
+ge_apoio_tecnico_2014_6 <- ge_apoio_tecnico(ge_2014, q28_6, "2014", "6")
+ge_apoio_tecnico_2014_7 <- ge_apoio_tecnico(ge_2014, q28_7, "2014", "7")
+
+ge_apoio_tecnico_2015_1 <- ge_apoio_tecnico(ge_2015, q21_1, "2015", "1")
+ge_apoio_tecnico_2015_2 <- ge_apoio_tecnico(ge_2015, q21_2, "2015", "2")
+ge_apoio_tecnico_2015_3 <- ge_apoio_tecnico(ge_2015, q21_3, "2015", "3")
+ge_apoio_tecnico_2015_4 <- ge_apoio_tecnico(ge_2015, q21_4, "2015", "4")
+ge_apoio_tecnico_2015_5 <- ge_apoio_tecnico(ge_2015, q21_5, "2015", "5")
+ge_apoio_tecnico_2015_6 <- ge_apoio_tecnico(ge_2015, q21_6, "2015", "6")
+ge_apoio_tecnico_2015_7 <- ge_apoio_tecnico(ge_2015, q21_99, "2015", "7")
+
+ge_apoio_tecnico_2016_1 <- ge_apoio_tecnico(ge_2016, q28_1, "2016", "1")
+ge_apoio_tecnico_2016_2 <- ge_apoio_tecnico(ge_2016, q28_2, "2016", "2")
+ge_apoio_tecnico_2016_3 <- ge_apoio_tecnico(ge_2016, q28_3, "2016", "3")
+ge_apoio_tecnico_2016_4 <- ge_apoio_tecnico(ge_2016, q28_4, "2016", "4")
+ge_apoio_tecnico_2016_5 <- ge_apoio_tecnico(ge_2016, q28_5, "2016", "5")
+ge_apoio_tecnico_2016_6 <- ge_apoio_tecnico(ge_2016, q28_6, "2016", "6")
+ge_apoio_tecnico_2016_7 <- ge_apoio_tecnico(ge_2016, q28_99, "2016", "7")
+
+ge_apoio_tecnico_2017_1 <- ge_apoio_tecnico(ge_2017, q37_1, "2017", "1")
+ge_apoio_tecnico_2017_2 <- ge_apoio_tecnico(ge_2017, q37_2, "2017", "2")
+ge_apoio_tecnico_2017_3 <- ge_apoio_tecnico(ge_2017, q37_3, "2017", "3")
+ge_apoio_tecnico_2017_4 <- ge_apoio_tecnico(ge_2017, q37_4, "2017", "4")
+ge_apoio_tecnico_2017_5 <- ge_apoio_tecnico(ge_2017, q37_5, "2017", "5")
+ge_apoio_tecnico_2017_6 <- ge_apoio_tecnico(ge_2017, q37_6, "2017", "6")
+ge_apoio_tecnico_2017_7 <- ge_apoio_tecnico(ge_2017, q37_99, "2017", "7")
+
+grafico <- ge_apoio_tecnico_2013_1 %>%
+  bind_rows(ge_apoio_tecnico_2013_2) %>% 
+  bind_rows(ge_apoio_tecnico_2013_3) %>% 
+  bind_rows(ge_apoio_tecnico_2013_4) %>% 
+  bind_rows(ge_apoio_tecnico_2013_5) %>%
+  bind_rows(ge_apoio_tecnico_2013_6) %>%
+  bind_rows(ge_apoio_tecnico_2013_7) %>%
+  bind_rows(ge_apoio_tecnico_2014_1) %>%
+  bind_rows(ge_apoio_tecnico_2014_2) %>% 
+  bind_rows(ge_apoio_tecnico_2014_3) %>% 
+  bind_rows(ge_apoio_tecnico_2014_4) %>% 
+  bind_rows(ge_apoio_tecnico_2014_5) %>%
+  bind_rows(ge_apoio_tecnico_2014_6) %>%
+  bind_rows(ge_apoio_tecnico_2014_7) %>%
+  bind_rows(ge_apoio_tecnico_2015_1) %>%
+  bind_rows(ge_apoio_tecnico_2015_2) %>% 
+  bind_rows(ge_apoio_tecnico_2015_3) %>% 
+  bind_rows(ge_apoio_tecnico_2015_4) %>% 
+  bind_rows(ge_apoio_tecnico_2015_5) %>%
+  bind_rows(ge_apoio_tecnico_2015_6) %>%
+  bind_rows(ge_apoio_tecnico_2015_7) %>%
+  bind_rows(ge_apoio_tecnico_2016_1) %>%
+  bind_rows(ge_apoio_tecnico_2016_2) %>% 
+  bind_rows(ge_apoio_tecnico_2016_3) %>% 
+  bind_rows(ge_apoio_tecnico_2016_4) %>% 
+  bind_rows(ge_apoio_tecnico_2016_5) %>%
+  bind_rows(ge_apoio_tecnico_2016_6) %>%
+  bind_rows(ge_apoio_tecnico_2016_7) %>%
+  bind_rows(ge_apoio_tecnico_2017_1) %>%
+  bind_rows(ge_apoio_tecnico_2017_2) %>% 
+  bind_rows(ge_apoio_tecnico_2017_3) %>% 
+  bind_rows(ge_apoio_tecnico_2017_4) %>% 
+  bind_rows(ge_apoio_tecnico_2017_5) %>%
+  bind_rows(ge_apoio_tecnico_2017_6) %>%
+  bind_rows(ge_apoio_tecnico_2017_7) %>% 
+  ungroup() %>% 
+  mutate(Categoria=str_wrap(Categoria,width=51)) %>% 
+  ggplot(aes(x = Categoria, y = Percentual, group = Ano)) +
+  geom_col(aes(fill = Ano), position = "dodge") +
+  geom_text(aes(label = percent(Percentual), y=Percentual+0.07), position = position_dodge(width = 0.9)) +
+  scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
+  coord_flip() +
+  theme(legend.position="bottom",
+        legend.title = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.x = element_blank(),
+        axis.line.y = element_line(),
         panel.background = element_blank(),
         plot.background = element_rect(colour = "black"))+
   guides(fill=guide_legend(nrow=1,byrow=TRUE))
@@ -867,20 +1099,10 @@ Em 2016, todos os Estados declararam que os recursos próprios eram registrados 
 Gráfico 14: Percentual de estados segundo alocação dos recursos próprios na unidade Orçamentária do Fundo Estadual de Assistência Social (FEAS) - Brasil, 2014 a 2016
 Fonte: MDS, Censo SUAS.
 
-Dos 23 estados que realizavam cofinanciamento em 2016, 22 (95,7%) destinavam os recursos para o serviço de proteção social básica e 21 (91,3%) para o serviço de proteção social especial de média complexidade. Quatro estados (17,4% dos estados que realizavam cofinanciamento em 2016) destinavam o cofinanciamento ao incentivo financeiro para gestão do SUAS. 
-Quando comparado aos anos anteriores, 2016 foi o ano em que mais estados destinavam os recursos do cofinanciamento para serviços de proteção social básica, especial de média complexidade e incentivo financeiro para gestão do SUAS. Entre 2015 e 2016 houve redução de um estado entre aqueles que destinavam recursos do cofinanciamento para benefícios eventuais (Gráfico 16).
-Gráfico 16: Número de estados segundo a destinação dos recursos transferidos aos municípios - Brasil, 2013 a 2016
-Fonte: MDS, Censo SUAS.
-
 Considerando-se as categorias de organização do cofinanciamento fundo-a-fundo (por serviços socioassistenciais, por tipo de proteção, comum a todos os serviços ou outra), verificou-se que em 2016 10 estados realizavam o cofinanciamento por nível de proteção (45,5% dos 22 estados que realizavam cofinanciamento fundo-a-fundo), enquanto 7 realizavam por serviço Socioassistencial (31,8%), 3 tinham o cofinanciamento comum a todos os serviços socioassistenciais (13,6%) e 2 tinham outra organização (9,1%).
 Dos 10 estados que realizavam cofinanciamento por nível de proteção, 4 (18,2% do total) não tinham frequência regular, 2 (9,1%) realizavam mensalmente e 2 (9,1%) anualmente.
 Entre os 7 estados que realizavam o cofinanciamento por serviço socioassistencial, 2 (9,1%) realizavam sem frequência regular e 2 (9,1%) anualmente. Os dois estados que tinham outra organização realizavam repasses trimestrais (Gráfico 17).
 Gráfico 17: Número de estados segundo organização e periodicidade do cofinanciamento fundo-a-fundo - Brasil, 2016
-Fonte: MDS, Censo SUAS.
-
-Em 2016, todos os estados informaram prestar alguma modalidade de apoio técnico aos municípios. Os maiores percentuais observados referiam-se ao assessoramento técnico de forma presencial no município, ofertado por 96,2% dos estados (25). Os menores percentuais eram referentes a capacitações à distância, realizadas por 26,9% dos estados. Outras formas além das discriminadas eram ofertadas por 15,4% dos estados.
-Entre 2013 e 2016 o percentual de estados que prestavam assessoramento técnico a distância aumentou, passando de 61,5% em 2013 para 92,3% em 2016. O percentual de estados que prestava capacitações à distância, por sua vez, diminuiu, passando de 42,3% em 2013 para 26,9% em 2016 (Gráfico 18).
-Gráfico 18: Percentual de estados segundo formas de apoio técnico aos municípios - Brasil, 2013 a 2016
 Fonte: MDS, Censo SUAS.
 
 As Secretarias Estaduais de Assistência Social dos Estados de Rondônia, Roraima, Ceará, Sergipe e Paraná declaram ter realizado visitas técnicas em todos os seus municípios.
