@@ -892,7 +892,7 @@ grafico <- ge_apoio_tecnico_2013_1 %>%
   mutate(Categoria=str_wrap(Categoria,width=51)) %>% 
   ggplot(aes(x = Categoria, y = Percentual, group = Ano)) +
   geom_col(aes(fill = Ano), position = "dodge") +
-  geom_text(aes(label = percent(Percentual), y=Percentual+0.07), position = position_dodge(width = 0.9)) +
+  geom_text(aes(label = percent(Percentual), y=Percentual+0.06), position = position_dodge(width = 0.9), size=3) +
   scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
   coord_flip() +
   theme(legend.position="bottom",
@@ -918,108 +918,57 @@ Quando se observa as Secretarias por região, verifica-se que em 2016 a região 
 
 Entre os anos de 2010 e 2016 observou-se aumento na proporção de Secretarias exclusivas em todas as regiões do país, sendo os maiores aumentos observados nas regiões Sul e Sudeste. No entanto, embora tenham concentrado o aumento mais expressivo, as regiões Sul e Sudeste tinham os menores percentuais de Secretarias exclusivas de assistência social tanto em 2010 quanto em 2016.
 
-Entre os anos de 2015 e 2016, é possível identificar redução nos percentuais de Secretarias exclusivas em todas as regiões, com exceção da região Norte (Gráfico 1).
+Entre os anos de 2015 e 2016, é possível identificar redução nos percentuais de Secretarias exclusivas em todas as regiões, com exceção da região Norte (Gráfico 7).
 
-**Gráfico 1: Percentual de Secretarias Municipais exclusivas de Assistência Social, segundo grandes regiões – Brasil, 2010 a 2017**
+**Gráfico 7: Percentual de Secretarias Municipais exclusivas de Assistência Social, segundo grandes regiões – Brasil, 2010 a 2017**
 
 ```{r, message=FALSE, warning=FALSE}
-gm_2010_q1_regiao <- gm_2010 %>% 
-  select(Região,q1) %>% 
-  mutate(Região = str_replace(Região, "Região ", "")) %>% 
-  filter(!is.na(q1)) %>% 
-  group_by(Região, q1) %>% 
-  summarise(n=n()) %>% 
-  spread(q1,n, fill = 0) %>% 
-  ungroup() %>% 
-  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum'))) %>% 
-  mutate(`2010` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região)))
+gm_secretaria_exclusiva = function(df, q, ano, regiao, selecao){
+  q <- enquo(q)
+  ano <- quo_name(ano)
+  regiao <- enquo(regiao)
+  selecao <- quo_name(selecao)
 
-gm_2011_q1_regiao <- gm_2011 %>% 
-  select(Região,q1) %>% 
-  mutate(Região = str_replace(Região, "Região ", "")) %>% 
-  filter(!is.na(q1)) %>% 
-  group_by(Região, q1) %>% 
-  summarise(n=n()) %>% 
-  spread(q1,n, fill = 0) %>% 
-  ungroup() %>% 
-  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum'))) %>% 
-  mutate(`2011` = `Secretaria Municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região)))
+  df %>%
+    select(!! regiao, !!q) %>% 
+    mutate(!! regiao := str_replace(!! regiao, "Região ", "")) %>% 
+    filter(!is.na(!! q)) %>% 
+    group_by(!! regiao, !! q) %>% 
+    summarise(n=n()) %>% 
+    spread(!! regiao, n, fill = 0) %>% 
+    mutate("Brasil" = rowSums(.[2:6])) %>% 
+    gather("Região","n",-!! q) %>% 
+    group_by(!! regiao) %>% 
+    mutate("Percentual" = n/sum(n)) %>% 
+    filter(!! q == !! selecao) %>% 
+    mutate("Ano" = !! ano) %>% 
+    select(!! regiao, Percentual, Ano)
+}
 
-gm_2012_q1_regiao <- gm_2012 %>% 
-  select(Região,q1) %>% 
-  mutate(Região = str_replace(Região, "Região ", "")) %>% 
-  filter(!is.na(q1)) %>% 
-  group_by(Região, q1) %>% 
-  summarise(n=n()) %>% 
-  spread(q1,n, fill = 0) %>% 
-  ungroup() %>% 
-  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum'))) %>% 
-  mutate(`2012` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região)))
+gm_secretaria_exclusiva_2010 <- gm_secretaria_exclusiva(gm_2010, q1, "2010", Região, "Secretaria municipal exclusiva da área de Assistência Social")
 
-gm_2013_q1_regiao <- gm_2013 %>% 
-  select(Região,q1) %>% 
-  mutate(Região = str_replace(Região, "Região ", "")) %>% 
-  filter(!is.na(q1)) %>% 
-  group_by(Região, q1) %>% 
-  summarise(n=n()) %>% 
-  spread(q1,n, fill = 0) %>% 
-  ungroup() %>% 
-  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum'))) %>% 
-  mutate(`2013` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região)))
+gm_secretaria_exclusiva_2011 <- gm_secretaria_exclusiva(gm_2011, q1, "2011", Região, "Secretaria Municipal exclusiva da área de Assistência Social")
 
-gm_2014_q1_regiao <- gm_2014 %>% 
-  select(Região,q1) %>%
-  mutate(Região = str_replace(Região, "Região ", "")) %>% 
-  filter(!is.na(q1)) %>% 
-  group_by(Região, q1) %>% 
-  summarise(n=n()) %>% 
-  spread(q1,n, fill = 0) %>% 
-  ungroup() %>% 
-  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum'))) %>% 
-  mutate(`2014` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região)))
+gm_secretaria_exclusiva_2012 <- gm_secretaria_exclusiva(gm_2012, q1, "2012", Região, "Secretaria municipal exclusiva da área de Assistência Social")
 
-gm_2015_q1_regiao <- gm_2015 %>% 
-  select(Região,q1) %>%
-  mutate(Região = str_replace(Região, "Região ", "")) %>% 
-  filter(!is.na(q1)) %>% 
-  group_by(Região, q1) %>% 
-  summarise(n=n()) %>% 
-  spread(q1,n, fill = 0) %>% 
-  ungroup() %>% 
-  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum'))) %>% 
-  mutate(`2015` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região)))
+gm_secretaria_exclusiva_2013 <- gm_secretaria_exclusiva(gm_2013, q1, "2013", Região, "Secretaria municipal exclusiva da área de Assistência Social")
 
-gm_2016_q1_regiao <- gm_2016 %>% 
-  select(Região,q1) %>%
-  mutate(Região = str_replace(Região, "Região ", "")) %>% 
-  filter(!is.na(q1)) %>% 
-  group_by(Região, q1) %>% 
-  summarise(n=n()) %>% 
-  spread(q1,n, fill = 0) %>% 
-  ungroup() %>% 
-  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum'))) %>% 
-  mutate(`2016` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região)))
+gm_secretaria_exclusiva_2014 <- gm_secretaria_exclusiva(gm_2014, q1, "2014", Região, "Secretaria municipal exclusiva da área de Assistência Social")
 
-gm_2017_q1_regiao <- gm_2017 %>% 
-  select(Região,q1) %>%
-  mutate(Região = str_replace(Região, "Região ", "")) %>% 
-  filter(!is.na(q1)) %>% 
-  group_by(Região, q1) %>% 
-  summarise(n=n()) %>% 
-  spread(q1,n, fill = 0) %>% 
-  ungroup() %>% 
-  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum'))) %>% 
-  mutate(`2017` = `Secretaria municipal exclusiva da área de Assistência Social`/rowSums(select(.,-Região)))
+gm_secretaria_exclusiva_2015 <- gm_secretaria_exclusiva(gm_2015, q1, "2015", Região, "Secretaria municipal exclusiva da área de Assistência Social")
 
-grafico <- gm_2010_q1_regiao %>%
-  left_join(gm_2011_q1_regiao, by = "Região") %>%
-  left_join(gm_2012_q1_regiao, by = "Região") %>%
-  left_join(gm_2013_q1_regiao, by = "Região") %>%
-  left_join(gm_2014_q1_regiao, by = "Região") %>%
-  left_join(gm_2015_q1_regiao, by = "Região") %>%
-  left_join(gm_2016_q1_regiao, by = "Região") %>%
-  left_join(gm_2017_q1_regiao, by = "Região") %>%
-  gather("Ano","Percentual",c(`2010`,`2011`,`2012`,`2013`,`2014`,`2015`,`2016`,`2017`)) %>%
+gm_secretaria_exclusiva_2016 <- gm_secretaria_exclusiva(gm_2016, q1, "2016", Região, "Secretaria municipal exclusiva da área de Assistência Social")
+
+gm_secretaria_exclusiva_2017 <- gm_secretaria_exclusiva(gm_2017, q1, "2017", Região, "Secretaria municipal exclusiva da área de Assistência Social")
+
+grafico <- gm_secretaria_exclusiva_2010 %>%
+  bind_rows(gm_secretaria_exclusiva_2011) %>% 
+  bind_rows(gm_secretaria_exclusiva_2012) %>% 
+  bind_rows(gm_secretaria_exclusiva_2013) %>% 
+  bind_rows(gm_secretaria_exclusiva_2014) %>% 
+  bind_rows(gm_secretaria_exclusiva_2015) %>% 
+  bind_rows(gm_secretaria_exclusiva_2016) %>% 
+  bind_rows(gm_secretaria_exclusiva_2017) %>% 
   ggplot(aes(x = Região, y = Percentual, group = Ano)) +
   geom_col(aes(fill = Ano), position="dodge") +
   geom_text(aes(label = percent(Percentual), y=Percentual+.07), position = position_dodge(width = 0.9), angle = 90) +
