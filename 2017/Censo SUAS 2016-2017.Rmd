@@ -493,7 +493,8 @@ tabela<-ge_2017 %>%
 #         "Vigilância Socioassistencial (inclusive áreas de monitoramento e avaliação)"=q3_5,
 #         "Gestão do Trabalho"=q3_6,
 #         "Regulação do SUAS"=q3_7,
-#         "Gestão Financeira e Orçamentária"=q3_8) %>% 
+#         "Gestão Financeira e Orçamentária"=q3_8) %>%
+#-------------------
 # Questionário 2017:
   select("Gestão do SUAS"=q3_1,
          "Vigilância Socioassistencial (inclusive áreas de monitoramento e avaliação)"=q3_2,
@@ -504,6 +505,7 @@ tabela<-ge_2017 %>%
          "Proteção Social Especial"=q3_7,
          "Gestão do Cadastro Único e Programa Bolsa Família"=q3_8,
          "Gestão de Benefícios Assistenciais (BPC, Benefícios Eventuais)"=q3_9) %>% 
+#-------------------
   gather("Categoria","Nível") %>% 
   mutate(Categoria=str_wrap(Categoria,width=39)) %>% 
   mutate(Nível = case_when(Nível=="Sim, na estrutura formal do órgão gestor"~"Constituída formalmente",
@@ -560,20 +562,24 @@ tabela<-ge_2017 %>%
 #  select("Última atualização da Lei Estadual de Regulamentação do SUAS"=q5,
 #         "Última atualização do PEAS com a respectiva aprovação pelo CEAS"=q6,
 #         "Última atualização do Plano Estadual de Capacitação"=q7) %>% 
+#-------------------
 # Questionários 2017:
   select("Última atualização da Lei Estadual de Regulamentação do SUAS"=q6,
          "Última atualização do PEAS com a respectiva aprovação pelo CEAS"=q7,
          "Última atualização do Plano Estadual de Capacitação"=q8) %>% 
+#-------------------
   gather("Categoria","Nível") %>% 
   mutate(Categoria=str_wrap(Categoria,width=22)) %>% 
 # Censo 2016:
 #  mutate(Nível = case_when(Nível <= 2011~"Até 2011",
 #                           TRUE ~ as.character(Nível))) %>% 
 #  mutate(Nível = factor(Nível, levels = c("Até 2011","2012","2013","2014","2015","2016"))) %>% 
+#-------------------
 # Censo 2017:
   mutate(Nível = case_when(Nível <= 2012~"Até 2012",
                            TRUE ~ as.character(Nível))) %>% 
   mutate(Nível = factor(Nível, levels = c("Até 2012","2013","2014","2015","2016","2017"))) %>% 
+#-------------------
   group_by(Categoria, Nível) %>% 
   summarise(n=n()) %>% 
   group_by(Categoria) %>% 
@@ -583,8 +589,10 @@ tabela<-ge_2017 %>%
 ordenado<-tabela %>% 
 # Censo 2016:
 #  filter(Nível == "2016") %>% 
+#-------------------
 # Censo 2017:
   filter(Nível == "2017") %>% 
+#-------------------
   arrange(Percentual) %>% 
   select(Categoria)
 
@@ -593,9 +601,11 @@ ordenado<-factor(ordenado, levels = ordenado$Categoria)
 grafico<-tabela %>% 
   ungroup() %>% 
   mutate(Categoria = factor(Categoria, levels = levels(ordenado))) %>% 
-  ggplot(aes(x = Categoria, y = Percentual)) +
-  geom_col(aes(fill = Nível), position = position_stack(reverse = TRUE)) +
-  geom_text_repel(aes(y=Posição, label = percent(Percentual)), point.padding = NA) +
+  ggplot(aes(x = Categoria, y = Percentual, group = Nível)) +
+  geom_col(aes(fill = Nível), position = "dodge") +
+  geom_text(aes(label = percent(Percentual), y=Percentual+.015), position = position_dodge(width = 0.9)) +
+#  geom_col(aes(fill = Nível), position = position_stack(reverse = TRUE)) +
+#  geom_text_repel(aes(y=Posição, label = percent(Percentual)), point.padding = NA) +
   scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
   coord_flip() +
   theme(legend.position="bottom",
@@ -645,7 +655,7 @@ ge_cofinanciamento = function(df, q, ano){
     group_by(Categoria, Nível) %>% 
     summarise(n=n()) %>% 
     group_by(Categoria) %>% 
-    mutate(Percentual = n/sum(n))
+    mutate(Percentual = n/sum(n), Posição = (cumsum(n/sum(n)) - 0.5 * n/sum(n)))
 }
 
 ge_cofinanciamento_2013 <- ge_cofinanciamento(ge_2013, q73, "2013")
@@ -660,8 +670,10 @@ grafico <- ge_cofinanciamento_2013 %>%
   bind_rows(ge_cofinanciamento_2016) %>% 
   bind_rows(ge_cofinanciamento_2017) %>%
   ggplot(aes(x = Categoria, y = Percentual, group = Nível)) +
-  geom_col(aes(fill = Nível), position = "dodge") +
-  geom_text(aes(label = percent(Percentual), y=Percentual+.07), position = position_dodge(width = 0.9), angle = 90) +
+#  geom_col(aes(fill = Nível), position = "dodge") +
+#  geom_text(aes(label = percent(Percentual), y=Percentual+.07), position = position_dodge(width = 0.9), angle = 90) +
+  geom_col(aes(fill = Nível), position = position_stack(reverse = TRUE)) +
+  geom_text_repel(aes(y=Posição, label = percent(Percentual)), point.padding = NA) +
   scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
   theme(legend.position="bottom",
         legend.title = element_blank(),
@@ -704,6 +716,7 @@ ge_destinacao_recursos = function(df, q, ano, cod_categoria){
                                  Categoria == "5"~"Incentivo financeiro para Gestão do SUAS",
                                  TRUE ~ "")) %>% 
     filter(Categoria != "") %>% 
+    mutate(Categoria=str_wrap(Categoria,width=30)) %>% 
     group_by(Ano, Categoria) %>% 
     summarise(n=n())
 }
@@ -738,7 +751,7 @@ ge_destinacao_recursos_2017_3 <- ge_destinacao_recursos(ge_2017, q43_3, "2017", 
 ge_destinacao_recursos_2017_4 <- ge_destinacao_recursos(ge_2017, q43_4, "2017", "4")
 ge_destinacao_recursos_2017_5 <- ge_destinacao_recursos(ge_2017, q43_5, "2017", "5")
 
-grafico <- ge_destinacao_recursos_2013_1 %>%
+tabela <- ge_destinacao_recursos_2013_1 %>%
   bind_rows(ge_destinacao_recursos_2013_2) %>% 
   bind_rows(ge_destinacao_recursos_2013_3) %>% 
   bind_rows(ge_destinacao_recursos_2013_4) %>% 
@@ -762,7 +775,18 @@ grafico <- ge_destinacao_recursos_2013_1 %>%
   bind_rows(ge_destinacao_recursos_2017_2) %>% 
   bind_rows(ge_destinacao_recursos_2017_3) %>% 
   bind_rows(ge_destinacao_recursos_2017_4) %>% 
-  bind_rows(ge_destinacao_recursos_2017_5) %>%
+  bind_rows(ge_destinacao_recursos_2017_5)
+
+ordenado<-tabela %>% 
+  filter(Ano == "2017") %>% 
+  arrange(n) %>% 
+  select(Categoria)
+
+ordenado<-factor(ordenado, levels = ordenado$Categoria)
+
+grafico<-tabela %>% 
+  ungroup() %>% 
+  mutate(Categoria = factor(Categoria, levels = levels(ordenado))) %>% 
   ggplot(aes(x = Categoria, y = n, group = Ano)) +
   geom_col(aes(fill = Ano), position = "dodge") +
   geom_text(aes(label = n, y=n+0.7), position = position_dodge(width = 0.9)) +
@@ -853,7 +877,7 @@ ge_apoio_tecnico_2017_5 <- ge_apoio_tecnico(ge_2017, q37_5, "2017", "5")
 ge_apoio_tecnico_2017_6 <- ge_apoio_tecnico(ge_2017, q37_6, "2017", "6")
 ge_apoio_tecnico_2017_7 <- ge_apoio_tecnico(ge_2017, q37_99, "2017", "7")
 
-grafico <- ge_apoio_tecnico_2013_1 %>%
+tabela <- ge_apoio_tecnico_2013_1 %>%
   bind_rows(ge_apoio_tecnico_2013_2) %>% 
   bind_rows(ge_apoio_tecnico_2013_3) %>% 
   bind_rows(ge_apoio_tecnico_2013_4) %>% 
@@ -889,7 +913,17 @@ grafico <- ge_apoio_tecnico_2013_1 %>%
   bind_rows(ge_apoio_tecnico_2017_6) %>%
   bind_rows(ge_apoio_tecnico_2017_7) %>% 
   ungroup() %>% 
-  mutate(Categoria=str_wrap(Categoria,width=51)) %>% 
+  mutate(Categoria=str_wrap(Categoria,width=51))
+
+ordenado<-tabela %>% 
+  filter(Ano == "2017") %>% 
+  arrange(Percentual) %>% 
+  select(Categoria)
+
+ordenado<-factor(ordenado, levels = ordenado$Categoria)
+
+grafico<-tabela %>% 
+  mutate(Categoria = factor(Categoria, levels = levels(ordenado))) %>% 
   ggplot(aes(x = Categoria, y = Percentual, group = Ano)) +
   geom_col(aes(fill = Ano), position = "dodge") +
   geom_text(aes(label = percent(Percentual), y=Percentual+0.06), position = position_dodge(width = 0.9), size=3) +
@@ -990,35 +1024,419 @@ grafico %>%
 
 Fonte: MDS, Censo SUAS. 
 
-Em 2016, os órgãos gestores municipais que tinham como subdivisão administrativa na estrutura do órgão gestor constituído/formalizado, em sua maioria, eram a Gestão de Benefícios Assistenciais, Proteção Social Básica, Gestão do SUAS e a Gestão financeira e orçamentária com 63,1%, 62,5%, 52,8% e 51,6% respectivamente. A Vigilância Socioassistencial estava constituída de modo informal em 36,9% dos órgãos gestores municipais. A Gestão do trabalho e a Regulação do SUAS não estavam constituídas em 39,2% e 34% dos órgãos municipais (Gráfico 2).
-Gráfico 2: Distribuição dos órgãos gestores municipais segundo constituição/formalização de subdivisões administrativas - Brasil, 2016
+Em 2016, os órgãos gestores municipais que tinham como subdivisão administrativa na estrutura do órgão gestor constituído/formalizado, em sua maioria, eram a Gestão de Benefícios Assistenciais, Proteção Social Básica, Gestão do SUAS e a Gestão financeira e orçamentária com 63,1%, 62,5%, 52,8% e 51,6% respectivamente. A Vigilância Socioassistencial estava constituída de modo informal em 36,9% dos órgãos gestores municipais. A Gestão do trabalho e a Regulação do SUAS não estavam constituídas em 39,2% e 34% dos órgãos municipais (Gráfico 8).
+
+**Gráfico 8: Distribuição dos órgãos gestores municipais segundo constituição/formalização de subdivisões administrativas - Brasil, 2017**
+
+```{r, message=FALSE, warning=FALSE}
+
+tabela<-gm_2017 %>%
+# Questionários 2016:
+#  select("Proteção Social Básica"=q3_1,
+#         "Proteção Social Especial"=q3_2,
+#         "Gestão de Benefícios Assistenciais (Bolsa Família, BPC, Benefícios Eventuais)"=q3_3,
+#         "Gestão do SUAS"=q3_4,
+#         "Vigilância Socioassistencial (inclusive áreas de monitoramento e avaliação)"=q3_5,
+#         "Gestão do Trabalho"=q3_6,
+#         "Regulação do SUAS"=q3_7,
+#         "Gestão Financeira e Orçamentária"=q3_8) %>% 
+#-------------------
+# Questionário 2017:
+  select("Gestão do SUAS"=q3.1,
+         "Vigilância Socioassistencial (inclusive áreas de monitoramento e avaliação)"=q3.2,
+         "Gestão do Trabalho"=q3.3,
+         "Regulação do SUAS"=q3.4,
+         "Gestão Financeira e Orçamentária"=q3.5,
+         "Proteção Social Básica"=q3.6,
+         "Proteção Social Especial"=q3.7,
+         "Gestão do Cadastro Único e Programa Bolsa Família"=q3.8,
+         "Gestão de Benefícios Assistenciais (BPC, Benefícios Eventuais)"=q3.9) %>% 
+#-------------------
+  gather("Categoria","Nível") %>% 
+  mutate(Categoria=str_wrap(Categoria,width=39)) %>% 
+  mutate(Nível = case_when(Nível=="Sim, na estrutura formal do órgão gestor"~"Constituída formalmente",
+                           Nível=="Sim, de maneira informal"~"Constituída informalmente",
+                           TRUE ~ Nível)) %>% 
+  group_by(Categoria, Nível) %>% 
+  summarise(n=n()) %>% 
+  group_by(Categoria) %>% 
+  mutate(Percentual = n/sum(n), Posição = (cumsum(n/sum(n)) - 0.5 * n/sum(n)))
+
+ordenado<-tabela %>% 
+  filter(Nível == "Constituída formalmente") %>% 
+  arrange(Percentual) %>% 
+  select(Categoria)
+
+ordenado<-factor(ordenado, levels = ordenado$Categoria)
+
+grafico<-tabela %>% 
+  ungroup() %>% 
+  mutate(Categoria = factor(Categoria, levels = levels(ordenado))) %>% 
+  ggplot(aes(x = Categoria, y = Percentual)) +
+  geom_col(aes(fill = Nível), position = position_stack(reverse = TRUE)) +
+  geom_text(aes(y=Posição, label = percent(Percentual))) +
+  scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
+  coord_flip() +
+  theme(legend.position="bottom",
+        legend.title = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.x = element_blank(),
+        axis.line.y = element_line(),
+        panel.background = element_blank(),
+        plot.background = element_rect(colour = "black"))
+
+grafico
+grafico %>% 
+  graph2office(file="graficos", append = TRUE)
+```
+
 Fonte: MDS, Censo SUAS.
 
-Em 2016, 39,5% dos municípios respondentes possuíam Lei Municipal de regulamentação do Sistema Único de Assistência Social (SUAS). Desses, 6,1% dos municípios tinham atualizado sua Lei em 2016, 6,8% em 2015, 14,2% de 2 a 5 anos atrás, 6,1% de 5 a 10 anos atrás e 6,3% há mais de 10 anos.  
-Quando se observa a existência de Lei Municipal de regulamentação do SUAS por região, verifica-se que em todas as regiões mais da metade dos municípios não possuía a referida Lei. Na região Sul foi verificado o maior percentual de municípios com Lei: 48,9% dos municípios da região possuíam o normativo, sendo que 6,0% dos municípios atualizaram a Lei em 2016. O menor percentual foi observado na região Nordeste, na qual 33,7% dos municípios possuíam a Lei, e 5,5% a atualizaram em 2016. 
+Em 2016, 39,5% dos municípios respondentes possuíam Lei Municipal de regulamentação do Sistema Único de Assistência Social (SUAS). Desses, 6,1% dos municípios tinham atualizado sua Lei em 2016, 6,8% em 2015, 14,2% de 2 a 5 anos atrás, 6,1% de 5 a 10 anos atrás e 6,3% há mais de 10 anos.
+
+Quando se observa a existência de Lei Municipal de regulamentação do SUAS por região, verifica-se que em todas as regiões mais da metade dos municípios não possuía a referida Lei. Na região Sul foi verificado o maior percentual de municípios com Lei: 48,9% dos municípios da região possuíam o normativo, sendo que 6,0% dos municípios atualizaram a Lei em 2016. O menor percentual foi observado na região Nordeste, na qual 33,7% dos municípios possuíam a Lei, e 5,5% a atualizaram em 2016.
+
 No que se refere à atualização do Plano Municipal de Assistência Social (PMAS), verificou-se que 43,3% dos municípios atualizaram o PMAS de 2 a 5 anos atrás. Entre 2016 e 2015, 43,1% dos municípios atualizaram seus Planos. Apenas 0,8% dos municípios tinham Planos cuja atualização havia ocorrido há mais de 10 anos. 10,2% dos municípios não sabiam informar sobre a última atualização do PMAS.
-Quando se observa a atualização do PMAS por região, verifica-se que 40,3% dos municípios da região Sudeste atualizaram seus Planos em 2016. Nas demais regiões, a maior parte dos municípios atualizaram seus Planos de 2 a 5 anos atrás: 45,6% dos municípios da região Norte; 40,6% dos municípios da região Nordeste; 65,5% dos municípios da região Sul e 50,5% dos municípios da região Centro-Oeste (Gráfico 3).
-Gráfico 3: Distribuição de municípios segundo ano de atualização da Lei Municipal de regulamentação do SUAS e do Plano Municipal de Assistência Social (PMAS), segundo grandes regiões - Brasil, 2016
+
+Quando se observa a atualização do PMAS por região, verifica-se que 40,3% dos municípios da região Sudeste atualizaram seus Planos em 2016. Nas demais regiões, a maior parte dos municípios atualizaram seus Planos de 2 a 5 anos atrás: 45,6% dos municípios da região Norte; 40,6% dos municípios da região Nordeste; 65,5% dos municípios da região Sul e 50,5% dos municípios da região Centro-Oeste (Gráfico 9).
+
+**Gráfico 9: Distribuição de municípios segundo ano de atualização do Plano Municipal de Assistência Social (PMAS), por grandes regiões - Brasil, 2017**
+
+```{r, message=FALSE, warning=FALSE}
+
+grafico <- gm_2017 %>%
+# Questionários 2016:
+#  select(Região, "ano" = q6, "ns" = q6_ns) %>% 
+#-------------------
+# Questionários 2017:
+  select(Região, "ano" = q8, "ns" = q8.ns) %>% 
+#-------------------
+  mutate(Região = str_replace(Região, "Região ", "")) %>% 
+# Censo 2016:
+#  mutate(Nível = case_when(ns == "Não sabe"~"Não possui/Não sabe informar",
+#                           ano >= 2016~"2016",
+#                           ano >= 2015~"2015",
+#                           ano >= 2011~"De 2 a 5 anos atrás",
+#                           ano >= 2006~"De 6 a 10 anos atrás",
+#                           TRUE ~ "Mais de 10 anos atrás")) %>% 
+#  mutate(Nível = factor(Nível, levels = c("Não possui/Não sabe informar",
+#                                          "Mais de 10 anos atrás",
+#                                          "De 6 a 10 anos atrás",
+#                                          "De 2 a 5 anos atrás",
+#                                          "2015",
+#                                          "2016"))) %>% 
+#-------------------
+# Censo 2017:
+  mutate(Nível = case_when(ns == "Sim"~"Não possui/Não sabe informar",
+                           ano >= 2017~"2017",
+                           ano >= 2016~"2016",
+                           ano >= 2012~"De 2 a 5 anos atrás",
+                           ano >= 2007~"De 6 a 10 anos atrás",
+                           TRUE ~ "Mais de 10 anos atrás")) %>% 
+  mutate(Nível = factor(Nível, levels = c("Não possui/Não sabe informar",
+                                          "Mais de 10 anos atrás",
+                                          "De 6 a 10 anos atrás",
+                                          "De 2 a 5 anos atrás",
+                                          "2016",
+                                          "2017"))) %>% 
+#-------------------
+  group_by(Região, Nível) %>% 
+  summarise(n=n()) %>% 
+  spread(Região, n, fill = 0) %>% 
+  mutate("Brasil" = rowSums(.[2:6])) %>% 
+  gather("Região","n",-Nível) %>% 
+  group_by(Região) %>% 
+  mutate("Percentual" = n/sum(n), Posição = (cumsum(n/sum(n)) - 0.5 * n/sum(n))) %>% 
+
+  ggplot(aes(x = Região, y = Percentual, group = Nível)) +
+#  geom_col(aes(fill = Nível), position="dodge") +
+#  geom_text(aes(label = percent(Percentual), y=Percentual+.06), position = position_dodge(width = 0.9), angle = 90) +
+  geom_col(aes(fill = Nível), position = position_stack(reverse = TRUE)) +
+  geom_text_repel(aes(y=Posição, label = percent(Percentual)), point.padding = NA) +
+  scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
+  theme(legend.position="bottom",
+        legend.title = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.y = element_blank(),
+        axis.line.x = element_line(),
+        panel.background = element_blank(),
+        plot.background = element_rect(colour = "black")) +
+  guides(fill=guide_legend(nrow=2,byrow=TRUE))
+
+grafico
+grafico %>% 
+  graph2office(file="graficos", append = TRUE)
+```
+
 Fonte: MDS, Censo SUAS.
 
 Em 2016, 72,7% dos municípios brasileiros recebiam recursos estaduais para o cofinanciamento da assistência social: 60,4% fundo-a-fundo, 4,5% via convênio e 7,8% por convênio e fundo-a-fundo.
-Na região Norte, 70,0% dos municípios (310) não recebiam recursos estaduais para o cofinanciamento da Assistência Social, enquanto na região Sudeste apenas 2,2% dos municípios (36) não recebiam recursos estaduais para cofinanciamento. 
+
+Na região Norte, 70,0% dos municípios (310) não recebiam recursos estaduais para o cofinanciamento da Assistência Social, enquanto na região Sudeste apenas 2,2% dos municípios (36) não recebiam recursos estaduais para cofinanciamento.
+
 Nas regiões Centro-Oeste e Nordeste 53,4% e 60,2% dos municípios recebiam recursos estaduais para cofinanciamento, respectivamente. Nas regiões Sul e Sudeste esses valores eram 80,1% e 97,8%, respectivamente.
-Em todas as regiões, o recebimento de recursos estaduais era majoritariamente fundo-a-fundo (Gráfico 4).
-Gráfico 4: Distribuição de municípios por recebimento de recursos estaduais para o cofinanciamento da Assistência Social, segundo grandes regiões - Brasil, 2016
+
+Em todas as regiões, o recebimento de recursos estaduais era majoritariamente fundo-a-fundo (Gráfico 10).
+
+**Gráfico 10: Distribuição de municípios por recebimento de recursos estaduais para o cofinanciamento da Assistência Social - Brasil, 2013 a 2017**
+
+```{r, message=FALSE, warning=FALSE}
+gm_cofinanciamento = function(df, q, ano){
+  q <- enquo(q)
+  ano <- quo_name(ano)
+
+  df %>%
+    select(!! ano := !! q) %>% 
+    gather("Categoria","Nível") %>% 
+    mutate(Nível = case_when(Nível == "Sim, fundo-a-fundo"~"Recebe apenas fundo-a-fundo",
+                             Nível == "Sim, apenas fundo-a-fundo"~"Recebe apenas fundo-a-fundo",
+                             Nível == "Sim, por convênio"~"Recebe apenas por convênio",
+                             Nível == "Sim, apenas por convênio"~"Recebe apenas por convênio",
+                             Nível == "Sim, via convênio"~"Recebe apenas por convênio",
+                             Nível == "Sim, ambos"~"Recebe ambos",
+                             Nível == "Sim, por convênio e fundo-a-fundo"~"Recebe ambos",
+                             Nível == "Não"~"Não recebe",
+                             TRUE ~ Nível)) %>% 
+    filter(!is.na(Nível)) %>% 
+    mutate(Nível = factor(Nível, levels = c("Não recebe",
+                                            "Recebe apenas fundo-a-fundo",
+                                            "Recebe apenas por convênio",
+                                            "Recebe ambos"))) %>% 
+    group_by(Categoria, Nível) %>% 
+    summarise(n=n()) %>% 
+    group_by(Categoria) %>% 
+    mutate(Percentual = n/sum(n), Posição = (cumsum(n/sum(n)) - 0.5 * n/sum(n)))
+}
+
+gm_cofinanciamento_2013 <- gm_cofinanciamento(gm_2013, q29, "2013")
+gm_cofinanciamento_2014 <- gm_cofinanciamento(gm_2014, q39, "2014")
+#gm_cofinanciamento_2015 <- gm_cofinanciamento(gm_2015, q32, "2015")
+gm_cofinanciamento_2016 <- gm_cofinanciamento(gm_2016, q13, "2016")
+#gm_cofinanciamento_2017 <- gm_cofinanciamento(gm_2017, q21, "2017")
+
+grafico <- gm_cofinanciamento_2013 %>%
+  bind_rows(gm_cofinanciamento_2014) %>% 
+#  bind_rows(gm_cofinanciamento_2015) %>% 
+  bind_rows(gm_cofinanciamento_2016) %>% 
+#  bind_rows(gm_cofinanciamento_2017) %>%
+  ggplot(aes(x = Categoria, y = Percentual, group = Nível)) +
+#  geom_col(aes(fill = Nível), position = "dodge") +
+#  geom_text(aes(label = percent(Percentual), y=Percentual+.07), position = position_dodge(width = 0.9), angle = 90) +
+  geom_col(aes(fill = Nível), position = position_stack(reverse = TRUE)) +
+  geom_text_repel(aes(y=Posição, label = percent(Percentual)), point.padding = NA) +
+  scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
+  theme(legend.position="bottom",
+        legend.title = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.y = element_blank(),
+        axis.line.x = element_line(),
+        panel.background = element_blank(),
+        plot.background = element_rect(colour = "black"))+
+  guides(fill=guide_legend(nrow=1,byrow=TRUE))
+
+#grafico
+#grafico %>% 
+#  graph2office(file="graficos", append = TRUE)
+```
+**Gráfico 10: Distribuição de municípios por recebimento de recursos estaduais para o cofinanciamento da Assistência Social e destinação dos recursos recebidos - Brasil, 2017**
+
+```{r, message=FALSE, warning=FALSE}
+gm_cofinanciamento = function(df, q, destinacao){
+  q <- enquo(q)
+  destinacao <- quo_name(destinacao)
+
+  df %>%
+    select(!! destinacao := !! q) %>% 
+    gather("Categoria","Nível") %>% 
+    mutate(Categoria=str_wrap(Categoria,width=24)) %>% 
+    mutate(Nível = case_when(Nível == "Sim, fundo-a-fundo"~"Recebe apenas fundo-a-fundo",
+                             Nível == "Sim, apenas fundo-a-fundo"~"Recebe apenas fundo-a-fundo",
+                             Nível == "Sim, por convênio"~"Recebe apenas por convênio",
+                             Nível == "Sim, apenas por convênio"~"Recebe apenas por convênio",
+                             Nível == "Sim, via convênio"~"Recebe apenas por convênio",
+                             Nível == "Sim, ambos"~"Recebe ambos",
+                             Nível == "Sim, por convênio e fundo-a-fundo"~"Recebe ambos",
+                             Nível == "Não"~"Não recebe",
+                             TRUE ~ Nível)) %>% 
+    filter(!is.na(Nível)) %>% 
+    mutate(Nível = factor(Nível, levels = c("Não recebe",
+                                            "Recebe apenas fundo-a-fundo",
+                                            "Recebe apenas por convênio",
+                                            "Recebe ambos"))) %>% 
+    group_by(Categoria, Nível) %>% 
+    summarise(n=n()) %>% 
+    group_by(Categoria) %>% 
+    mutate(Percentual = n/sum(n), Posição = (cumsum(n/sum(n)) - 0.5 * n/sum(n)))
+}
+
+gm_cofinanciamento_1 <- gm_cofinanciamento(gm_2017, q21.1, "Proteção Social Básica")
+gm_cofinanciamento_2 <- gm_cofinanciamento(gm_2017, q21.2, "Proteção Social Especial de Média Complexidade")
+gm_cofinanciamento_3 <- gm_cofinanciamento(gm_2017, q21.3, "Proteção Social Especial de Alta Complexidade")
+gm_cofinanciamento_4 <- gm_cofinanciamento(gm_2017, q21.4, "Benefícios Eventuais")
+gm_cofinanciamento_5 <- gm_cofinanciamento(gm_2017, q21.5, "Incentivo à Gestão")
+
+tabela <- gm_cofinanciamento_1 %>%
+  bind_rows(gm_cofinanciamento_2) %>% 
+  bind_rows(gm_cofinanciamento_3) %>% 
+  bind_rows(gm_cofinanciamento_4) %>% 
+  bind_rows(gm_cofinanciamento_5)
+
+ordenado<-tabela %>% 
+  filter(Nível == "Não recebe") %>% 
+  arrange(desc(Percentual)) %>% 
+  select(Categoria)
+
+ordenado<-factor(ordenado, levels = ordenado$Categoria)
+
+grafico<-tabela %>% 
+  ungroup() %>% 
+  mutate(Categoria = factor(Categoria, levels = levels(ordenado))) %>% 
+  ggplot(aes(x = Categoria, y = Percentual, group = Nível)) +
+#  geom_col(aes(fill = Nível), position = "dodge") +
+#  geom_text(aes(label = percent(Percentual), y=Percentual+.04), position = position_dodge(width = 0.9)) +
+  geom_col(aes(fill = Nível), position = position_stack(reverse = TRUE)) +
+  geom_text_repel(aes(y=Posição, label = percent(Percentual)), point.padding = NA) +
+  scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
+  coord_flip() +
+  theme(legend.position="bottom",
+        legend.title = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.x = element_blank(),
+        axis.line.y = element_line(),
+        panel.background = element_blank(),
+        plot.background = element_rect(colour = "black"))+
+  guides(fill=guide_legend(nrow=2,byrow=TRUE))
+
+grafico
+grafico %>% 
+  graph2office(file="graficos", append = TRUE)
+```
+
+Fonte: MDS, Censo SUAS. 
+
+Em 2016, 64,2% dos municípios informaram não fazer transferência de recursos por convênio para ONG ou Entidade de Assistência Social no município. Entre os 35,8% de municípios que realizavam transferências, 18,7% faziam com recursos do Fundo Municipal de Assistência Social (FMAS), 6,5% dos recursos de outras fontes e 10,6% com recursos do FMAS e de outras fontes. 
+
+A realização dessas transferências era mais frequente nas regiões Sudeste e Sul, onde 56,5% e 45,7% dos municípios realizavam esse tipo de repasse de recursos, respectivamente. Nas regiões Norte e Nordeste a transferência foi menos frequente: 14,9% e 14,8% dos municípios das regiões realizavam, respectivamente. Em todas as regiões, as transferências eram realizadas majoritariamente com recursos dos FMAS (Gráfico 11).
+
+**Gráfico 11: Distribuição de municípios segundo realização de transferência de recursos por meio de convênios ou termos de parcerias para ONGs, Organizações da Sociedade Civil ou Entidades de Assistência Social, por grandes regiões - Brasil, 2017**
+
+```{r, message=FALSE, warning=FALSE}
+
+grafico <- gm_2017 %>%
+# Questionários 2016:
+#  select(Região, "resposta" = q15) %>% 
+#-------------------
+# Questionários 2017:
+  select(Região, "resposta" = q23) %>% 
+#-------------------
+  mutate(Região = str_replace(Região, "Região ", "")) %>% 
+  mutate(Nível = case_when(resposta == "Não"~"Não realiza",
+                           resposta == "Sim, com recursos do Fundo Municipal de Assistência Social (FMAS)"~"Realiza com recursos do Fundo Municipal de Assistência Social (FMAS)",
+                           resposta == "Sim, com recursos de outras fontes"~"Realiza com recursos de outras fontes",
+                           resposta == "Sim, com recursos do FMAS e de outras fontes"~"Realiza com recursos do FMAS e de outras fontes",
+                           TRUE ~ resposta)) %>% 
+  filter(!is.na(Nível)) %>% 
+  mutate(Nível = factor(Nível, levels = c("Não realiza",
+                                          "Realiza com recursos do Fundo Municipal de Assistência Social (FMAS)",
+                                          "Realiza com recursos de outras fontes",
+                                          "Realiza com recursos do FMAS e de outras fontes"))) %>% 
+  group_by(Região, Nível) %>% 
+  summarise(n=n()) %>% 
+  spread(Região, n, fill = 0) %>% 
+  mutate("Brasil" = rowSums(.[2:6])) %>% 
+  gather("Região","n",-Nível) %>% 
+  group_by(Região) %>% 
+  mutate("Percentual" = n/sum(n), Posição = (cumsum(n/sum(n)) - 0.5 * n/sum(n))) %>% 
+
+  ggplot(aes(x = Região, y = Percentual, group = Nível)) +
+#  geom_col(aes(fill = Nível), position="dodge") +
+#  geom_text(aes(label = percent(Percentual), y=Percentual+.06), position = position_dodge(width = 0.9), angle = 90) +
+  geom_col(aes(fill = Nível), position = position_stack(reverse = TRUE)) +
+  geom_text_repel(aes(y=Posição, label = percent(Percentual)), point.padding = NA) +
+  scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
+  theme(legend.position="bottom",
+        legend.title = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.y = element_blank(),
+        axis.line.x = element_line(),
+        panel.background = element_blank(),
+        plot.background = element_rect(colour = "black")) +
+  guides(fill=guide_legend(nrow=2,byrow=TRUE))
+
+grafico
+grafico %>% 
+  graph2office(file="graficos", append = TRUE)
+```
+
+Fonte: MDS, Censo SUAS. 
+
+Em 2016, 51,8% dos municípios receberam pelo menos uma visita de técnicos da Secretaria Estadual de Assistência Social (SEAS) nos 12 meses que antecederam a pesquisa. Foi o menor percentual observado desde 2013, quando 60,0% dos municípios tinham recebido ao menos uma visita. A maior parte dos municípios que informou ter recebido visitas nos quatro anos observados foi visitada de uma a três vezes pelos técnicos da SEAS nos 12 meses que antecederam as pesquisas (Gráfico 12).
+
+**Gráfico 12: Percentual de municípios que receberam visitas de técnicos da Secretaria Estadual de Assistência Social (SEAS) - Brasil, 2013 a 2017**
+
+```{r, message=FALSE, warning=FALSE}
+gm_visita_tecnicos = function(df, q, ano){
+  q <- enquo(q)
+  ano <- quo_name(ano)
+
+  df %>%
+    select(!! ano := !! q) %>% 
+    gather("Categoria","Nível") %>% 
+    mutate(Nível = case_when(Nível == "Nenhuma"~"Nenhuma visita",
+                             TRUE ~ Nível)) %>% 
+    filter(!is.na(Nível)) %>% 
+    mutate(Nível = factor(Nível, levels = c("Nenhuma visita",
+                                            "Uma visita",
+                                            "Duas a três visitas",
+                                            "Quatro a seis visitas",
+                                            "Mais de seis visitas"))) %>% 
+    group_by(Categoria, Nível) %>% 
+    summarise(n=n()) %>% 
+    group_by(Categoria) %>% 
+    mutate(Percentual = n/sum(n), Posição = (cumsum(n/sum(n)) - 0.5 * n/sum(n)))
+}
+
+gm_visita_tecnicos_2013 <- gm_visita_tecnicos(gm_2013, q19, "2013")
+gm_visita_tecnicos_2014 <- gm_visita_tecnicos(gm_2014, q23, "2014")
+gm_visita_tecnicos_2015 <- gm_visita_tecnicos(gm_2015, q24, "2015")
+gm_visita_tecnicos_2016 <- gm_visita_tecnicos(gm_2016, q7, "2016")
+gm_visita_tecnicos_2017 <- gm_visita_tecnicos(gm_2017, q19, "2017")
+
+grafico <- gm_visita_tecnicos_2013 %>%
+  bind_rows(gm_visita_tecnicos_2014) %>% 
+  bind_rows(gm_visita_tecnicos_2015) %>% 
+  bind_rows(gm_visita_tecnicos_2016) %>% 
+  bind_rows(gm_visita_tecnicos_2017) %>%
+  ggplot(aes(x = Categoria, y = Percentual, group = Nível)) +
+#  geom_col(aes(fill = Nível), position = "dodge") +
+#  geom_text(aes(label = percent(Percentual), y=Percentual+.07), position = position_dodge(width = 0.9), angle = 90) +
+  geom_col(aes(fill = Nível), position = position_stack(reverse = TRUE)) +
+  geom_text_repel(aes(y=Posição, label = percent(Percentual)), point.padding = NA) +
+  scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
+  theme(legend.position="bottom",
+        legend.title = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.y = element_blank(),
+        axis.line.x = element_line(),
+        panel.background = element_blank(),
+        plot.background = element_rect(colour = "black"))+
+  guides(fill=guide_legend(nrow=1,byrow=TRUE))
+
+grafico
+grafico %>% 
+  graph2office(file="graficos", append = TRUE)
+```
+
 Fonte: MDS, Censo SUAS. 
 
 No ano de 2016, em 69,3% dos municípios, o ordenador de despesas do Fundo Municipal de Assistência Social (FMAS) era o Secretário(a) Municipal de Assistência Social. O prefeito era ordenador de despesas em 23,7% dos municípios. Desde 2012 a proporção de secretários municipais ordenadores de despesas do FMAS aumentou, com redução da proporção de prefeitos desempenhando a função (Gráfico 5).
 Gráfico 5: Percentual de municípios por ordenador de despesas do FMAS – Brasil, 2012 a 2016
-Fonte: MDS, Censo SUAS. 
-
-Em 2016, 64,2% dos municípios informaram não fazer transferência de recursos por convênio para ONG ou Entidade de Assistência Social no município. Entre os 35,8% de municípios que realizavam transferências, 18,7% faziam com recursos do Fundo Municipal de Assistência Social (FMAS), 6,5% dos recursos de outras fontes e 10,6% com recursos do FMAS e de outras fontes. 
-A realização dessas transferências era mais frequente nas regiões Sudeste e Sul, onde 56,5% e 45,7% dos municípios realizavam esse tipo de repasse de recursos, respectivamente. Nas regiões Norte e Nordeste a transferência foi menos frequente: 14,9% e 14,8% dos municípios das regiões realizavam, respectivamente. Em todas as regiões, as transferências eram realizadas majoritariamente com recursos dos FMAS (Gráfico 6).
-Gráfico 6: Distribuição de municípios por realização de transferência de recursos por meio de convênios para ONGs e Entidades de Assistência Social, segundo grandes regiões - Brasil, 2016
-Fonte: MDS, Censo SUAS. 
-
-Em 2016, 51,8% dos municípios receberam pelo menos uma visita de técnicos da Secretaria Estadual de Assistência Social (SEAS) nos 12 meses que antecederam a pesquisa. Foi o menor percentual observado desde 2013, quando 60,0% dos municípios tinham recebido ao menos uma visita. A maior parte dos municípios que informou ter recebido visitas nos quatro anos observados foi visitada de uma a três vezes pelos técnicos da SEAS nos 12 meses que antecederam as pesquisas (Gráfico 7).
-Gráfico 7: Percentual de municípios que receberam visitas de técnicos da Secretaria Estadual de Assistência Social (SEAS) - Brasil, 2013 a 2016
 Fonte: MDS, Censo SUAS. 
 
 Em 2016, 72,6% dos municípios informaram que técnicos ou gestores municipais da assistência social participaram de capacitações presenciais. Na região Sudeste, 76,8% dos municípios indicaram ter recebido essa modalidade de apoio técnico, assim como 75,8% dos municípios da região Norte.
