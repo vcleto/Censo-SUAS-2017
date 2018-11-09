@@ -578,7 +578,7 @@ tabela<-ge_2017 %>%
 # Censo 2017:
   mutate(Nível = case_when(Nível <= 2012~"Até 2012",
                            TRUE ~ as.character(Nível))) %>% 
-  mutate(Nível = factor(Nível, levels = c("Até 2012","2013","2014","2015","2016","2017"))) %>% 
+  mutate(Nível = factor(Nível, levels = rev(c("Até 2012","2013","2014","2015","2016","2017")))) %>% 
 #-------------------
   group_by(Categoria, Nível) %>% 
   summarise(n=n()) %>% 
@@ -616,7 +616,7 @@ grafico<-tabela %>%
         axis.line.y = element_line(),
         panel.background = element_blank(),
         plot.background = element_rect(colour = "black"))+
-  guides(fill=guide_legend(nrow=1,byrow=TRUE))
+  guides(fill=guide_legend(nrow=1, byrow=TRUE, reverse=TRUE))
 
 grafico
 grafico %>% 
@@ -784,9 +784,17 @@ ordenado<-tabela %>%
 
 ordenado<-factor(ordenado, levels = ordenado$Categoria)
 
+ordenado2<-tabela %>%
+  select(Ano) %>% 
+  distinct() %>% 
+  arrange(Ano)
+
+ordenado2<-factor(ordenado2, levels = ordenado2$Ano)
+
 grafico<-tabela %>% 
   ungroup() %>% 
   mutate(Categoria = factor(Categoria, levels = levels(ordenado))) %>% 
+  mutate(Ano = factor(Ano, levels = rev(levels(ordenado2)))) %>% 
   ggplot(aes(x = Categoria, y = n, group = Ano)) +
   geom_col(aes(fill = Ano), position = "dodge") +
   geom_text(aes(label = n, y=n+0.7), position = position_dodge(width = 0.9)) +
@@ -800,7 +808,7 @@ grafico<-tabela %>%
         axis.line.y = element_line(),
         panel.background = element_blank(),
         plot.background = element_rect(colour = "black"))+
-  guides(fill=guide_legend(nrow=1,byrow=TRUE))
+  guides(fill=guide_legend(nrow=1, byrow=TRUE, reverse=TRUE))
 
 grafico
 grafico %>% 
@@ -922,8 +930,16 @@ ordenado<-tabela %>%
 
 ordenado<-factor(ordenado, levels = ordenado$Categoria)
 
+ordenado2<-tabela %>%
+  select(Ano) %>% 
+  distinct() %>% 
+  arrange(Ano)
+
+ordenado2<-factor(ordenado2, levels = ordenado2$Ano)
+
 grafico<-tabela %>% 
   mutate(Categoria = factor(Categoria, levels = levels(ordenado))) %>% 
+  mutate(Ano = factor(Ano, levels = rev(levels(ordenado2)))) %>% 
   ggplot(aes(x = Categoria, y = Percentual, group = Ano)) +
   geom_col(aes(fill = Ano), position = "dodge") +
   geom_text(aes(label = percent(Percentual), y=Percentual+0.06), position = position_dodge(width = 0.9), size=3) +
@@ -937,7 +953,7 @@ grafico<-tabela %>%
         axis.line.y = element_line(),
         panel.background = element_blank(),
         plot.background = element_rect(colour = "black"))+
-  guides(fill=guide_legend(nrow=1,byrow=TRUE))
+  guides(fill=guide_legend(nrow=1, byrow=TRUE, reverse=TRUE))
 
 grafico
 grafico %>% 
@@ -957,7 +973,7 @@ Entre os anos de 2015 e 2016, é possível identificar redução nos percentuais
 **Gráfico 7: Percentual de Secretarias Municipais exclusivas de Assistência Social, segundo grandes regiões – Brasil, 2010 a 2017**
 
 ```{r, message=FALSE, warning=FALSE}
-gm_secretaria_exclusiva = function(df, q, ano, regiao, selecao){
+f_selecao_regiao_ano = function(df, q, selecao, regiao, ano){
   q <- enquo(q)
   ano <- quo_name(ano)
   regiao <- enquo(regiao)
@@ -979,21 +995,21 @@ gm_secretaria_exclusiva = function(df, q, ano, regiao, selecao){
     select(!! regiao, Percentual, Ano)
 }
 
-gm_secretaria_exclusiva_2010 <- gm_secretaria_exclusiva(gm_2010, q1, "2010", Região, "Secretaria municipal exclusiva da área de Assistência Social")
+gm_secretaria_exclusiva_2010 <- f_selecao_regiao_ano(gm_2010, q1, "Secretaria municipal exclusiva da área de Assistência Social", Região, "2010")
 
-gm_secretaria_exclusiva_2011 <- gm_secretaria_exclusiva(gm_2011, q1, "2011", Região, "Secretaria Municipal exclusiva da área de Assistência Social")
+gm_secretaria_exclusiva_2011 <- f_selecao_regiao_ano(gm_2011, q1, "Secretaria Municipal exclusiva da área de Assistência Social", Região, "2011")
 
-gm_secretaria_exclusiva_2012 <- gm_secretaria_exclusiva(gm_2012, q1, "2012", Região, "Secretaria municipal exclusiva da área de Assistência Social")
+gm_secretaria_exclusiva_2012 <- f_selecao_regiao_ano(gm_2012, q1, "Secretaria municipal exclusiva da área de Assistência Social", Região, "2012")
 
-gm_secretaria_exclusiva_2013 <- gm_secretaria_exclusiva(gm_2013, q1, "2013", Região, "Secretaria municipal exclusiva da área de Assistência Social")
+gm_secretaria_exclusiva_2013 <- f_selecao_regiao_ano(gm_2013, q1, "Secretaria municipal exclusiva da área de Assistência Social", Região, "2013")
 
-gm_secretaria_exclusiva_2014 <- gm_secretaria_exclusiva(gm_2014, q1, "2014", Região, "Secretaria municipal exclusiva da área de Assistência Social")
+gm_secretaria_exclusiva_2014 <- f_selecao_regiao_ano(gm_2014, q1, "Secretaria municipal exclusiva da área de Assistência Social", Região, "2014")
 
-gm_secretaria_exclusiva_2015 <- gm_secretaria_exclusiva(gm_2015, q1, "2015", Região, "Secretaria municipal exclusiva da área de Assistência Social")
+gm_secretaria_exclusiva_2015 <- f_selecao_regiao_ano(gm_2015, q1, "Secretaria municipal exclusiva da área de Assistência Social", Região, "2015")
 
-gm_secretaria_exclusiva_2016 <- gm_secretaria_exclusiva(gm_2016, q1, "2016", Região, "Secretaria municipal exclusiva da área de Assistência Social")
+gm_secretaria_exclusiva_2016 <- f_selecao_regiao_ano(gm_2016, q1, "Secretaria municipal exclusiva da área de Assistência Social", Região, "2016")
 
-gm_secretaria_exclusiva_2017 <- gm_secretaria_exclusiva(gm_2017, q1, "2017", Região, "Secretaria municipal exclusiva da área de Assistência Social")
+gm_secretaria_exclusiva_2017 <- f_selecao_regiao_ano(gm_2017, q1, "Secretaria municipal exclusiva da área de Assistência Social", Região, "2017")
 
 grafico <- gm_secretaria_exclusiva_2010 %>%
   bind_rows(gm_secretaria_exclusiva_2011) %>% 
@@ -1180,7 +1196,7 @@ Nas regiões Centro-Oeste e Nordeste 53,4% e 60,2% dos municípios recebiam recu
 
 Em todas as regiões, o recebimento de recursos estaduais era majoritariamente fundo-a-fundo (Gráfico 10).
 
-**Gráfico 10: Distribuição de municípios por recebimento de recursos estaduais para o cofinanciamento da Assistência Social - Brasil, 2013 a 2017**
+<!-- **Gráfico 10: Distribuição de municípios por recebimento de recursos estaduais para o cofinanciamento da Assistência Social - Brasil, 2013 a 2017** -->
 
 ```{r, message=FALSE, warning=FALSE}
 gm_cofinanciamento = function(df, q, ano){
@@ -1435,453 +1451,197 @@ grafico %>%
 
 Fonte: MDS, Censo SUAS. 
 
-No ano de 2016, em 69,3% dos municípios, o ordenador de despesas do Fundo Municipal de Assistência Social (FMAS) era o Secretário(a) Municipal de Assistência Social. O prefeito era ordenador de despesas em 23,7% dos municípios. Desde 2012 a proporção de secretários municipais ordenadores de despesas do FMAS aumentou, com redução da proporção de prefeitos desempenhando a função (Gráfico 5).
-Gráfico 5: Percentual de municípios por ordenador de despesas do FMAS – Brasil, 2012 a 2016
-Fonte: MDS, Censo SUAS. 
-
 Em 2016, 72,6% dos municípios informaram que técnicos ou gestores municipais da assistência social participaram de capacitações presenciais. Na região Sudeste, 76,8% dos municípios indicaram ter recebido essa modalidade de apoio técnico, assim como 75,8% dos municípios da região Norte.
-A modalidade na qual foi observado o menor percentual foi a de capacitações à distância, da qual participaram 29,7% dos municípios. Esse tipo de apoio ocorreu em 53,9% dos municípios da região Sudeste e em 14,3% dos municípios da região Centro-Oeste (Gráfico 8).
-Gráfico 8: Percentual de municípios que participaram de atividades de orientações e apoio técnico promovido pelo Estado, segundo grandes regiões - Brasil, 2016
+
+A modalidade na qual foi observado o menor percentual foi a de capacitações à distância, da qual participaram 29,7% dos municípios. Esse tipo de apoio ocorreu em 53,9% dos municípios da região Sudeste e em 14,3% dos municípios da região Centro-Oeste (Gráfico 13).
+
+**Gráfico 13: Percentual de municípios por formas de apoio técnico recebido do Estado nos 12 meses anteriores à pesquisa, segundo grandes regiões - Brasil, 2017**
+
+```{r, message=FALSE, warning=FALSE}
+
+tabela<-gm_2017 %>%
+# Questionários 2016:
+#  select(Região,
+#         "Produção e distribuição de material técnico"=q9_1,
+#         "Elaboração, pelo Estado, de normativas e instruções operacionais para orientação dos municípios"=q9_2,
+#         "Capacitações presenciais"=q9_3,
+#         "Capacitações à distância"=q9_4,
+#         "Assessoramento técnico de forma presencial no município"=q9_5,
+#         "Assessoramento técnico à distância"=q9_6,
+#         "Outras formas"=q9_99) %>% 
+#-------------------
+# Questionários 2017:
+  select(Região,
+         "Produção e distribuição de material técnico"=q18.1,
+         "Elaboração, pelo Estado, de normativas e instruções operacionais para orientação dos municípios"=q18.2,
+         "Capacitações presenciais"=q18.3,
+         "Capacitações à distância"=q18.4,
+         "Assessoramento técnico de forma presencial no município"=q18.5,
+         "Assessoramento técnico à distância"=q18.6,
+         "Outras formas"=q18.99) %>% 
+#-------------------
+  mutate(Região = str_replace(Região, "Região ", "")) %>% 
+  gather("Categoria","Valor", -Região) %>% 
+  mutate(Categoria=str_wrap(Categoria,width=51)) %>% 
+  group_by(Região, Categoria, Valor) %>% 
+  summarise(n=n()) %>% 
+  spread(Região, n, fill = 0) %>%
+  ungroup() %>% 
+  mutate("Brasil" = rowSums(.[3:7])) %>% 
+  gather("Região","n",-(Categoria:Valor)) %>% 
+  group_by(Região, Categoria) %>% 
+  mutate(Percentual = n/sum(n)) %>% 
+  filter(Valor == "Sim") %>% 
+  ungroup()
+
+ordenado<-tabela %>% 
+  filter(Região == "Brasil") %>% 
+  arrange(Percentual) %>% 
+  select(Categoria)
+
+ordenado<-factor(ordenado, levels = ordenado$Categoria)
+
+ordenado2<-tabela %>%
+  select(Região) %>% 
+  distinct() %>% 
+  arrange(Região)
+
+ordenado2<-factor(ordenado2, levels = ordenado2$Região)
+
+grafico<-tabela %>% 
+  mutate(Categoria = factor(Categoria, levels = levels(ordenado))) %>% 
+  mutate(Região = factor(Região, levels = rev(levels(ordenado2)))) %>% 
+  ggplot(aes(x = Categoria, y = Percentual, group = Região)) +
+  geom_col(aes(fill = Região), position = "dodge") +
+  geom_text(aes(label = percent(Percentual), y=Percentual+.04), position = position_dodge(width = 0.9), size=2.5) +
+#  geom_col(aes(fill = Nível), position = position_stack(reverse = TRUE)) +
+#  geom_text_repel(aes(y=Posição, label = percent(Percentual)), point.padding = NA) +
+  scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
+  coord_flip() +
+  theme(legend.position="bottom",
+        legend.title = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.x = element_blank(),
+        axis.line.y = element_line(),
+        panel.background = element_blank(),
+        plot.background = element_rect(colour = "black"))+
+  guides(fill=guide_legend(nrow=1, byrow=TRUE, reverse=TRUE))
+
+grafico
+grafico %>% 
+  graph2office(file="graficos", append = TRUE)
+```
+
 Fonte: MDS, Censo SUAS. 
 
-A NOB SUAS 2012 define a Comissão Intergestores Bipartite (CIB) como instância estadual de negociação, articulação e pactuação entre gestores da assistência social, que é integrada por representantes do estado, indicados pelo Órgão Gestor Estadual de Assistência Social, e por representantes dos municípios, indicados pelo Colegiado Estadual de Gestores Municipais de Assistência Social (Coegemas). 
-Em 2016, mais da metade dos municípios (58,8%) relataram não ter representante participando de reuniões da CIB de 2015, enquanto 41,2% relataram ter representantes participando pelo menos uma vez ao ano. Sobre o número de participações de representantes ao longo do ano, tem-se que 11,3% participaram uma vez ano, 11,9% de duas a três vezes, 8,8% de quatro a seis vezes, 6,5% de sete a dez vezes e 2,6% mais de dez vezes no ano. 
-Na região Norte 71,3% dos municípios da região declararam ter havido participação de representante em pelo menos uma reunião da CIB no ano. O percentual mais baixo de participação foi observado na região Sudeste: 22,1% dos municípios da região declararam ter participado em pelo menos uma reunião, sendo que 7,8% apenas uma vez no ano (Gráfico 9).
-Gráfico 9: Percentual de municípios por número de participações em reuniões da CIB (Comissão Intergestores Bipartite) no ano de 2015, segundo grandes regiões - Brasil, 2016
+A NOB SUAS 2012 define a Comissão Intergestores Bipartite (CIB) como instância estadual de negociação, articulação e pactuação entre gestores da assistência social, que é integrada por representantes do estado, indicados pelo Órgão Gestor Estadual de Assistência Social, e por representantes dos municípios, indicados pelo Colegiado Estadual de Gestores Municipais de Assistência Social (Coegemas).
+
+Em 2016, mais da metade dos municípios (58,8%) relataram não ter representante participando de reuniões da CIB de 2015, enquanto 41,2% relataram ter representantes participando pelo menos uma vez ao ano. Sobre o número de participações de representantes ao longo do ano, tem-se que 11,3% participaram uma vez ano, 11,9% de duas a três vezes, 8,8% de quatro a seis vezes, 6,5% de sete a dez vezes e 2,6% mais de dez vezes no ano.
+
+Na região Norte 71,3% dos municípios da região declararam ter havido participação de representante em pelo menos uma reunião da CIB no ano. O percentual mais baixo de participação foi observado na região Sudeste: 22,1% dos municípios da região declararam ter participado em pelo menos uma reunião, sendo que 7,8% apenas uma vez no ano (Gráfico 14).
+
+**Gráfico 14: Percentual de municípios por número de participações em reuniões da CIB (Comissão Intergestores Bipartite) no ano de 2016, segundo grandes regiões - Brasil, 2017**
+
+```{r, message=FALSE, warning=FALSE}
+
+grafico <- gm_2017 %>%
+# Questionários 2016:
+#  select(Região, "grupo" = q10) %>% 
+#-------------------
+# Questionários 2017:
+  select(Região, "grupo" = q16) %>% 
+#-------------------
+  mutate(Região = str_replace(Região, "Região ", "")) %>% 
+  mutate(grupo = factor(grupo, levels = c("Não sabe",
+                                          "Nenhuma",
+                                          "1 vez no ano",
+                                          "De 2 a 3 vezes no ano",
+                                          "De 4 a 6 vezes no ano",
+                                          "De 7 a 10 vezes no ano",
+                                          "Mais de 10 vezes no ano"))) %>% 
+  filter(!is.na(grupo)) %>% 
+  group_by(Região, grupo) %>% 
+  summarise(n=n()) %>% 
+  spread(Região, n, fill = 0) %>% 
+  mutate("Brasil" = rowSums(.[2:6])) %>% 
+  gather("Região","n",-grupo) %>% 
+  group_by(Região) %>% 
+  mutate("Percentual" = n/sum(n), Posição = (cumsum(n/sum(n)) - 0.5 * n/sum(n))) %>% 
+
+  ggplot(aes(x = Região, y = Percentual, group = grupo)) +
+#  geom_col(aes(fill = Nível), position="dodge") +
+#  geom_text(aes(label = percent(Percentual), y=Percentual+.06), position = position_dodge(width = 0.9), angle = 90) +
+  geom_col(aes(fill = grupo), position = position_stack(reverse = TRUE)) +
+  geom_text_repel(aes(y=Posição, label = percent(Percentual)), point.padding = NA) +
+  scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
+  theme(legend.position="bottom",
+        legend.title = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.y = element_blank(),
+        axis.line.x = element_line(),
+        panel.background = element_blank(),
+        plot.background = element_rect(colour = "black")) +
+  guides(fill=guide_legend(nrow=2,byrow=TRUE))
+
+grafico
+grafico %>% 
+  graph2office(file="graficos", append = TRUE)
+```
+
 Fonte: MDS, Censo SUAS.
 
 Em 2016, 588 municípios indicaram ter Plano de Capacitação e Educação Permanente, o que equivale a 10,7% dos respondentes. Em 2015 o número de municípios que informou ter o Plano foi superior: 616 municípios, o que representava 11,2% dos municípios respondentes.
+
 A região com maior proporção de municípios com Plano de Capacitação e Educação Permanente é a Nordeste: 16,1% dos municípios da região possuíam o Plano (285). A região com menor percentual é a Centro-Oeste, com 7,7% dos municípios informando ter o Plano (35 municípios).
-A região Sul foi a única que apresentou aumento no percentual de municípios que indicaram ter o Plano entre 2015 e 2016: passou de 7,6% dos municípios da região (90) para 8,6% (101 municípios). Na região Sudeste o percentual ficou estável e nas demais regiões foi observada queda, sendo a mais acentuada em termos percentuais na região Centro-Oeste (redução de 2,6 pontos percentuais) e em termos absolutos na região Nordeste (24 municípios a menos) (Gráfico 10).
-Gráfico 10: Percentual de municípios que possuem Plano de Capacitação e Educação Permanente, segundo grandes regiões - Brasil, 2015 e 2016
+
+A região Sul foi a única que apresentou aumento no percentual de municípios que indicaram ter o Plano entre 2015 e 2016: passou de 7,6% dos municípios da região (90) para 8,6% (101 municípios). Na região Sudeste o percentual ficou estável e nas demais regiões foi observada queda, sendo a mais acentuada em termos percentuais na região Centro-Oeste (redução de 2,6 pontos percentuais) e em termos absolutos na região Nordeste (24 municípios a menos) (Gráfico 15).
+
+**Gráfico 15: Percentual de municípios que possuem Plano de Capacitação e Educação Permanente, segundo grandes regiões - Brasil, 2015 a 2017**
+
+```{r, message=FALSE, warning=FALSE}
+
+selecao_regiao_ano_2015 <- f_selecao_regiao_ano(gm_2015, q40, "Sim", Região, "2015")
+
+selecao_regiao_ano_2016 <- f_selecao_regiao_ano(gm_2016, q20, "Sim", Região, "2016")
+
+selecao_regiao_ano_2017 <- f_selecao_regiao_ano(gm_2017, q31, "Sim", Região, "2017")
+
+grafico <- selecao_regiao_ano_2015 %>%
+  bind_rows(selecao_regiao_ano_2016) %>% 
+  bind_rows(selecao_regiao_ano_2017) %>% 
+  ggplot(aes(x = Região, y = Percentual, group = Ano)) +
+  geom_col(aes(fill = Ano), position="dodge") +
+  geom_text(aes(label = percent(Percentual), y=Percentual+.015), position = position_dodge(width = 0.9), angle = 90) +
+  scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
+  theme(legend.position="bottom",
+        legend.title = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.y = element_blank(),
+        axis.line.x = element_line(),
+        panel.background = element_blank(),
+        plot.background = element_rect(colour = "black")) +
+  guides(fill=guide_legend(nrow=1,byrow=TRUE))
+
+grafico
+grafico %>% 
+  graph2office(file="graficos", append = TRUE)
+```
+
 Fonte: MDS, Censo SUAS.
 
-Uma importante atividade das equipes nos municípios é a realização de cadastramento e atualização cadastral do Cadastro Único para Programas Sociais (CadÚnico). Quando se observa o espaço no qual se realizava a atividade, seja no sistema eletrônico ou em papel, verifica-se que 3.618 municípios (66%) declararam realizar cadastramento e/ou atualização cadastral do CadÚnico no domicílio das famílias, dos quais 623 municípios realizaram apenas o cadastramento (11,4%), 669 realizaram apenas a atualização cadastral (12,2%) e 2.326 realizaram ambas as atividades (42,4%).
-3.492 municípios (63,7%) realizavam a atividade no CRAS: 678 faziam cadastramento (12,4%), 283 realizavam atualização cadastral (5,2%) e 2.531 (46,2%) ambos. Na sede do órgão gestor/ Secretaria de Assistência, 2.948 (53,8%) municípios realizaram a atividade: 377 (6,9%) cadastramento, 137 (2,5%) atualização cadastral e 2.434 (44,4%) ambos.
-Em 401 (7,3%) municípios eram realizados cadastramento e/ou atualização cadastral em unidades de outras políticas públicas: 78 (1,4%) cadastramento, 82 (1,5%) atualização cadastral e 241 (4,4%) ambos (Gráfico 11).
-Gráfico 11: Locais do município onde são realizados o cadastramento e a atualização cadastral do Cadastro Único para Programas Sociais (CadÚnico) - Brasil, 2016
-Fonte: MDS, Censo SUAS.
+### Considerações Finais
 
-Em 2016, todos os Estados declararam que os recursos próprios eram registrados no FEAS. Deste 57,7% registraram a totalidade dos recursos próprios. Esse percentual foi o menor desde 2014, quando em 61,5% dos estados a totalidade dos recursos era registrada (Gráfico 14).
-Gráfico 14: Percentual de estados segundo alocação dos recursos próprios na unidade Orçamentária do Fundo Estadual de Assistência Social (FEAS) - Brasil, 2014 a 2016
-Fonte: MDS, Censo SUAS.
-
-Considerando-se as categorias de organização do cofinanciamento fundo-a-fundo (por serviços socioassistenciais, por tipo de proteção, comum a todos os serviços ou outra), verificou-se que em 2016 10 estados realizavam o cofinanciamento por nível de proteção (45,5% dos 22 estados que realizavam cofinanciamento fundo-a-fundo), enquanto 7 realizavam por serviço Socioassistencial (31,8%), 3 tinham o cofinanciamento comum a todos os serviços socioassistenciais (13,6%) e 2 tinham outra organização (9,1%).
-Dos 10 estados que realizavam cofinanciamento por nível de proteção, 4 (18,2% do total) não tinham frequência regular, 2 (9,1%) realizavam mensalmente e 2 (9,1%) anualmente.
-Entre os 7 estados que realizavam o cofinanciamento por serviço socioassistencial, 2 (9,1%) realizavam sem frequência regular e 2 (9,1%) anualmente. Os dois estados que tinham outra organização realizavam repasses trimestrais (Gráfico 17).
-Gráfico 17: Número de estados segundo organização e periodicidade do cofinanciamento fundo-a-fundo - Brasil, 2016
-Fonte: MDS, Censo SUAS.
-
-As Secretarias Estaduais de Assistência Social dos Estados de Rondônia, Roraima, Ceará, Sergipe e Paraná declaram ter realizado visitas técnicas em todos os seus municípios.
-Por outro lado, a Secretaria Estadual do Amapá não realizou nenhuma visita (Gráfico 19).
-Gráfico 19: Percentual de municípios do estado que receberam visitas técnicas da Secretaria Estadual de Assistência Social no ano de 2015 - Brasil, 2016
-Fonte: MDS, Censo SUAS.
-
-De acordo com o artigo 136 da NOB SUAS 2012, as Comissões Intergestores Bipartite (CIBs) devem contar com representação do estado e dos municípios, considerando o porte dos municípios e sua distribuição regional. A composição deve se dar da seguinte forma: 6 representantes do Estado e seus respectivos suplentes, indicados pelo gestor estadual da política de assistência social; 6 representantes dos Municípios e seus respectivos suplentes, indicados pelo COEGEMAS, observando a representação regional e o porte dos municípios, de acordo com o estabelecido na PNAS, sendo: 2 representantes de municípios de pequeno porte I; 1 representante de municípios de pequeno porte II; 1 representante de municípios de médio porte; 1 representante de municípios de grande porte; e 1 representante da capital do Estado. A NOB SUAS 2012 prevê a possibilidade de alterações na composição da CIB conforme especificidades regionais. São previstas tanto possibilidades de ampliação, de forma a aumentar a representação estadual e municipal, quanto de modificação, caso não seja possível observar a proporção de porte de municípios prevista. Não é permitida, contudo, a redução do número de representantes de cada ente federativo.
-Em 2016, verificou-se que em 11 estados (42,3% do total) a composição da CIB estava em consonância ao disposto na NOB SUAS 2012, considerando os representantes titulares e suplentes. Em 20 estados (76,9%) havia o mesmo número de representantes da gestão estadual e da gestão municipal, entre titulares e suplentes. Em 4 estados (15,4%) havia mais representantes da gestão municipal e em 2 estados (7,7%) mais representantes da gestão estadual.
-No que se refere à representação da gestão estadual, observou-se que 20 estados (76,9%) tinham 6 representantes na CIB, titulares e suplentes, 3 estados (11,5%) tinham 3 representantes, 2 estados (7,7%) tinham 7 representantes e 1 estado (3,8%) tinha 8 representantes.
-Sobre as representações dos municípios, tem-se que: 19 estados (73,1%) tinham 2 representes titulares de municípios de pequeno porte I na CIB, e 16 (61,5%) dois representes suplentes. Em 4 estados (15,4%) havia mais de 2 representes titulares de municípios de pequeno porte I, e em 3 havia apenas um representante titular (11,5%).
-Em 20 estados (76,9%), os municípios de pequeno porte II tinham 1 represente titular na CIB, em 5 estados (19,2%) mais de dois representantes e em 1 estado não havia representante titular de município de pequeno porte II na CIB.
-Em 22 estados (84,6%) os municípios de médio porte tinham 1 representante titular na CIB.  Em 2 estados havia mais de 1 represente titular e em 2 não havia representante titular de municípios de médio porte.
-A existência de um representante titular dos municípios de grande porte era observada em 23 estados (88,5%). Em 1 estado havia mais de um representante e em outros 2 não havia representante titular de municípios de grande porte.
-Sobre a representação de metrópoles ou capitais, verifica-se que em 23 estados (88,5%) havia um represente titular na CIB, e em 3 estados não havia representante titular. Sobre os representes suplentes, tem-se que em 20 estados (76,9%) havia um represente, e em 6 (23,1%) não havia representante (Tabela 4).
-Em 19 estados (73,1%) há critério de representação regional na CIB e em 18 deles (94,7% do total de estados em que há critério de representação regional) há rotatividade da representação de por região.
-Todos os estados declararam que os representantes municipais foram indicados pelo Colegiado Estadual de Gestores Municipais de Assistência Social (COEGEMAS ou similar).
-Tabela 4: Número de componentes da Comissão Intergestores Bipartite (CIB) segundo tipo de representação e porte do município - Brasil, 2016
-
-Estado
-Representantes da Gestão Estadual - Titulares
-Representantes da Gestão Estadual - Suplentes
-Representantes de Municípios de Pequeno Porte I - Titulares
-Representantes de Municípios de Pequeno Porte I - Suplentes
-Representantes de Municípios de Pequeno Porte II - Titulares
-Representantes de Municípios de Pequeno Porte II - Suplentes
-Representantes de Municípios de Médio Porte - Titulares
-Representantes de Municípios de Médio Porte - Suplentes
-Representantes de Municípios de Grande Porte - Titulares
-Representantes de Municípios de Grande Porte - Suplentes
-Representantes de Municípios de Metrópoles/ capitais - Titulares
-Representantes de Municípios de Metrópoles/ capitais - Suplentes
-Total de representantes - Titulares e Suplentes
-AC
-6
-6
-2
-4
-2
-1
-1
-0
-1
-1
-0
-0
-24
-AL
-6
-6
-1
-4
-2
-2
-2
-0
-0
-0
-1
-0
-24
-AM
-6
-6
-3
-4
-2
-2
-2
-3
-1
-0
-1
-0
-30
-AP
-6
-6
-2
-2
-1
-1
-0
-0
-1
-1
-1
-1
-22
-BA
-6
-6
-2
-2
-1
-1
-1
-1
-1
-1
-1
-1
-24
-CE
-6
-6
-2
-1
-1
-2
-1
-1
-1
-1
-1
-1
-24
-ES
-3
-3
-2
-2
-1
-1
-1
-1
-1
-1
-1
-1
-18
-GO
-6
-6
-2
-2
-1
-1
-1
-1
-1
-1
-1
-1
-24
-MA
-6
-6
-2
-2
-1
-1
-1
-1
-1
-1
-1
-1
-24
-MG
-6
-6
-2
-2
-1
-1
-1
-1
-1
-1
-1
-1
-24
-MS
-6
-6
-2
-3
-1
-1
-1
-0
-1
-1
-1
-1
-24
-MT
-6
-6
-2
-2
-1
-1
-1
-1
-1
-1
-1
-1
-24
-PA
-7
-7
-2
-2
-2
-2
-1
-1
-1
-1
-1
-1
-28
-PB
-7
-7
-4
-4
-1
-2
-1
-1
-0
-0
-1
-0
-28
-PE
-6
-6
-2
-2
-1
-1
-1
-1
-1
-1
-1
-1
-24
-PI
-6
-6
-3
-4
-0
-1
-1
-1
-2
-0
-0
-0
-24
-PR
-6
-6
-2
-2
-1
-1
-1
-1
-1
-1
-1
-1
-24
-RJ
-6
-6
-1
-1
-2
-2
-1
-1
-1
-1
-1
-1
-24
-RN
-3
-3
-2
-2
-1
-1
-1
-1
-1
-1
-1
-1
-18
-RO
-6
-6
-2
-2
-1
-1
-1
-1
-1
-1
-1
-1
-24
-RR
-6
-6
-1
-1
-1
-1
-1
-1
-1
-1
-0
-0
-20
-RS
-3
-3
-2
-2
-1
-1
-1
-1
-1
-1
-1
-1
-18
-SC
-6
-6
-2
-2
-1
-1
-1
-1
-1
-1
-1
-1
-24
-SE
-6
-6
-2
-2
-1
-1
-1
-1
-1
-1
-1
-1
-24
-SP
-6
-6
-2
-2
-1
-1
-1
-1
-1
-1
-1
-1
-24
-TO
-8
-8
-5
-6
-1
-1
-0
-0
-1
-0
-1
-1
-32
-Fonte: MDS, Censo SUAS.
-Sobre a periodicidade com que as CIBs se reuniram em 2015, verifica-se que 14 estados reuniram-se mensalmente (53,8%), 8 estados bimestralmente (30,8%), 1 estado quadrimestralmente (3,8%) e 1 estado semestralmente (3,8%).
-Quando se observa a periodicidade das reuniões por região, verifica-se que 3 das CIBs na região Sudeste reuniram-se mensalmente (75,0%), assim como 6 na região Nordeste (66,7%) e 2 na região Centro-Oeste (66,7%). Duas das CIBs na região Sul reuniram-se bimestralmente (66,7%) e 2 das CIBs na região Norte trimestralmente (28,6%) (Gráfico 20).
-Sobre o número de reuniões realizadas em 2015, em 15 estados (57,7%) a CIB realizou até 7 reuniões. Em 4 estados (15,4%) foram realizadas 8 reuniões e em 7 estados (26,9%) foram realizadas 9 ou mais reuniões.
-As reuniões descentralizadas, que são realizadas fora da capital do estado, foram feitas em apenas quatro estados (15,4% do total).  
-Em 2016, 96,2% dos estados (25) indicaram que a CIB pactuou o calendário de reuniões ordinárias anual
-Gráfico 20: Número de estados por periodicidade com a qual a Comissão Intergestores Bipartite (CIB) se reuniu em 2015, segundo grandes regiões - Brasil, 2016
-Fonte: MDS, Censo SUAS.
-
-Considerações Finais
 Os órgãos gestores da assistência social, tanto estaduais quanto municipais, são estruturas fundamentais para a execução integral do SUAS e da PNAS. Suas participações nos planejamentos das ações a serem executadas, na coordenação do recebimento de recursos e na distribuição dos mesmos segundo as prioridades de seu território de trabalho tem papel crucial na fluidez do Sistema como um todo e no funcionamento da Rede Socioassistencial.
+
 As subdivisões administrativas que apresentavam maior percentual de formalização nos órgãos gestores municipais eram as voltadas à Proteção Social Básica e à Gestão de Benefícios Assistenciais, presentes em 62,5% e 63,1% dos municípios, respectivamente. As que apresentavam menores percentuais de formalização nos órgãos gestores municipais eram as de Regulação do SUAS (36,5%), de Proteção Social Especial (35,6%), de Vigilância Socioassistencial (31,1%) e de Gestão do Trabalho (30,6%).
+
 Os recursos recebidos via transação fundo-a-fundo, garantem maior qualidade na distribuição, já que estes são fiscalizados pelos órgãos de controle social e passam pelo crivo das Comissões Intergestores Bipartite e Tripartite. Sobre o repasse, destacam-se as regiões Norte e Nordeste que apresentam alto percentual de municípios que não repassam recursos a ONGs ou entidades privadas da assistência social.
 
-Capítulo 3 - Equipamentos
+## Capítulo 3 - Equipamentos
+
 A assistência social organiza-se por dois tipos de proteção: a proteção social básica, definida no artigo 6º-A da Lei Orgânica da Assistência Social (LOAS) como um "conjunto de serviços, programas, projetos e benefícios da assistência social que visa a prevenir situações de vulnerabilidade e risco social por meio do desenvolvimento de potencialidades e aquisições e do fortalecimento de vínculos familiares e comunitários" e a proteção social especial, definida como "conjunto de serviços, programas e projetos que tem por objetivo contribuir para a reconstrução de vínculos familiares e comunitários, a defesa de direito, o fortalecimento das potencialidades e aquisições e a proteção de famílias e indivíduos para o enfrentamento das situações de violação de direitos"11.
 Nesse contexto, os equipamentos da assistência social são as unidades nas quais os serviços socioassistenciais, programas e projetos são realizados. Essas unidades podem ser públicas ou entidades de assistência social.
 A Tipificação Nacional de Serviços Socioassistenciais organiza os serviços ofertados conforme seu nível de complexidade, indicando o equipamento recomendado à execução do serviço12. No âmbito da proteção social básica, os atendimentos são prestados pelos Centros de Referência de Assistência Social (CRAS) e pelos Centros de Convivência. No âmbito da proteção social especial, os serviços são prestados pelos Centros de Referência Especializados de Assistência Social (CREAS), Centros de Referência Especializados para População em Situação de Rua (Centros POP), Centros-Dia de Referência para Pessoa com Deficiência e suas Famílias e pelas Unidades de Acolhimento.
