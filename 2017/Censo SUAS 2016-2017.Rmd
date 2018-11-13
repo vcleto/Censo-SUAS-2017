@@ -1,5 +1,8 @@
 ---
-output: html_document
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -417,7 +420,6 @@ Em 2016, 19,2% dos Estados tinham Secretaria estadual exclusiva da área de Assi
 **Gráfico 1: Percentual de estados segundo característica da Secretaria estadual de Assistência Social - Brasil, 2017**
 
 ```{r, warning=FALSE}
-
 ge_2017 %>% 
   select(q1,q2_1,q2_2,q2_3,q2_4,q2_5,q2_6,q2_7,q2_99) %>% 
   filter(!is.na(q1)) %>% 
@@ -461,7 +463,7 @@ ge_2017 %>%
 
 Fonte: MDS, Censo SUAS. 
 
-Em 2016, 78,5% das 5.481 Secretarias Municipais eram exclusivas da Assistência Social. Houve redução de 0,8 pontos percentuais em relação ao ano anterior.
+*TEXTO A SER ATUALIZADO:* Em 2016, 78,5% das 5.481 Secretarias Municipais eram exclusivas da Assistência Social. Houve redução de 0,8 pontos percentuais em relação ao ano anterior.
 
 Quando se observa as Secretarias por região, verifica-se que em 2016 a região Centro-Oeste tinha a maior proporção de Secretarias exclusivas: 84,6% das Secretarias Municipais da região eram exclusivas da assistência social. Na sequência apareceram as regiões Nordeste (84,3%) e Norte (82,6%). A região Sul tinha a menor proporção: 65,6% das Secretarias da região eram exclusivas da assistência social, o que indica a existência de maior número, em termos percentuais, de Secretarias Municipais na região que realizavam gestão simultânea de assistência social com outras áreas.
 
@@ -2354,276 +2356,325 @@ Considerações Finais
 Os dados do Censo SUAS 2016 revelaram uma significativa aceleração no crescimento do percentual de CRAS que concederam benefícios eventuais (Gráfico 109), crescimento que vinha ocorrendo entre 2010 e 2015, mas em ritmo bem mais lento. Os maiores crescimentos observados foram no percentual de CRAS que concederam auxílio funeral, que cresceu 10,9 pontos percentuais, e que concederam auxílios relacionados à segurança alimentar, que cresceu 10,8 pontos percentuais.
 Por outro lado, foi observada queda no percentual de CRAS que executavam diretamente os Serviços de Convivência e Fortalecimento de Vínculos (Gráfico 102), que se aproximou dos menores percentuais da série histórica, observados em 2009 e 2010.
 
-Capítulo 6 - Participação social no SUAS
-A participação social é uma das diretrizes estabelecidas pela Constituição Federal de 1988 para a organização das ações da Assistência Social. Nesse sentido, a Lei Orgânica da Assistência Social (LOAS)23, que dispõe sobre a sua organização, instituiu em seu artigo 16 os Conselhos de Assistência Social em âmbito nacional, estadual e municipal como instâncias de deliberação colegiada do SUAS, cuja composição deve ser paritária entre governo e sociedade civil. Os Conselhos integram o Sistema Único de Assistência Social (SUAS), juntamente com o governo e as entidades e organizações de assistência social.
-A Resolução do Conselho Nacional de Assistência Social (CNAS) nº 237/200624, estabelece em seu artigo 3º as competências dos Conselhos de Assistência Social, das quais se destacam: a aprovação da respectiva Política de Assistência Social, em consonância com a Política Nacional de Assistência Social (PNAS); a normatização e regulação de ações e prestação de serviços, em conjunto com a gestão; o acompanhamento, avaliação e fiscalização da gestão de recursos; a inscrição e a fiscalização das entidades e organizações da assistência social; e a aprovação da proposta orçamentária dos recursos da assistência social e dos critérios de partilha dos recursos, dentre outras atribuições. A mesma Resolução estabelece que na composição dos Conselhos deve haver, além de representantes do governo, representantes da sociedade civil, incluindo usuários, entidades e organizações de assistência social e entidades de trabalhadores do setor.
-Para garantir seu funcionamento adequado, a LOAS, no artigo 16, estabelece que os órgãos gestores de assistência social, aos quais estão vinculados os Conselhos de Assistência Social, devem prover a infraestrutura necessária ao seu funcionamento, garantindo recursos materiais, humanos e financeiros. 
+**Capítulo 6 - Participação social no SUAS**
+A participação social é uma das diretrizes estabelecidas pela Constituição Federal de 1988 para a organização das ações da Assistência Social. Nesse sentido, a Lei Orgânica da Assistência Social (LOAS) -referenciar em nota-  , que dispõe sobre a sua organização, instituiu em seu artigo 16 os Conselhos de Assistência Social em âmbito nacional, estadual e municipal como instâncias de deliberação colegiada do SUAS, cuja composição deve ser paritária entre governo e sociedade civil. Os Conselhos integram o Sistema Único de Assistência Social (SUAS), juntamente com o governo e as entidades e organizações de assistência social.
+A Resolução do Conselho Nacional de Assistência Social (CNAS) nº 237/2006 -referenciar em nota- , estabelece em seu artigo 3º as competências dos Conselhos de Assistência Social, das quais se destacam: a aprovação da respectiva Política de Assistência Social, em consonância com a Política Nacional de Assistência Social (PNAS); a normatização e regulação de ações e prestação de serviços, em conjunto com a gestão; o acompanhamento, avaliação e fiscalização da gestão de recursos; a inscrição e a fiscalização das entidades e organizações da assistência social; e a aprovação da proposta orçamentária dos recursos da assistência social e dos critérios de partilha dos recursos, dentre outras atribuições. A mesma Resolução estabelece que na composição dos Conselhos deve haver, além de representantes do governo, representantes da sociedade civil, incluindo usuários, entidades e organizações de assistência social e entidades de trabalhadores do setor.
+Para garantir seu funcionamento adequado, a LOAS, em seu artigo 16, estabelece que os órgãos gestores de assistência social, aos quais estão vinculados os Conselhos de Assistência Social, devem prover a infraestrutura necessária ao seu funcionamento, garantindo recursos materiais, humanos e financeiros. 
 Este bloco apresenta os resultados apurados pelo Censo SUAS para os Conselhos Municipais e Estaduais de Assistência Social, considerando as dimensões estrutura administrativa, dinâmica de funcionamento e composição.
-O percentual de municípios com Conselho Municipal de Assistência Social está sempre acima de 90%, com algumas variações entre 2010 e 2016. É importante pontuar que as variações no período analisado não significam necessariamente redução no número de municípios com Conselhos, uma vez que podem ocorrer variações no número de Conselhos Municipais que respondem ao Censo SUAS.
-Ao analisar a evolução de municípios com Conselhos Municipais de Assistência Social ao longo dos anos segundo grandes regiões, verifica-se em 2016 que apenas as regiões Norte (93,8%) e Centro-Oeste (93,8%) estavam abaixo do percentual nacional (Gráfico 125).
-Gráfico 125 – Percentual de municípios com Conselhos Municipais de Assistência Social, segundo grandes regiões – Brasil, 2010 a 2016
+
+**6.1 - Municípios com Conselhos Municipais de Assistência Social **
+O percentual de municípios com Conselho Municipal de Assistência Social está sempre acima de 90%, com algumas variações entre 2010 e 2016. É importante pontuar que as variações no período analisado não significam necessariamente redução no número de municípios com conselhos, uma vez que podem ocorrer variações no número de conselhos municipais que respondem ao Censo SUAS.
+Ao analisar a evolução de municípios com Conselhos Municipais de Assistência Social ao longo dos anos segundo grandes regiões, verifica-se em 2016 que apenas as regiões Norte (93,8%) e Centro-Oeste (93,8%) estavam abaixo do percentual nacional (Grafico xx).
+
+**Gráfico xx – Percentual de municípios com Conselhos Municipais de Assistência Social, segundo grandes regiões – Brasil, 2010 a 2017**
+```{r, warning=FALSE}
+  
+cmun_2010_regiao <- cmun_2010 %>% 
+  select(Região) %>% 
+  mutate(Região = str_replace(Região, "Região ", "")) %>% 
+  group_by(Região) %>% 
+  summarise(n=n()) %>% 
+  ungroup() %>% 
+  mutate(total_regiao=)
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum')))
+ 
+ cmun_2011_regiao <- cmun_2011 %>% 
+   select(Região) %>% 
+   mutate(Região = str_replace(Região, "Região ", "")) %>% 
+   group_by(Região) %>% 
+   summarise(n=n()) %>% 
+   ungroup() %>% 
+   bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum')))
+ 
+ cmun_2012_regiao <- cmun_2012 %>% 
+   select(Região) %>% 
+   mutate(Região = str_replace(Região, "Região ", "")) %>% 
+   group_by(Região) %>% 
+   summarise(n=n()) %>% 
+   ungroup() %>% 
+   bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum')))
+ 
+ cmun_2013_regiao <- cmun_2013 %>% 
+  select(Região) %>% 
+   mutate(Região = str_replace(Região, "Região ", "")) %>% 
+   group_by(Região) %>% 
+   summarise(n=n()) %>% 
+   ungroup() %>% 
+   bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum')))
+ 
+ cmun_2014_regiao <- cmun_2014 %>% 
+   select(Região) %>% 
+   mutate(Região = str_replace(Região, "Região ", "")) %>% 
+   group_by(Região) %>% 
+   summarise(n=n()) %>% 
+   ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum')))
+ 
+ cmun_2015_regiao <- cmun_2015 %>% 
+  select(Região) %>% 
+   mutate(Região = str_replace(Região, "Região ", "")) %>% 
+   group_by(Região) %>% 
+   summarise(n=n()) %>% 
+   ungroup() %>% 
+   bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum')))
+ 
+ cmun_2016_regiao <- cmun_2016 %>% 
+   select(Região) %>% 
+   mutate(Região = str_replace(Região, "Região ", "")) %>% 
+   group_by(Região) %>% 
+   summarise(n=n()) %>% 
+   ungroup() %>% 
+   bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum')))
+ 
+ cmun_2017_regiao <- cmun_2017 %>% 
+ select(Região) %>% 
+   mutate(Região = str_replace(Região, "Região ", "")) %>% 
+   group_by(Região) %>% 
+  summarise(n=n()) %>% 
+   ungroup() %>% 
+   bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum')))
+ 
+ cmun_regiao <- cmun_2010_regiao %>% 
+   left_join(cmun_2011_regiao, by = "Região") %>%
+   left_join(cmun_2012_regiao, by = "Região") %>%
+   left_join(cmun_2013_regiao, by = "Região") %>%
+   left_join(cmun_2014_regiao, by = "Região") %>%
+   left_join(cmun_2015_regiao, by = "Região") %>%
+   left_join(cmun_2016_regiao, by = "Região") %>%
+   left_join(cmun_2017_regiao, by = "Região")
+   
+  names(cmun_regiao) <- c("Região","2010","2011","2012","2013","2014","2015","2016","2017") 
+  
+
+  ggplot(aes(x = Região, y = Percentual, group = Ano)) +
+  geom_col(aes(fill = Ano), position="dodge") +
+  geom_text(aes(label = percent(Percentual), y=Percentual+.07), position = position_dodge(width = 0.9), angle = 90) +
+  scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
+  theme(legend.position="bottom",
+        legend.title = element_blank(),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.y = element_blank(),
+        axis.line.x = element_line(),
+        panel.background = element_blank(),
+        plot.background = element_rect(colour = "black")) +
+  guides(fill=guide_legend(nrow=1,byrow=TRUE))
+```
+
+
 Fonte: MDS, Censo SUAS.
 
-Em 2016, o Censo SUAS verificou que 76,5% dos Conselhos Municipais de Assistência Social possuíam Secretaria Executiva (4.100 unidades), aumento de 8,4 pontos percentuais desde 2013.
-Quanto aos Conselhos Estaduais, todos possuíam Secretaria Executiva (Gráfico 126).
-Gráfico 126 - Distribuição percentual de Conselhos Estaduais e Municipais segundo a existência de Secretaria Executiva – Brasil, 2013 a 2016
+**6.2 – Características dos Conselhos Municipais e Estaduais de Assistência Social**
+**6.2.1 – Secretaria Executiva**
+A Secretaria Executiva é uma unidade administrativa de apoio e assessoramento técnico ao conselho e que tem como responsabilidade dar suporte à Presidência, ao Colegiado, Comissões e Grupos de Trabalhos para cumprimento de suas atribuições. 
+Em 2016, o Censo SUAS verificou que 76,5% dos Conselhos Municipais de Assistência Social possuíam Secretaria Executiva (4.100 unidades), aumento de 8,4 pontos percentuais desde 2013. Quanto aos Conselhos Estaduais, todos possuíam Secretaria Executiva (Gráfico xx).
+**Gráfico xx - Distribuição percentual de Conselhos Estaduais e Municipais segundo a existência de Secretaria Executiva – Brasil, 2013 a 2017**
+```{r, warning=FALSE}
+  
+cest_2010_regiao <- cest_2010 %>% 
+  select(Região) %>%
+  mutate(Região = str_replace(Região, "Região ", "")) %>%
+  group_by(Região) %>% 
+  summarise(n=n()) %>% 
+  ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum')))
+ 
+ cest_2011_regiao <- cest_2011 %>% 
+   select(Região) %>% 
+   mutate(Região = str_replace(Região, "Região ", "")) %>% 
+   group_by(Região) %>% 
+   summarise(n=n()) %>% 
+   ungroup() %>% 
+   bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum')))
+ 
+ cest_2012_regiao <- cest_2012 %>% 
+   select(Região) %>% 
+   mutate(Região = str_replace(Região, "Região ", "")) %>% 
+   group_by(Região) %>% 
+   summarise(n=n()) %>% 
+   ungroup() %>% 
+   bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum')))
+ 
+ cest_2013_regiao <- cest_2013 %>% 
+  select(Região) %>% 
+   mutate(Região = str_replace(Região, "Região ", "")) %>% 
+   group_by(Região) %>% 
+   summarise(n=n()) %>% 
+   ungroup() %>% 
+   bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum')))
+ 
+ cest_2014_regiao <- cest_2014 %>% 
+   select(Região) %>% 
+   mutate(Região = str_replace(Região, "Região ", "")) %>% 
+   group_by(Região) %>% 
+   summarise(n=n()) %>% 
+   ungroup() %>% 
+  bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum')))
+ 
+ cest_2015_regiao <- cest_2015 %>% 
+  select(Região) %>% 
+   mutate(Região = str_replace(Região, "Região ", "")) %>% 
+   group_by(Região) %>% 
+   summarise(n=n()) %>% 
+   ungroup() %>% 
+   bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum')))
+ 
+ cest_2016_regiao <- cest_2016 %>% 
+   select(Região) %>% 
+   mutate(Região = str_replace(Região, "Região ", "")) %>% 
+   group_by(Região) %>% 
+   summarise(n=n()) %>% 
+   ungroup() %>% 
+   bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum')))
+ 
+ cest_2017_regiao <- cest_2017 %>% 
+ select(Região) %>% 
+   mutate(Região = str_replace(Região, "Região ", "")) %>% 
+   group_by(Região) %>% 
+  summarise(n=n()) %>% 
+   ungroup() %>% 
+   bind_rows(c(Região="Brasil",summarise_all(select(.,-Região), 'sum')))
+ 
+ cest_regiao <- cest_2010_regiao %>% 
+   left_join(cest_2011_regiao, by = "Região") %>%
+   left_join(cest_2012_regiao, by = "Região") %>%
+   left_join(cest_2013_regiao, by = "Região") %>%
+   left_join(cest_2014_regiao, by = "Região") %>%
+   left_join(cest_2015_regiao, by = "Região") %>%
+   left_join(cest_2016_regiao, by = "Região") %>%
+   left_join(cest_2017_regiao, by = "Região")
+   
+  names(cest_regiao) <- c("Região","2010","2011","2012","2013","2014","2015","2016","2017")
+
+```
+
 Fonte: MDS, Censo SUAS.
 
-A Secretaria Executiva é uma unidade administrativa de apoio e assessoramento técnico ao conselho e que tem como responsabilidade dar suporte à Presidência, ao Colegiado, Comissões e Grupos de Trabalhos para cumprimento de suas atribuições. A análise da existência de Secretaria Executiva nos Conselhos Municipais segundo o porte do município apresentou que em 2016, 72,2% dos Conselhos Municipais de Assistência Social localizados em municípios de pequeno porte I possuíam Secretaria Executiva (2.702 unidades). Esse número representa 50,4% do total de 5.359 Conselhos Municipais que responderam ao Censo SUAS em 2016. A partir dos dados apurados, verifica-se que quanto menor o porte do município, menores são os percentuais de Conselhos Municipais com Secretaria Executiva. Todos os Conselhos Municipais de metrópoles possuíam Secretaria Executiva em 2016 (Gráfico 127).
-Gráfico 127 - Distribuição percentual de Conselhos Municipais segundo a existência de Secretaria Executiva segundo porte do município – Brasil, 2016
+**6.2.2 – IGD-SUAS**
+O Índice de Gestão Descentralizada do SUAS (IGD-SUAS) visa avaliar a qualidade da gestão descentralizada dos serviços, programas, projetos e benefícios socioassistenciais no âmbito dos municípios, estados e Distrito Federal, bem como a articulação intersetorial. Com base nesse indicador, o MDS repassa recursos aos municípios para que façam a gestão do programa, respeitando a previsão legal de aplicação obrigatória de 3% dos recursos do IGD/PBF e do IGD/SUAS nos Conselho de Assistência Social.
+O percentual de Conselhos Municipais de Assistência Social cujo IGD-SUAS era utilizado para custear despesas de funcionamento do Conselho foi maior em 2016 na região Nordeste (87,6%), seguida das regiões Norte (87,4%) e Centro-Oeste (87,4%).
+Foi observado aumento nos percentuais de Conselhos Municipais que utilizam o IGD em todas as regiões, com exceção da região Centro-Oeste, em que foi observada pequena queda de 1,2 pontos percentuais entre 2015 e 2016 (Gráfico xx).
+**Gráfico xx - Percentual de Conselhos Municipais de Assistência Social cujo IGD-SUAS era destinado a custear despesas de funcionamento do Conselho, segundo grandes regiões – Brasil, 2014 a 2017**
+```{r}
+
+```
+
 Fonte: MDS, Censo SUAS.
 
-Em 2016, mais da metade dos Conselhos Municipais (55,9%) e 88,9% dos Conselhos Estaduais tinham local/ sede específicos para funcionamento. Entre os Conselhos Municipais o percentual aumentou desde 2014. Já entre os Conselhos Estaduais houve redução na quantidade de Conselhos que indiciou possuir sede para funcionamento: em 2014 todos os estados tinham local/ sede específico para funcionamento, enquanto em 2016 11,1% (2) informaram não possuir (Gráfico 128).
-Gráfico 128 – Percentual de Conselhos que possuem local/sede específico para funcionamento - Brasil, 2014 a 2016
-Fonte: MDS, Censo SUAS.
-
-O IGD-SUAS visa avaliar a qualidade da gestão descentralizada dos serviços, programas, projetos e benefícios socioassistenciais no âmbito dos municípios, DF e estados, bem como a articulação intersetorial. Com base nesse indicador, o MDS repassa recursos aos municípios para que façam a gestão do Programa, respeitando a previsão legal de aplicação obrigatória de 3% dos recursos do IGD/PBF e do IGD/SUAS nos Conselho de Assistência Social.
-O percentual de Conselhos Municipais de Assistência Social cujo IGD-SUAS era utilizado para custear despesas de funcionamento do Conselho foi maior em 2016 na região Nordeste(87,6%), seguida das regiões Norte (87,4%) e Centro-Oeste (87,4%).
-Foi observado aumento nos percentuais de Conselhos Municipais que utilizam o IGD em todas as regiões, com exceção da região Centro-Oeste, em que foi observada pequena queda de 1,2 pontos percentuais entre 2015 e 2016 (Gráfico 129).
-Gráfico 129 - Percentual de Conselhos Municipais de Assistência Social cujo IGD-SUAS era destinado a custear despesas de funcionamento do Conselho, segundo grandes regiões – Brasil, 2014 a 2016
-Fonte: MDS, Censo SUAS.
-
-Os recursos específicos são aqueles recursos orçamentários do órgão gestor reservados e transferidos regularmente ao conselho para sua manutenção e funcionamento. Em 2016, 77,5% dos Conselhos Municipais e 92,6% dos Conselhos Estaduais indicaram haver na Lei Orçamentária de 2015 previsão de recursos específicos do órgão gestor destinados à manutenção e ao funcionamento dos Conselhos.
-O percentual de Conselhos Municipais que indicaram haver previsão orçamentária de recursos específicos aumentou desde 2014. Em relação aos Conselhos Estaduais, os percentuais diminuíram entre 2014 e 2016: em 2014 a totalidade dos Conselhos Estaduais indicaram haver previsão, e em 2016 7,4% (2) informaram não haver (Gráfico 130).
-Gráfico 130 – Percentual de Conselhos com previsão de recursos específicos do órgão gestor para manutenção e funcionamento dos Conselhos - Brasil, 2014 a 2016
-Fonte: MDS, Censo SUAS.
-
+**6.2.3 – Plano de Assistência Social**
 A NOB SUAS 2012, em seu Artigo 18, define o Plano de Assistência Social como um "instrumento de planejamento estratégico que organiza, regula e norteia a execução da PNAS na perspectiva do Sistema Único de Assistência Social (SUAS)". Assim, é fundamental que os Conselhos de Assistência Social deliberem sobre o Plano. 
 Em 2016, 92,5% dos Conselhos informaram que o município possuía Plano de Assistência Social (4.955 municípios), e 74,1% que os estados possuíam o Plano (20 estados). 403 Conselhos informaram que o município não possuía Plano de Assistência Social em 2016.
 Considerando a totalidade dos Conselhos, 89,9% dos Conselhos Municipais (4.816) e 70,4% dos Conselhos Estaduais (19) informaram deliberar sobre os Planos de Assistência Social. 
-O percentual de Conselhos Municipais que deliberam sobre o Plano de Assistência Social se manteve constante desde 2014. Entre os Conselhos Estaduais houve aumento em 2016 em relação ao ano anterior (Gráfico 131).
-Gráfico 131: Percentual de Conselhos Estaduais e Municipais que possuem e que deliberaram sobre o Plano de Assistência Social – Brasil, 2011 a 2016
+O percentual de Conselhos Municipais que deliberam sobre o Plano de Assistência Social se manteve constante desde 2014. Entre os Conselhos Estaduais houve aumento em 2016 em relação ao ano anterior (Gráfico xx).
+
+**Gráfico xx: Percentual de Conselhos Estaduais e Municipais que possuem e que deliberaram sobre o Plano de Assistência Social – Brasil, 2011 a 2017**
+```{r}
+
+```
+
 Fonte: MDS, Censo SUAS.
 
-Em 2016 todos os Conselhos Estaduais realizaram pelo menos 10 reuniões plenárias (ordinários e extraordinárias) no ano: 25,9% realizaram entre 10 e 12 reuniões, enquanto 66,7% realizaram entre 13 e 24 reuniões ao longo do ano, uma média de mais de uma reunião por mês. Foram realizadas entre 25 e 36 reuniões ao longo do ano por 7,4% dos Conselhos Estaduais.
-Entre os Conselhos Municipais, 0,1% (6) não realizaram nenhuma reunião, enquanto 57,5% (3.080 unidades) realizaram dez ou mais reuniões no ano (Gráfico 132).
-Gráfico 132: Número de reuniões plenárias realizadas pelos Conselhos Municipais e Estaduais em 2016 - Brasil, 2016
+**6.2.4 – Regimento interno**
+O Regimento interno do conselho é um conjunto de normas que rege, disciplina e regulamenta o seu funcionamento. Geralmente, é aprovado por meio de Resolução e contém o detalhamento de suas competências, de acordo com o que está definido na Lei Orgânica de Assistência Social (LOAS), na Lei de criação do conselho e na Resolução CNAS n° 237, de 2006.
+Foi possível observar que em 2016, 4.501 Conselhos Municipais de Assistência Social (84% do total) informaram possuir regimento interno, enquanto 858 Conselhos (16% do total) informaram não possuir. Quando se observa a última atualização do regimento interno, tem-se que 2.852 Conselhos (63,4% do total de conselhos que possuem regimento interno) realizaram a última atualização entre 2009 e 2016, enquanto 510 (11,3%) atualizaram seus regimentos pela última vez entre 2005 e 2008. Observa-se que 1.139 Conselhos Municipais (25,3%) atualizaram seu regimento interno pela última vez até o ano de 2004 (Gráfico xx). 
+**Gráfico xx: Número de Conselhos Municipais de Assistência Social por período de atualização do Regimento Interno - Brasil, 2017**
+```{r}
+
+```
+
 Fonte: MDS, Censo SUAS.
 
-O Regimento Interno do Conselho é um conjunto de normas que rege, disciplina e regulamenta o seu funcionamento. Geralmente, é aprovado por meio de Resolução e contém o detalhamento de suas competências, de acordo com o que está definido na Lei Orgânica de Assistência Social (LOAS), na Lei de criação do conselho e na Resolução CNAS n° 237, de 200625.
-Foi possível observar que em 2016, 4.501 Conselhos Municipais de Assistência Social (84% do total) informaram possuir Regimento Interno, enquanto 858 Conselhos (16% do total) informaram não possuir. Quando se observa a última atualização do Regimento Interno, tem-se que 2.852 Conselhos (63,4% do total de Conselhos que possuem Regimento Interno) realizaram a última atualização entre 2009 e 2016, enquanto 510 (11,3%) atualizaram seus regimentos pela última vez entre 2005 e 2008. Observa-se que 1.139 Conselhos Municipais (25,3%) atualizaram seu Regimento Interno pela última vez até o ano de 2004 (Gráfico 133). 
-Gráfico 133: Número de Conselhos Municipais de Assistência Social por período de atualização do Regimento Interno - Brasil, 2016
-Fonte: MDS, Censo SUAS.
-
+**6.2.5 - Instância de controle social do Programa Bolsa Família (PBF)**
 O Conselho é a instancia de controle social do Programa Bolsa Família (PBF) e deve atuar no acompanhamento de todos os componentes do Programa, como: o Cadastro Único para Programas Sociais, a Gestão de benefícios, as condicionalidades, a fiscalização e as oportunidades de desenvolvimento das capacidades das famílias desenvolvidas ou articuladas pelo município e os programas complementares.
-No ano de 2016, todos os Conselhos Estaduais exerciam o papel de instância de controle social do Programa Bolsa Família (PBF), 85,2% deliberaram sobre os critérios de repasse de recursos para os municípios, 51,9% deliberaram sobre os critérios de repasse de recursos para entidades e 74,1% deliberaram sobre proposta anual de orçamento do executivo. Quanto aos Conselhos Municipais, 89,1% eram instância de controle social do PBF, 44,3% deliberam sobre os critérios de repasse de recursos para entidades e 67,4% deliberaram sobre a proposta anual de orçamento do executivo (Gráfico 134).
-Gráfico 134 - Percentual de Conselhos Municipais e Estaduais segundo suas atribuições – Brasil, 2016 
+No ano de 2016, todos os Conselhos Estaduais exerciam o papel de instância de controle social do Programa Bolsa Família (PBF), 85,2% deliberaram sobre os critérios de repasse de recursos para os municípios, 51,9% deliberaram sobre os critérios de repasse de recursos para entidades e 74,1% deliberaram sobre proposta anual de orçamento do executivo. Quanto aos Conselhos Municipais, 89,1% eram instância de controle social do PBF, 44,3% deliberam sobre os critérios de repasse de recursos para entidades e 67,4% deliberaram sobre a proposta anual de orçamento do executivo (Gráfico xx).
+Gráfico xx - Percentual de Conselhos Municipais e Estaduais segundo suas atribuições – Brasil, 2017 
+```{r}
+
+```
+
 Fonte: MDS, Censo SUAS.
 
-Sobre a frequência de realização de atividades pelos Conselhos Municipais, observa-se as mais realizadas no ano de 2016 foram as visitas às unidades da rede socioassistencial, que ocorreram semestralmente em 28,5% dos Conselhos Municipais, anualmente em 27,5% e trimestralmente em 19,1%. Também figuram dentre as atividades mais realizadas as ações de mobilização social e as reuniões ampliadas. 50,2% dos Conselhos apontaram nunca acompanhar votações e discussões do Poder Legislativo local e 73,5% nunca realizar reuniões descentralizadas (Gráfico 135).
-Gráfico 135 - Distribuição percentual de Conselhos Municipais por frequência com que realizam atividades – Brasil, 2016
+**6.2.6 – Realização de atividades**
+Sobre a frequência de realização de atividades pelos Conselhos Municipais, observa-se as mais realizadas no ano de 2016 foram as visitas às unidades da rede socioassistencial, que ocorreram semestralmente em 28,5% dos Conselhos Municipais, anualmente em 27,5% e trimestralmente em 19,1%. Também figuram dentre as atividades mais realizadas as ações de mobilização social e as reuniões ampliadas. 50,2% dos Conselhos apontaram nunca acompanhar votações e discussões do Poder Legislativo local e 73,5% nunca realizar reuniões descentralizadas (Gráfico xx).
+
+**Gráfico xx - Distribuição percentual de Conselhos Municipais por frequência com que realizam atividades – Brasil, 2017**
+```{r}
+
+```
+
 Fonte: MDS, Censo SUAS.
 
-No que diz respeito à frequência de atividades realizadas pelos Conselhos Estaduais, 51,9% informaram nunca acompanhar as votações/discussões do Poder Legislativo local. Sobre a realização de reuniões, 40,7% informaram realizar reuniões ampliadas anualmente, enquanto 29,6% realizavam reuniões descentralizadas anualmente. Ações de mobilização social não eram realizadas por 40,7% dos Conselhos, enquanto 25,9% nunca faziam visitas nas unidades de rede socioassistencial. Todos os Conselhos Estaduais indicaram receber denúncias em alguma periodicidade. Nenhum Conselho Estadual realizava reuniões descentralizadas e reuniões ampliadas mensalmente ou trimestralmente (Gráfico 136).
-Gráfico 136 - Distribuição percentual de Conselhos Estaduais por frequência com que realizam atividades – Brasil, 2016
+No que diz respeito à frequência de atividades realizadas pelos Conselhos Estaduais, 51,9% informaram nunca acompanhar as votações/discussões do Poder Legislativo local. Sobre a realização de reuniões, 40,7% informaram realizar reuniões ampliadas anualmente, enquanto 29,6% realizavam reuniões descentralizadas anualmente. Ações de mobilização social não eram realizadas por 40,7% dos conselhos, enquanto 25,9% nunca faziam visitas nas unidades de rede socioassistencial. Todos os Conselhos Estaduais indicaram receber denúncias em alguma periodicidade. Nenhum Conselho Estadual realizava reuniões descentralizadas e reuniões ampliadas mensalmente ou trimestralmente (Gráfico xx).
+
+**Gráfico xx - Distribuição percentual de Conselhos Estaduais por frequência com que realizam atividades – Brasil, 2017**
+```{r}
+
+```
+
 Fonte: MDS, Censo SUAS.
 
-Em 2016, 36,4% dos Conselhos Municipais fiscalizavam as redes públicas e privadas, 53,6% apenas a rede pública, 2,3% apenas a rede privada e 7,7% não fiscalizavam serviços, programas, projetos e benefícios socioassistenciais do SUAS. O percentual de Conselhos Municipais que não realizava fiscalização aumentou em relação a 2015, enquanto o de Conselhos que fiscalizam tanto a rede pública quanto a rede privada diminuiu no mesmo período (Gráfico 137).
+**6.2.7 - Fiscalização**
+Em 2016, 36,4% dos Conselhos Municipais fiscalizavam as redes públicas e privadas, 53,6% apenas a rede pública, 2,3% apenas a rede privada e 7,7% não fiscalizavam serviços, programas, projetos e benefícios socioassistenciais do SUAS. O percentual de Conselhos Municipais que não realizava fiscalização aumentou em relação a 2015, enquanto o de Conselhos que fiscalizam tanto a rede pública quanto a rede privada diminuiu no mesmo período (Gráfico xx).
+**Gráfico xx - Percentual de Conselhos Municipais que fiscalizaram serviços, programas, projetos e benefícios socioassistenciais do SUAS – Brasil, 2017**
+```{r}
 
-Gráfico 137 - Percentual de Conselhos Municipais que fiscalizaram serviços, programas, projetos e benefícios socioassistenciais do SUAS – Brasil, 2016
+```
+
 Fonte: MDS, Censo SUAS.
 
-Já a região Sul tinha o maior percentual de Conselhos Municipais que não realizavam fiscalização de serviços, programas, projetos e benefícios socioassistenciais do SUAS (11,3%). Nas regiões Norte, Nordeste e Centro-Oeste a maior parte dos Conselhos (68,7%, 74,2% e 55,7%, respectivamente) fiscalizava apenas a rede pública.  Já nas regiões Sudeste e Sul a maior parte dos Conselhos Municipais fiscalizava tanto a rede pública quanto a rede privada (53% e 45% dos Conselhos, respectivamente) (Gráfico 138).
-Gráfico 138 - Distribuição percentual de Conselhos Municipais que fiscalizaram serviços, programas, projetos e benefícios socioassistenciais do SUAS, segundo grandes regiões - Brasil, 2016
+Já a região Sul tinha o maior percentual de Conselhos Municipais que não realizavam fiscalização de serviços, programas, projetos e benefícios socioassistenciais do SUAS (11,3%). Nas regiões Norte, Nordeste e Centro-Oeste a maior parte dos Conselhos (68,7%, 74,2% e 55,7%, respectivamente) fiscalizava apenas a rede pública.  Já nas regiões Sudeste e Sul a maior parte dos Conselhos Municipais fiscalizava tanto a rede pública quanto a rede privada (53% e 45% dos Conselhos, respectivamente) (Gráfico xx).
+**Gráfico xx - Distribuição percentual de Conselhos Municipais que fiscalizaram serviços, programas, projetos e benefícios socioassistenciais do SUAS, segundo grandes regiões - Brasil, 2017**
+```{r}
+
+```
+
 Fonte: MDS, Censo SUAS.
 
-Quanto aos Conselhos Estaduais, 48,1% fiscalizavam serviços, programas, projetos e benefícios socioassistenciais tanto na rede pública quanto na rede privada, o maior percentual desde 2013. No ano de 2016, 25,9% dos Conselhos estaduais supervisionavam apenas a rede pública, 18,5% não fiscalizavam, e 7,4% fiscalizavam apenas a rede privada (Gráfico 139).
-Gráfico 139: Percentual de Conselhos Estaduais que fiscalizaram serviços, programas, projetos e benefícios socioassistenciais do SUAS – Brasil, 2016
+Quanto aos Conselhos Estaduais, 48,1% fiscalizavam serviços, programas, projetos e benefícios socioassistenciais tanto na rede pública quanto na rede privada, o maior percentual desde 2013. No ano de 2016, 25,9% dos conselhos estaduais supervisionavam apenas a rede pública, 18,5% não fiscalizavam, e 7,4% fiscalizavam apenas a rede privada (Gráfico xx).
+**Gráfico xx: Percentual de Conselhos Estaduais que fiscalizaram serviços, programas, projetos e benefícios socioassistenciais do SUAS – Brasil, 2017**
+```{r}
+
+```
+
 Fonte: MDS, Censo SUAS.
 
 Sobre a fiscalização e o acompanhamento do Programa Bolsa Família (PBF), observa-se que o percentual de Conselho Municipais que executavam a atividade vem aumentando desde 2012, atingindo 87,7% em 2016. 
-O percentual de Conselhos Estaduais que fiscalizavam e acompanhavam o PBF sofreu queda entre 2013 e 2015. Em 2016 foi observado aumento do percentual em relação aos dois anos anteriores, e 77,8% dos Conselhos Estaduais declararam executar a atividade (Gráfico 140).
-Gráfico 140 - Percentual de Conselhos Estaduais e Municipais que fiscalizam e acompanham o Programa Bolsa Família – Brasil, 2010 e 2016
+O percentual de Conselhos Estaduais que fiscalizavam e acompanhavam o PBF sofreu queda entre 2013 e 2015. Em 2016 foi observado aumento do percentual em relação aos dois anos anteriores, e 77,8% dos Conselhos Estaduais declararam executar a atividade (Gráfico xx).
+**Gráfico xx - Percentual de Conselhos Estaduais e Municipais que fiscalizam e acompanham o Programa Bolsa Família – Brasil, 2010 e 2017**
+```{r}
+
+```
+
 Fonte: MDS, Censo SUAS.
 
-A CIB e a CIT são espaços de negociação e pactuação de caráter permanente para discussão quanto aos aspectos operacionais da gestão do sistema descentralizado e participativo da assistência social que devem ser acompanhados pelos Conselhos. Entretanto, foi possível observar que ao longo dos últimos anos tem caído a participação regular dos Conselhos Municipais junto a essas Instâncias. Em 2016, 15,7% dos Conselhos Municipais acompanhavam os processos de pactuação da CIB e CIT com regularidade (840) e 45,2% sem regularidade (2.422), totalizando 60,9% de Conselhos Municipais que informaram acompanhar os processos de pactuação (3.262). Não houve alteração expressiva nos percentuais em relação ao ano anterior.
-Entre os Conselhos Estaduais, observou-se uma oscilação entre 2010 e 2016 quanto aos percentuais de Conselhos que acompanhavam os processos de pactuação da CIB e CIT com regularidade. Em 2016 esse percentual foi de 63,0%, correspondendo a 11,1 pontos percentuais a menos que o ano anterior (Gráfico 141). Essa redução foi maior do que o aumento observado no percentual de Conselhos que acompanhavam os processos de pactuação da CIB e CIT sem regularidade e por isso foi observada em 2016 redução no percentual de Conselhos Estaduais que acompanhavam os processos de pactuação, com ou sem regularidade, de 96,3% em 2015 para 92,6% em 2016.
-Gráfico 141 - Percentual de Conselhos Estaduais e Municipais que acompanhavam os processos de pactuação da CIB e CIT – Brasil, 2010 a 2016
+**6.2.8 – Comissões Intergestores**
+A CIB e a CIT são espaços de negociação e pactuação de caráter permanente para discussão quanto aos aspectos operacionais da gestão do sistema descentralizado e participativo da assistência social que devem ser acompanhados pelos conselhos. Entretanto, foi possível observar que ao longo dos últimos anos tem caído a participação regular dos Conselhos Municipais junto a essas Instâncias. Em 2016, 15,7% dos Conselhos Municipais acompanhavam os processos de pactuação da CIB e CIT com regularidade (840) e 45,2% sem regularidade (2.422), totalizando 60,9% de Conselhos Municipais que informaram acompanhar os processos de pactuação (3.262). 
+Entre os Conselhos Estaduais, observou-se uma oscilação entre 2010 e 2016 quanto aos percentuais de conselhos que acompanhavam os processos de pactuação da CIB e CIT com regularidade. Em 2016 esse percentual foi de 63,0%, correspondendo a 11,1 pontos percentuais a menos que o ano anterior (Gráfico xx).
+**Gráfico xx - Percentual de Conselhos Estaduais e Municipais que acompanhavam os processos de pactuação da CIB e CIT – Brasil, 2010 a 2017**
+```{r}
+
+```
+
 Fonte: MDS, Censo SUAS.
 
-A Resolução nº 14/2014 do Conselho Nacional de Assistência Social (CNAS), de 15/05/2014, estabelece os parâmetros nacionais para a inscrição das entidades ou organizações de Assistência Social, bem como dos serviços, programas, projetos e benefícios socioassistenciais nos Conselhos de Assistência Social.
-Em 2016, 52,7% dos Conselhos Municipais (2.825 unidades) declararam ter regulamentado, por meio de resolução própria, a inscrição das entidades e organizações de assistência social, bem como dos serviços, programas, projetos e benefícios socioassistenciais. 
-Entre os Conselhos Estaduais, apenas 14,8% (4 unidades) declararam ter realizado a regulamentação: Rondônia, Acre, São Paulo e Distrito Federal.
-De 2011 a 2015 a questão feita aos Conselhos fazia referência à Resolução 16/2010, revogada após a publicação da Resolução nº 14/2014. Observou-se um aumento no percentual de Conselhos municipais que possuíam a regulamentação desde 2014, e uma redução na quantidade de Conselhos Estaduais de 2015 para 2016 (Gráfico 142).
-Gráfico 142: Percentual de Conselhos Estaduais e Municipais que possuíam regulamentação da Resolução nº 14/2014 da CNAS – Brasil, 2011 a 2016
-Fonte: MDS, Censo SUAS.
-
-Em 2016, mais de 50% dos Conselhos Estaduais e Municipais tinham regulamentado os Benefícios Eventuais por meio de resolução própria, como previsto na Resolução nº 39/2010 da CNAS, que dispõe sobre o processo de reordenamento dos Benefícios Eventuais. No período analisado, o percentual de conselhos municipais que regulamentaram por meio de resolução própria os benefícios eventuais cresceu mais de 10 pontos percentuais em comparação a 2012 (Gráfico 143).
-Gráfico 143: Percentual de Conselhos Municipais e Estaduais por regulamentação dos Benefícios Eventuais por resolução própria - Brasil, 2012 a 2016
-Fonte: MDS, Censo SUAS.
-
-Observa-se que todos os Conselhos Estaduais tinham Comissões Permanentes nos três anos analisados. Em relação aos Conselhos Municipais foi observado aumento nos percentuais ao longo dos três anos, passando de 23,7% em 2014 para 27,1% em 2016 (Gráfico 144).
-Gráfico 144 - Percentual de Conselhos Estaduais e Municipais por existência de comissões permanentes – Brasil, 2014 a 2016
-Fonte: MDS, Censo SUAS.
-
+**6.2.9 – Publicação de deliberações e resoluções**
 Em 2016, 92,6% dos Conselhos Estaduais publicaram todas as suas deliberações/resoluções em diário oficial. Apenas 3,7% (um estado) tinha a maioria das decisões publicadas e 3,7% a metade. 
-Mais de 40% dos Conselhos Municipais não publicaram suas deliberações em Diário Oficial, 12,7% publicaram a minoria das deliberações, enquanto 32,5% publicaram todas as decisões em Diário Oficial (Gráfico 145).
-Gráfico 145 - Publicação em Diário Oficial das deliberações/resoluções dos Conselhos Municipais e Estaduais - Brasil, 2016
-Fonte: MDS, Censo SUAS.
+Mais de 40% dos Conselhos Municipais não publicaram suas deliberações em Diário Oficial, 12,7% publicaram a minoria das deliberações, enquanto 32,5% publicaram todas as decisões em Diário Oficial (Gráfico xx).
+**Gráfico xx - Publicação em Diário Oficial das deliberações/resoluções dos Conselhos Municipais e Estaduais - Brasil, 2017**
+```{r}
 
-No que se refere às normatizações quanto aos conselheiros, conforme dispõe o Art. 16 da LOAS, os conselhos têm composição paritária entre governo e sociedade civil. A Resolução do CNAS nº 237/2006, em seu § 3º, art. 10, recomenda que “o número de conselheiros/as não seja inferior a 10 membros titulares”. Outra situação a ser considerada na composição dos Conselhos de Assistência Social é a proporcionalidade dos três segmentos que compõem a sociedade civil (usuários, trabalhadores e entidades de assistência social). Em 2016, verificou-se que, em média, o número de conselheiros representantes do governo e da sociedade civil seguia a paridade, tanto nos Conselhos Municipais quanto nos Conselhos Estaduais, mantendo a proporção de 50% para cada grupo. Em relação à normatização sobre titulares e suplentes também foi observada a proporcionalidade.
-Em 2016, da totalidade de conselheiros titulares e suplentes que compunha os Conselhos Municipais segundo as normatizações, 50,1% (47.875) eram conselheiros titulares e 49,9% (47.775) conselheiros suplentes. Da mesma forma, os Conselhos Municipais informaram haver, segundo as normatizações, 50,0% (35.934) de conselheiros representantes do governo e 50,0% (35.879) de representantes da sociedade civil.
-Nos Conselhos Estaduais havia o mesmo percentual de Conselheiros governamentais e da sociedade civil (50,0% ou 342 conselheiros) e 50,3% de conselheiros titulares (470) e 49,7% de suplentes (465).
-Em nenhum ano foi identificada oscilação expressiva nos percentuais apurados (Gráfico 146).
-Gráfico 146 - Normatização sobre a composição dos Conselhos Municipais e Estaduais - Brasil, 2014 a 2016
-Fonte: MDS, Censo SUAS.
+```
 
-O Presidente e Vice-presidente do conselho devem ser eleitos entre seus membros, em reunião plenária. A Resolução CNAS nº 237/200626, em seu Art. 10, recomenda ainda a alternância entre representantes do governo e da sociedade civil em cada mandato, sendo permitida uma única recondução. Nesse sentido, em 2016 a maior parte dos Conselhos Municipais declarou manter alternância entre os representantes do governo e os representantes da sociedade civil na presidência dos Conselhos Municipais. Os maiores percentuais foram observados na região Norte (89,6%) e os menores na região Sul (82,6%).
-Quando se observa a série histórica, verifica-se que os percentuais aumentaram entre 2014 e 2016 em todas as regiões, sendo o aumento mais acentuado na região Norte, de 4,8 pontos percentuais. Na região Centro-Oeste, embora tenha sido observado aumento nos percentuais entre 2014 (82,9%) e 2016 (84,4%), houve redução de 1,7 pontos percentuais entre 2015 e 2016 (Gráfico 147).
-Gráfico 147 - Percentual de Conselhos Municipais que têm alternância na presidência entre os representantes do governo e os representantes da sociedade civil, segundo grandes regiões – Brasil, 2014 e 2016
-Fonte: MDS, Censo SUAS.
-
-A maneira como os representantes da sociedade civil são escolhidos para o cargo de conselheiro pode ser através de eleição em assembleias instaladas especificamente para esse fim, podem ser indicados pelo poder público, ou mesmo, uma combinação dos dois. Em 2016, 66,4% dos Conselheiros representantes da Sociedade Civil foram eleitos em assembleias, 8,9% foram indicados pelo poder público e 24,6% uma combinação dos dois. Não houve alteração expressiva nos percentuais desde 2012, que variaram no máximo 1,5 pontos percentuais nos anos observados.
-Nos Conselhos Estaduais desde 2012 todos os representantes da Sociedade Civil foram eleitos em assembleias (Gráfico 148).
-Gráfico 148 - Eleição dos conselheiros da Sociedade Civil para os Conselhos Municipais - Brasil, 2012 a 2016
-Fonte: MDS, Censo SUAS.
-
-Como já mencionado os Conselhos de Assistência Social devem observar, além da paridade entre os conselheiros representantes de governo e sociedade civil, a proporcionalidade entre os três segmentos que compõem a sociedade civil (entidades de assistência social, usuários e trabalhadores).
-Em 2016 a proporcionalidade entre governo e sociedade civil em geral era observada tanto nos Conselhos Municipais quanto nos Estaduais (51,2% e 50,3% de representantes do governo, respectivamente), quando observado o número total de conselheiros. 
-Sobre a paridade, observa-se que a proporção de entidades era maior que as demais tanto nos Conselhos Municipais quanto nos Estaduais (21,5% e 20,8%, respectivamente). A representação dos trabalhadores era a menor tanto nos Conselhos Municipais, nos quais os trabalhadores eram 8,0% dos conselheiros, quanto nos Conselhos Estaduais, nos quais eram 13,7% dos conselheiros. 
-É importante ressaltar que o registro retrata o momento da resposta ao questionário do Censo SUAS, e que a composição dos Conselhos pode sofrer alterações ao longo do período, uma vez que frequentemente há mudança dos conselheiros (Gráfico 149).
-Gráfico 149 - Paridade e proporcionalidade na representação nos Conselhos Municipais e Estaduais - Brasil, 2016
-Fonte: MDS, Censo SUAS.
-
-Em 2016, 49,5% dos Conselhos Municipais informaram ter beneficiários do Programa Bolsa Família (PBF) como conselheiros representando o segmento de usuários ou organização de usuários. Apenas 8,7% dos Conselhos Municipais informaram ter conselheiros representantes de fóruns ou coletivos de usuários.
-O percentual de Conselhos Estaduais que informaram ter beneficiários do Programa Bolsa Família (PBF) como Conselheiros representando o segmento de usuários ou organização de usuários foi de 33,3%. Em 44,4% dos Conselhos Estaduais havia usuários de serviços da Proteção Social Básica (Gráfico 150).
-Gráfico 150 - Representantes de usuários e organização de usuários nos Conselhos Municipais e Estaduais - Brasil, 2016
-Fonte: MDS, Censo SUAS.
-
-Em 2016, 39,9% dos Conselhos Municipais informaram ter representantes de associação/fórum ou coletivo de trabalhadores como conselheiros representando o segmento de trabalhadores.
-Em 96,3% dos Conselhos Estaduais havia representantes de conselhos de classe representando o segmento de trabalhadores (Gráfico 151).
-Gráfico 151 - Representantes de trabalhadores nos Conselhos Municipais e Estaduais - Brasil, 2016
-Fonte: MDS, Censo SUAS.
-
-Ao se observar as características dos Conselheiros e Conselheiras de Assistência Social nos estados e municípios, tem-se uma predominância do sexo feminino, cujos percentuais giraram em torno de 70 a 78% em todos os anos observados, tanto nos Conselhos Municipais quanto nos Conselhos Estaduais (Gráfico 152).
-Gráfico 152 - Percentual de Conselheiros estaduais e municipais por sexo - Brasil, 2012 a 2016
-Fonte: MDS, Censo SUAS.
-
-Sobre a escolaridade dos Conselheiros de Assistência Social, verificou-se que em 2016 o percentual de conselheiros municipais com nível superior, especialização, mestrado ou doutorado era de 48,3%, enquanto entre os conselheiros estaduais esse número era de 84,4%. Ainda nesse ano, entre os Conselheiros Municipais, 14,3% tinham até o nível fundamental completo, o que inclui 6,2% sem escolaridade ou com nível fundamental incompleto, 5,5% de pessoas com nível fundamental completo e 2,6% com nível médio completo.  Entre os conselheiros estaduais havia 1,7% cuja escolaridade era de até o nível fundamental completo. Ao se observar a série histórica, percebe-se que não houve variação expressiva nos últimos anos na escolaridade dos Conselheiros municipais ou estaduais (Gráfico 153).
-Gráfico 153 - Percentual de Conselheiros estaduais e municipais segundo escolaridade - Brasil, 2014 a 2016
-Fonte: MDS, Censo SUAS.
-
-Além da participação nos Conselhos de Assistência Social, há outras modalidades de participação social no âmbito do SUAS. Em 2016, em 65,1% dos CRAS e em 73,5% dos Centros POP havia participação de usuários nas atividades de planejamento das Unidades. A participação ainda é majoritariamente informal, mas há formalização da participação dos usuários nas atividades de planejamento em 6,3% nos CRAS e 16,1% nos Centros POP (Gráfico 154).
-Gráfico 154 - Participação dos usuários nas atividades de planejamento nos CRAS e Centros POP - Brasil, 2016
 Fonte: MDS, Censo SUAS.
 
 Considerações Finais
 Este capítulo teve por objetivo demonstrar como vem se dando a participação da sociedade civil na assistência social por meio dos Conselhos Estaduais e Municipais de Assistência Social. A partir de suas atribuições como responsáveis pela normatização, disciplina, acompanhamento, avaliação e fiscalização da gestão e a execução dos serviços, programas, projetos e benefícios socioassistenciais, essas instâncias compartilhadas entre representantes da sociedade e do governo são fundamentais para consolidar o controle social.
-Os dados do Censo mostram que a institucionalização dos Conselhos vem gradativamente se estruturando. Em 2016, todos os Conselhos Estaduais tinham Secretaria Executiva e, os Conselhos Municipais, desde 2013 apresentaram um aumento de 8,4 pontos percentuais na instituição dessa Secretaria.
+Os dados do censo mostram que a institucionalização dos conselhos vem gradativamente se estruturando. Em 2016, todos os Conselhos Estaduais tinham Secretaria Executiva e, os Conselhos Municipais, desde 2013 apresentaram um aumento de 8,4 pontos percentuais na instituição dessa secretaria.
 Entretanto, o percentual de conselhos que fiscalizam serviços, programas, projetos e benefícios socioassistenciais segue como um desafio a ser superado. Em 2016, dentre os Conselhos Municipais, 53,6% fiscalizavam apenas a rede pública e 36,4% fiscalizavam ambas as redes, pública e privada. Por sua vez, entre os Conselhos Estaduais 25,9% fiscalizaram apenas a rede pública, enquanto 48,1% fiscalizaram ambas as redes. Quanto ao acompanhamento e fiscalização da execução do Programa Bolsa Família, até 2015 ocorreu uma queda considerável no percentual de Conselhos Estaduais, passando de 84,6% no ano de 2013, para 65,4% em 2014 e 63,0% em 2015; porém, em 2016, verifica-se um aumento relevante, alcançando 77,8%. Já em relação aos Conselhos Municipais, o percentual vem crescendo, assim, o resultado em 2016 foi que 87,7% fiscalizaram e acompanharam o Programa Bolsa Família.
 Analisando a distribuição do percentual da frequência de atividades realizadas pelos Conselhos Estaduais em 2016, percebe-se que 51,9% (14) deles nunca acompanharam votações/discussões do Poder Legislativo local, 44,4% (12) nunca realizaram reuniões descentralizadas, 40,7% (11) nunca realizaram ações de mobilização social, 29,6% (8) realizaram anualmente visitas nas unidades da rede Socioassistencial, 40,7% (11) realizavam anualmente reuniões ampliadas, enquanto 33,3% (9) recebiam denúncia anualmente.
-Capítulo 7 - Indicadores de Desenvolvimento
-A Vigilância Socioassistencial é elencada pela Lei Orgânica da Assistência Social (LOAS)27 como um dos objetivos da assistência social, tendo como função a análise territorial da capacidade protetiva das famílias, de forma a identificar vulnerabilidades, ameaças, vitimização e danos. A Norma Operacional Básica do SUAS (NOB/SUAS 2012)28 detalha as atividades da vigilância, que envolvem produção e análise de informações para apoiar o planejamento, monitoramento e aperfeiçoamento das políticas, programas, serviços e ações da assistência social. 
-Uma das proposições da vigilância socioassistencial para o acompanhamento e avaliação do desenvolvimento de equipamentos e Conselhos Municipais de Assistência Social (CMAS) são os Indicadores de Desenvolvimento (IDs). Eles buscam, por meio da análise de diversos critérios, agrupados em diferentes dimensões, promover o aprimoramento das ações a partir de seu monitoramento, que pode gerar informações importantes para aperfeiçoamento das atividades realizadas e dos serviços ofertados.
-Esta seção apresenta os resultados dos IDs para CRAS, CREAS e Conselhos Municipais. Os valores dos IDs variam do nível 1 ao nível 5, sendo o nível 1 o que representa as situações mais distantes dos padrões desejáveis e o nível 5 aquele que representa as situações que mais se aproximam desses padrões.
-Para o cálculo dos Indicadores são utilizados dados do Censo SUAS e também do Registro Mensal de Atendimentos – RMA. A metodologia de cálculo dos indicadores apresentados nesta seção pode ser consultada em maior detalhe nos documentos: Nota Técnica "Metodologia de cálculo relativa aos novos indicadores de desenvolvimento das unidades CRAS e CREAS – IDCRAS e IDCREAS referentes ao ano de 2014”29 e Nota Técnica "Metodologia de cálculo do Indicador de Desenvolvimento dos Conselhos Municipais de Assistência Social – IDConselho"30
-O IDCRAS é composto por três dimensões: Estrutura Física, Recursos Humanos e Serviços e Benefícios. Cada dimensão é avaliada a partir de cinco níveis, considerando o número de famílias referenciadas ou o porte do município. Na dimensão Estrutura Física são avaliados elementos como a existência de salas de atendimento individualizado e coletivo, de condições de acessibilidade, de recepção e banheiros e de um determinado conjunto de equipamentos (computadores, veículo exclusivo ou compartilhado, impressora, entre outros).
-No ano de 2016, na dimensão estrutura física, verificou-se que 28,7% dos 8.240 CRAS atingiram o nível 5, que representa a situação que mais se aproxima dos padrões de qualidade desejáveis, enquanto 7,0% estavam no Nível 1, com a situação que menos se aproxima dos padrões de qualidade desejáveis.
-Quando se observa a dimensão por região, verifica-se que a região Centro-Oeste possuía em 2016 o maior percentual de CRAS com nível 5: 45,4% dos CRAS localizados na região. A região com menor proporção de CRAS com nível 1 era a Nordeste, com 5,7% dos CRAS com essa classificação (Gráfico 155).
-Gráfico 155 - Distribuição dos Centros de Referência de Assistência Social (CRAS) segundo níveis do Indicador de Desenvolvimento na dimensão Estrutura Física, por grandes regiões - Brasil, 2016
-Fonte: MDS, Censo SUAS e RMA.
+Informações mais detalhadas sobre estrutura física, previsão orçamentária,  composição, normatização e atividades realizadas pelo Conselhos Municipais e Estaduais de Assistência Social, além de outros dados sobre regulamentação de benefícios eventuais e inscrição das entidades e organizações de assistência social, serviços, programas, projetos e benefícios socioassistenciais poderão ser consultadas na versão eletrônica do CensoSUAS 2016 disponível em https://aplicacoes.mds.gov.br/sagi/portal/index.php?grupo=105.
 
-A dimensão Recursos humanos do IDCRAS busca verificar se o quantitativo da equipe de referência é adequado ao porte da unidade, utilizando como parâmetro a Norma Operacional Básica – Recursos Humanos (NOB-RH). Esta dimensão considera o número total de profissionais, avaliando o número de assistentes sociais e psicólogos, o tipo de vínculo dos servidores, a escolaridade dos servidores, a existência de equipes volantes e a existência de coordenador de nível superior.
-No ano de 2016, na dimensão recursos humanos, verificou-se que 41,6% dos 8.240 CRAS atingiram o nível 5, com a situação que mais se aproxima dos padrões de qualidade desejáveis, enquanto 5,6% estavam no Nível 1, com a situação que menos se aproxima dos padrões de qualidade desejáveis.
-Ao observar a dimensão por região, verificou-se que a região Sul possuía o maior percentual de CRAS com nível 5: 49,6% dos CRAS localizados na região. A região com menor proporção de CRAS com nível 1 era a Nordeste, com 4,8% dos CRAS com essa classificação. Em todas as regiões do país mais da metade dos CRAS tinham nível 4 ou 5 na dimensão, sendo a menor proporção na região Norte (55,3%) e a maior na região Nordeste (65,8%) (Gráfico 156).
-Gráfico 156 - Distribuição dos Centros de Referência de Assistência Social (CRAS) segundo níveis do Indicador de Desenvolvimento na dimensão Recursos Humanos, por grandes regiões - Brasil, 2016
-Fonte: MDS, Censo SUAS e RMA.
 
-A dimensão de Serviços e Benefícios do IDCRAS avalia a quantidade média de famílias em acompanhamento no mês, dividida pela equipe técnica; se a unidade executa o PAIF, com avaliação das atividades realizadas no âmbito do serviço; se a unidade oferta o serviço de convivência e para quantos ciclos de vida; se realiza cadastramento e atualização do Cadastro Único sem utilizar profissionais de nível superior do PAIF; se possui profissionais de serviços social e psicólogos; o tempo semanal de funcionamento da unidade; e ainda se há articulação da unidade com serviços de educação e saúde.
-No ano de 2016, na dimensão Serviços e Benefícios, verificou-se que 17,4% dos 8.240 CRAS atingiram o nível 5, com a situação que mais se aproxima dos padrões de qualidade desejáveis, enquanto 13,6% estavam no Nível 1, com a situação que menos se aproxima dos padrões de qualidade desejáveis.
-Ao se observar a dimensão por região, verificou-se que a região Centro-Oeste possuía o maior percentual de CRAS com nível 5: 23,2% dos CRAS localizados na região. A região com menor proporção de CRAS com nível 1 era a Nordeste, com 12,4% dos CRAS com essa classificação (Gráfico 157).
-Gráfico 157: Distribuição percentual dos Centros de Referência de Assistência Social (CRAS) segundo níveis do Indicador de Desenvolvimento na dimensão Serviços e Benefícios, por grandes regiões - Brasil, 2016.
-Fonte: MDS, Censo SUAS e RMA.
-
-O IDCRAS é um indicador sintético obtido por meio de média aritmética simples dos resultados das dimensões que o compõem, isto é, somando os níveis atingidos em cada uma das dimensões, dividindo o resultado por 3.
-Entre 2014 e 2016, foi observada redução na quantidade e na proporção de unidades com IDCRAS igual a 1,00: eram 37 em 2014 (0,5% do total) e passaram a 20 em 2016 (0,2% do total). No mesmo período, foi observado aumento na quantidade de unidades com IDCRAS igual a 5,00: eram 178 em 2014 (2,2% das unidades) e passaram a ser 293 unidades em 2016 (3,6% do total). Em todos os anos, mais da metade das unidades tinham IDCRAS entre 3,00 e 4,00: em 2014 eram 4.639 unidades (57,4% do total), em 2015 eram 4.728 unidades (58,0%) e em 2016 eram 4.658 unidades (56,5%).
-Houve aumento na quantidade e na proporção de CRAS com IDCRAS igual ou superior a 4,00: eram 2.208 unidades em 2014, o que correspondia a 27,3% do total e 2.694 unidades em 2016, ou 32,7% do total (Gráfico 158).
-Gráfico 158: Número de Centros de Referência de Assistência Social (CRAS) segundo valores do IDCRAS - Brasil, 2014 a 2016
-Fonte: MDS, Censo SUAS e RMA.
-
-Em 2016, 3,6% dos CRAS tinham IDCRAS 5,00, enquanto 3,3% das unidades tinham IDCRAS entre 1,00 e 1,67. A maior parte das unidades tinham IDCRAS entre 3,00 e 4,00 (42,6%). 32,7% das unidades (2.694) possuíam IDCRAS 4,00 ou acima de 4,00, o que indica bom grau de desenvolvimento. 0,2% das unidades tinham IDCRAS igual a 1,00.
-Ao se observar o IDCRAS por região, verificou-se que a região Centro-Oeste possuía o maior percentual de unidades com IDCRAS igual a 5,00: 6,2% dos CRAS localizados na região. A região com menor proporção de unidades com IDCRAS de 1,00 a 1,67 era a Nordeste, com 2,9% dos CRAS com essa classificação.
-As regiões com maior proporção de unidades com IDCRAS igual ou superior a 4,00 eram Sul e Centro-Oeste (37,1% do total de CRAS de cada região). A menor proporção foi observada na região Norte: 24,3% das unidades da região (Gráfico 159).
-Gráfico 159: Distribuição dos Centros de Referência de Assistência Social (CRAS) segundo valores do IDCRAS, por grandes regiões - Brasil, 2016
-Fonte: MDS, Censo SUAS e RMA.
-
-Em 2016, ao se observar o IDCRAS segundo porte do município, verificou-se que 39,0% das unidades localizadas em municípios de Pequeno Porte I tinham IDCRAS igual ou superior a 4,00. Entre as unidades localizadas em metrópoles esse percentual era de 33,3%. Nos CRAS localizados em municípios de médio porte o percentual era 22,1%.
-18,4% das unidades localizadas em municípios de Pequeno Porte I tinham IDCRAS igual ou inferior a 2,67, assim como 17,5% dos CRAS localizados em metrópoles. 35,8% dos CRAS localizados em municípios de médio porte tinham IDCRAS igual ou inferior a 2,67. 
-Em 2016 não foram registradas unidades localizadas em metrópoles com IDCRAS igual a 1,00. Foram computados ainda 293 CRAS com IDCRAS igual a 5,00: 4,6% dos CRAS localizados em municípios de Pequeno Porte I tinham essa classificação (184 unidades), assim como 2,9% das unidades localizadas em municípios de pequeno porte II (42 unidades), 2,3% dos CRAS localizadas em municípios médios (18 unidades), 2,8% dos CRAS localizados em municípios de grande porte (44 unidades) e 1,2% dos CRAS localizados em metrópoles (5 unidades) (Gráfico 160).
-Gráfico 160: Distribuição dos Centros de Referência de Assistência Social (CRAS) segundo valores do IDCRAS, por porte do município - Brasil, 2016
-Fonte: MDS, Censo SUAS e RMA.
-
-O IDCREAS é composto por três dimensões: Estrutura Física, Recursos Humanos e Serviços. Cada dimensão é avaliada em cinco níveis, considerando o porte do município e se o CREAS é municipal ou regional.                                                                          A dimensão Estrutura Física é medida a partir da avaliação da quantidade de salas para atendimento e de sua capacidade, quantidade de banheiros, existência de recepção e sala administrativa, condições de acessibilidade e a existência de equipamentos, como telefones, impressoras, computadores com acesso a internet e veículo próprio ou compartilhado.
-Na dimensão estrutura física, verificou-se que 11,6% dos 2.519 CREAS estavam no nível 5, com a situação que mais se aproxima dos padrões de qualidade desejáveis, enquanto 7,5% estavam no Nível 1, com a situação que menos se aproxima dos padrões de qualidade desejáveis.
-Quando se observa a dimensão por região, verificou-se que a região Centro-Oeste possuía o maior percentual de CREAS com nível 5 para a dimensão: 17,6% dos CRAS localizados na região. A região com menor proporção de CREAS com nível 1 era a Nordeste, com 5,8% dos CREAS com essa classificação. Na região Sul, 48,0% dos CREAS tinham nível 4 ou 5 na dimensão, o maior percentual dentre as regiões. Na região Norte, 33,9% dos CREAS tinham nível 4 ou 5 (Gráfico 161).
-Gráfico 161: Distribuição dos Centros de Referência Especializados de Assistência Social (CREAS) segundo níveis do Indicador de Desenvolvimento na dimensão Estrutura Física, por grandes regiões - Brasil, 2016
-Fonte: MDS, Censo SUAS e RMA.
-
-A dimensão Recursos humanos do IDCREAS avalia o dimensionamento das equipes de referência a partir das definições constantes na NOB-RH, considerando o porte do município e o tipo de CREAS (se municipal ou regional). Assim, são avaliados o total de trabalhadores, considerando o nível de escolaridade, a existência de assistentes sociais, psicólogos e advogados na equipe, a existência de coordenador com nível superior e o tipo de vínculo dos trabalhadores.
-Na dimensão recursos humanos, verificou-se que 20,7% dos 2.519 CREAS estavam no nível 5, com a situação que mais se aproxima dos padrões de qualidade desejáveis, enquanto 11,7% estavam no Nível 1, com a situação que menos se aproxima dos padrões de qualidade desejáveis.
-Quando se observa a dimensão por região, verificou-se que a região Sudeste possuía o maior percentual de CREAS com nível 5 para a dimensão: 26,6% dos CREAS localizados na região. A região com menor proporção de CREAS com nível 1 era também a Sudeste, com 7,7% dos CREAS com essa classificação. As regiões Nordeste e Sudeste tinham os maiores percentuais de CREAS com nível 4 ou 5 para a dimensão, 48,1% e 47,3%, respectivamente. Na região Norte esse percentual era de 26,9% (Gráfico 162).
-Gráfico 162: Distribuição dos Centros de Referência Especializados de Assistência Social (CREAS) segundo níveis do Indicador de Desenvolvimento na dimensão Recursos Humanos, por grandes regiões - Brasil, 2016
-Fonte: MDS, Censo SUAS e RMA.
-
-Na dimensão Serviços do IDCREAS são analisadas, considerando o porte dos municípios, as ofertas do PAEFI e as atividade desenvolvidas no âmbito do serviço; a quantidade média de casos em acompanhamento no mês; a oferta do serviço de Medidas socioeducativas (MSE) e as atividades realizadas; a existência de serviço de abordagem social; a articulação da unidades com CRAS e com Conselho Tutelar; a oferta de atendimento para variadas situações e para diferentes ciclos de vida; a existência de assistente social e psicólogo na equipe; e a quantidade de tempo de funcionamento da unidade durante a semana.
-Na dimensão Serviços, verificou-se que 13,1% dos 2.519 CREAS estavam no nível 5, com a situação que mais se aproxima dos padrões de qualidade desejáveis, enquanto 9,5% estavam no Nível 1, com a situação que menos se aproxima dos padrões de qualidade desejáveis.
-Quando se observa a dimensão por região, verificou-se que a região Nordeste possuía o maior percentual de CREAS com nível 5 para a dimensão:16,2% dos CREAS localizados na região. A região com menor proporção de CREAS com nível 1 era também a Nordeste, com 8,8% dos CREAS com essa classificação. A região com menor proporção de CREAS com nível 4 ou 5 era a Centro-Oeste (30,6% dos CREAS da região) (Gráfico 163).
-Gráfico 163: Distribuição dos Centros de Referência Especializados de Assistência Social (CREAS) segundo níveis do Indicador de Desenvolvimento na dimensão Serviços, por grandes regiões - Brasil, 2016
-Fonte: MDS, Censo SUAS e RMA.
-
-O indicador sintético final IDCREAS é obtido por meio de média aritmética simples dos resultados das dimensões que o compõem.
-Desde 2014, a maioria das unidades tinha IDCREAS inferior a 4,00: 1.956 unidades em 2014 (82,5% do total), 1.972 unidades em 2015 (81,0%) e 2.021 em 2016 (80,2% do total). 
-Apenas 30 unidades tinham IDCREAS igual a 5,00 em 2016 (1,2% do total), mas houve um aumento em relação a 2014, quando 21 unidades tinham IDCREAS igual a 5,00 (0,9% do total de CREAS) (Gráfico 164). Em 2016, 0,4% das unidades tinham IDCREAS igual a 1,00, um aumento de 0,1 pontos percentuais em relação a 2014.
-Gráfico 164: Número de Centros de Referência Especializados de Assistência Social (CREAS) segundo valores do IDCREAS - Brasil, 2014 a 2016
-Fonte: MDS, Censo SUAS e RMA.
-
-Em 2016, 1,2% dos CREAS tinham IDCREAS igual a 5, enquanto 5,8% das unidades tinham IDCREAS entre 1,00 e 1,67. A maior parte das unidades tinha IDCREAS entre 3,00 e 3,67 (43,8%). 19,8% das unidades (498) possuíam IDCREAS 4,00 ou acima, o que indica bom grau de desenvolvimento. 80,2% das unidades tinham IDCREAS de 1,00 a 3,67.
-Ao se observar o IDCREAS por região, verificou-se que as regiões Sudeste e Sul possuíam os maiores percentuais de unidades com IDCREAS 5: 1,8% dos CREAS localizados nas duas regiões. A região com menor proporção de unidades com IDCREAS de 1 a 1,67 era a Sudeste, com 4,5% dos CREAS com essa classificação. A região Nordeste tinha o maior percentual de unidades com IDCREAS igual ou acima de 4,00 (22,3% das unidades da região) e a região Norte tinha a menor proporção (10,1% dos CREAS da região) (Gráfico 165).
-Gráfico 165: Distribuição dos Centros de Referência Especializados de Assistência Social (CREAS) segundo valores do IDCREAS, por grandes regiões - Brasil, 2016
-Fonte: MDS, Censo SUAS e RMA.
-
-Em 2016, verificou-se que não existiam CREAS localizados em metrópoles com IDCREAS igual ou menor que 1,33. Verificou-se ainda que 48,9% das unidades localizadas em municípios de Pequeno Porte I tinham IDCREAS igual ou inferior a 2,67, assim como 34,3% dos CREAS localizados em municípios de Pequeno Porte II e 33,8% dos CREAS localizados em municípios de Grande Porte.
-25,7% dos CREAS localizados em municípios de Médio Porte tinham IDCREAS igual ou superior a 4,00, assim como 24,2% dos CREAS localizados em municípios de pequeno porte II e 18,8% dos CREAS localizados em municípios de Grande Porte. 15,8% dos CREAS localizados em Metrópoles e 12,0% dos CREAS de municípios de Pequeno Porte I tinham IDCREAS igual ou superior a 4,00 (Gráfico 166).
-Gráfico 166: Distribuição dos Centros de Referência Especializados de Assistência Social (CREAS) segundo valores do IDCREAS, por porte do município - Brasil, 2016
-Fonte: MDS, Censo SUAS e RMA.
-
-O IDConselhos é composto por três dimensões: Estrutura Administrativa, Dinâmica de Funcionamento e Composição do Conselho. Cada dimensão é avaliada em cinco níveis, considerando o porte do município.
-A dimensão Estrutura Administrativa avalia a existência de sala, de Secretaria Executiva, a previsão de recursos específica para Conselhos na Lei Orçamentária Anual, se o Conselho utiliza para as despesas de seu funcionamento o mínimo de 3% do IGD, e ainda, a existência na unidade de um determinado conjunto de equipamentos (computadores conectados à internet, veículo exclusivo ou compartilhado e telefone).
-Em 2016, na dimensão Estrutura Administrativa, verificou-se que 6,3% dos 5.359 Conselhos Municipais de Assistência Social (CMAS) atingiram o nível 5, que representa a situação que mais se aproxima dos padrões de qualidade desejáveis, enquanto 13,0% estavam no Nível 1, que representa as situações mais distantes do padrão almejado.
-Ao se observar a dimensão por região, verificou-se que a região Nordeste possuía o maior percentual de CMAS com nível 5 para a dimensão: 8,9% dos CMAS localizados na região. As regiões com menor proporção de CMAS com nível 1 eram a Nordeste e a Norte, com 8,1% dos CMAS com essa classificação.
-47,0% dos CMAS da região Centro-Oeste atingiram nível 4 ou 5 na dimensão, o melhor resultado entre as regiões. Na região Sul, 19,0% dos CMAS tinham nível 4 ou 5 (Gráfico 167).
-Gráfico 167: Distribuição dos Conselhos Municipais de Assistência Social (CMAS) segundo níveis do Indicador de Desenvolvimento na dimensão Estrutura Administrativa, por grandes regiões - Brasil, 2016
-Fonte: MDS, Censo SUAS e RMA.
-
-A dimensão Dinâmica de Funcionamento do IDConselhos avalia a realização de reuniões de plenária no ano anterior (ordinárias e extraordinárias), a existência de regimento interno, deliberações sobre o orçamento do executivo e sobre o Plano de Assistência Social, a fiscalização de serviços, programas e projetos da rede pública e privada, se o CMAS é Instância de Controle Social do Bolsa Família, se acompanha cumprimento de deliberações da Conferência Municipal e se realiza reuniões/ações de mobilização ou descentralizadas ou ampliadas.
-Na dimensão Dinâmica de Funcionamento, verificou-se que 16,3% dos 5.359 Conselhos Municipais de Assistência Social (CMAS) atingiram o nível 5, que representa a situação que mais se aproxima dos padrões de qualidade desejáveis, enquanto 20,5% estavam no Nível 1, que representa as situações mais distantes do padrão almejado.
-Ao se observar a dimensão por região, verificou-se que a região Sudeste possuía o maior percentual de CMAS com nível 5 para a dimensão: 18,2% dos CMAS localizados na região. A região com menor proporção de CMAS com nível 1 era a Sul, com 13,5% dos CMAS com essa classificação. A maior proporção de Conselhos Municipais com nível 4 e 5 na dimensão foi verificada na região Nordeste: 38,5% dos CMAS da região (Gráfico 168).
-Gráfico 168: Distribuição dos Conselhos Municipais de Assistência Social (CMAS) segundo níveis do Indicador de Desenvolvimento na dimensão Dinâmica de Funcionamento, por grandes regiões - Brasil, 2016
-Fonte: MDS, Censo SUAS e RMA.
-
-A dimensão Composição do Conselho do IDConselhos avalia a existência de um número mínimo de conselheiros conforme porte do município, a existência de representantes da sociedade civil eleitos por assembleias constituídas para esse fim, a presença de conselheiros representantes de usuários ou representantes de organização de usuários, a presença de conselheiros representantes de trabalhadores do setor, a alternância na presidência entre os representantes de governo e os representantes da sociedade civil, a eleição em plenária de Presidente e Vice, a recondução de Conselheiros e a observância da representação governamental da área de assistência, saúde e educação.
-Na dimensão Composição do Conselho, verificou-se que 16,4% dos 5.359 Conselhos Municipais de Assistência Social (CMAS) atingiram o nível 5, que representa a situação que mais se aproxima dos padrões de qualidade desejáveis, enquanto 42,7% estavam no Nível 1, que representa as situações mais distantes do padrão almejado.
-Ao se observar a dimensão por região, verificou-se que a região Sul possuía o maior percentual de CMAS com nível 5 para a dimensão: 19,7% dos CMAS localizados na região. As regiões com menor proporção de CMAS com nível 1 eram a Sul e a Centro-Oeste, com 39,0% dos CMAS com essa classificação. Na região Nordeste, pouco menos da metade dos CMAS (46,3% dos Conselhos Municipais da região) tinham nível 1 na dimensão de Composição dos Conselhos. Em todas as regiões mais de 60,0% dos CMAS tinham nível 1 ou 2 na dimensão (Gráfico 169).
-Gráfico 169: Distribuição dos Conselhos Municipais de Assistência Social (CMAS) segundo níveis do Indicador de Desenvolvimento na dimensão Composição do Conselho, por grandes regiões - Brasil, 2016
-Fonte: MDS, Censo SUAS e RMA.
-
-O indicador sintético final IDConselho é obtido por meio de média aritmética simples dos resultados de cada uma das três dimensões que o compõem.
-Entre 2014 e 2016 houve redução na quantidade e na proporção de Conselhos Municipais com IDConselhos igual a 1,00: passaram de 159 (3,0% do total) para 134 (2,5% do total). Também foi observada redução na quantidade e na proporção de Conselhos Municipais com IDConselhos igual a 5,00: passaram de 46 (0,9% do total) para 36 (0,7% do total).
-Em todos os anos mais da metade das unidades tinham IDConselhos entre 1,00 e 2,67: eram 3.077 unidades em 2014 (57,3%), 3.081 em 2015 (57,3%) e 3.080 em 2016 (57,5%). No mesmo período, aproximadamente um terço das unidades tinha IDConselhos entre 3,00 e 3,67: eram 1.717 unidades em 2014 (32,0% do total), 1.660 em 2015 (30,9%) e 1.719 em 2016 (32,1%).
-Em 2016, 560 CMAS (10,4% do total) tinham IDConselhos igual ou superior a 4,00. Em 2014 eram 572 unidades com essa classificação, o que representava 10,7% do total de conselhos municipais (Gráfico 170).
-Gráfico 170: Número de Conselhos Municipais de Assistência Social (CMAS) segundo valores do IDConselhos - Brasil, 2014 a 2016
-Fonte: MDS, Censo SUAS e RMA.
-
-Em 2016, 0,7% dos CMAS tinham IDConselho igual a 5,00, enquanto 17,8% das unidades tinham IDConselho entre 1,00 e 1,67. A maior parte das unidades tinha IDConselho entre 2,00 e 2,67 (39,7%). 10,4% das unidades (560) possuíam IDConselho 4,00 ou acima, o que indica bom grau de desenvolvimento. 89,6% das unidades tinham IDConselho de 1,00 a 3,67.
-Ao se observar o IDConselho por região, verificou-se que as regiões Nordeste e Sudeste possuíam os maiores percentuais de unidades com IDConselho igual a 5,00: 0,9 e 0,6% dos CMAS localizados nas duas regiões, respectivamente. A região com menor proporção de unidades com IDConselho de 1 a 1,67 era a Norte, com 13,7% dos CMAS com essa classificação. A região Norte não tinha nenhum Conselho com IDConselho igual a 5,00. Em todas as regiões mais de 50% dos CMAS tinham IDConselhos igual ou inferior a 2,67 (Gráfico 171).
-Gráfico 171: Distribuição dos Conselhos Municipais de Assistência Social (CMAS) segundo valores do IDConselhos, por grandes regiões. Brasil - 2016
-Fonte: MDS, Censo SUAS e RMA.
-
-Em 2016, 62,5% dos Conselhos Municipais de Assistência Social localizados em Metrópoles tinham IDConselhos igual ou superior a 4,00. (10 CMAS do total de 16). Dos 3.744 CMAS localizados em municípios de Pequeno Porte I, 8,1% tinham IDConselhos igual ou superior a 4,00. 27,7% dos CMAS localizados em municípios de Grande Porte, 18,1% dos CMAS localizados em municípios de Médio Porte e 11,4% dos CMAS localizados em municípios de Pequeno Porte II tinham IDConselhos igual ou superior a 4,00, valores que indicam bom grau de desenvolvimento.
-Ao se observar as unidades que tiveram IDConselhos igual ou menor que 2,67 em 2016, verificou-se que 62,4% dos CMAS localizados em municípios de Pequeno Porte I tiveram essa classificação, assim como 53,8% dos CMAS de municípios de Pequeno Porte II e 40,2% dos CMAS de municípios de Médio Porte.
-Nenhum CMAS de Metrópole teve IDConselho Igual ou inferior a 2,33, e apenas um teve IDConselho inferior a 3,33 (Gráfico 172).
-Gráfico 172: Distribuição dos Conselhos Municipais de Assistência Social (CMAS) segundo valores do IDConselhos, por porte do município - Brasil, 2016
-Fonte: MDS, Censo SUAS e RMA.
 Referências Bibliográficas:
 ______________ (2012) Norma Operacional Básica, NOB-SUAS. Brasília, DF: MDS.
 ______________ (2012) NOB-RH Anotada e Comentada – Brasília, DF: MDS; Secretaria Nacional de Assistência Social, 2011. 144 p.; 23.
