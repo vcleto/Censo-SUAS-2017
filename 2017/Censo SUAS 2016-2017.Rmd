@@ -418,10 +418,6 @@ Em 2016, 19,2% dos Estados tinham Secretaria estadual exclusiva da área de Assi
 
 **Gráfico 1: Percentual de estados segundo característica da Secretaria estadual de Assistência Social - Brasil, 2017**
 
-<<<<<<< HEAD
-```{r, warning=FALSE}
-ge_2017 %>% 
-=======
 ```{r, message=FALSE, warning=FALSE}
 
 nao0_sim1 = function(df, q){
@@ -432,7 +428,6 @@ nao0_sim1 = function(df, q){
 }
 
 grafico <- ge_2017 %>% 
->>>>>>> ca44379db9879a642b81c895ea65d22622edcedf
   select(q1,q2_1,q2_2,q2_3,q2_4,q2_5,q2_6,q2_7,q2_99) %>% 
   filter(!is.na(q1)) %>% 
   nao0_sim1(q2_1) %>% 
@@ -479,9 +474,6 @@ grafico %>%
 
 Fonte: MDS, Censo SUAS. 
 
-<<<<<<< HEAD
-*TEXTO A SER ATUALIZADO:* Em 2016, 78,5% das 5.481 Secretarias Municipais eram exclusivas da Assistência Social. Houve redução de 0,8 pontos percentuais em relação ao ano anterior.
-=======
 Alguns órgãos gestores estaduais constituíram as áreas de assistência social como subdivisões administrativas em sua estrutura, como superintendências, departamentos, gerências, coordenações, dentre outras.
 
 Em 65,4% dos estados, as subdivisões administrativas das áreas de Proteção Social Básica, Proteção Social Especial e Gestão do SUAS estavam constituídas formalmente.
@@ -524,7 +516,6 @@ tabela<-ge_2017 %>%
   summarise(n=n()) %>% 
   group_by(Categoria) %>% 
   mutate(Percentual = n/sum(n), Posição = (cumsum(n/sum(n)) - 0.5 * n/sum(n)))
->>>>>>> ca44379db9879a642b81c895ea65d22622edcedf
 
 ordenado<-tabela %>% 
   filter(Nível == "Constituída formalmente") %>% 
