@@ -462,10 +462,7 @@ grafico <- ge_2017 %>%
   coord_polar(theta = "y", direction = -1) +
   theme_void() +
   theme(legend.title = element_blank(),
-        legend.key = element_rect(size = 5),
-        legend.key.size = unit(1.5, 'lines'),
-        plot.background = element_rect(colour = "black"),
-        plot.margin = unit(c(1, 1, 1, 1), "cm")) #top, right, bottom, left
+        legend.key.size = unit(2, 'lines'))
 
 grafico
 grafico %>% 
@@ -508,7 +505,7 @@ tabela<-ge_2017 %>%
          "Gestão de Benefícios Assistenciais (BPC, Benefícios Eventuais)"=q3_9) %>% 
 #-------------------
   gather("Categoria","Nível") %>% 
-  mutate(Categoria=str_wrap(Categoria,width=34)) %>% 
+  mutate(Categoria=str_wrap(Categoria,width=39)) %>% 
   mutate(Nível = case_when(Nível=="Sim, na estrutura formal do órgão gestor"~"Constituída formalmente",
                            Nível=="Sim, de maneira informal"~"Constituída informalmente",
                            TRUE ~ Nível)) %>% 
@@ -527,6 +524,7 @@ ordenado<-factor(ordenado, levels = ordenado$Categoria)
 grafico<-tabela %>% 
   ungroup() %>% 
   mutate(Categoria = factor(Categoria, levels = levels(ordenado))) %>% 
+  mutate(Nível=str_wrap(Nível,width=22)) %>% 
   ggplot(aes(x = Categoria, y = Percentual)) +
   geom_col(aes(fill = Nível), position = position_stack(reverse = TRUE)) +
   geom_text(aes(y=Posição, label = percent(Percentual))) +
@@ -538,8 +536,7 @@ grafico<-tabela %>%
         axis.ticks = element_blank(),
         axis.text.x = element_blank(),
         axis.line.y = element_line(),
-        panel.background = element_blank(),
-        plot.background = element_rect(colour = "black"))
+        panel.background = element_blank())
 
 grafico
 grafico %>% 
@@ -615,8 +612,7 @@ grafico<-tabela %>%
         axis.ticks = element_blank(),
         axis.text.x = element_blank(),
         axis.line.y = element_line(),
-        panel.background = element_blank(),
-        plot.background = element_rect(colour = "black"))+
+        panel.background = element_blank()) +
   guides(fill=guide_legend(nrow=1, byrow=TRUE, reverse=TRUE))
 
 grafico
@@ -682,8 +678,7 @@ grafico <- ge_cofinanciamento_2013 %>%
         axis.ticks = element_blank(),
         axis.text.y = element_blank(),
         axis.line.x = element_line(),
-        panel.background = element_blank(),
-        plot.background = element_rect(colour = "black"))+
+        panel.background = element_blank()) +
   guides(fill=guide_legend(nrow=1,byrow=TRUE))
 
 grafico
@@ -807,8 +802,7 @@ grafico<-tabela %>%
         axis.ticks = element_blank(),
         axis.text.x = element_blank(),
         axis.line.y = element_line(),
-        panel.background = element_blank(),
-        plot.background = element_rect(colour = "black"))+
+        panel.background = element_blank()) +
   guides(fill=guide_legend(nrow=1, byrow=TRUE, reverse=TRUE))
 
 grafico
@@ -943,7 +937,7 @@ grafico<-tabela %>%
   mutate(Ano = factor(Ano, levels = rev(levels(ordenado2)))) %>% 
   ggplot(aes(x = Categoria, y = Percentual, group = Ano)) +
   geom_col(aes(fill = Ano), position = "dodge") +
-  geom_text(aes(label = percent(Percentual), y=Percentual+0.06), position = position_dodge(width = 0.9), size=3) +
+  geom_text(aes(label = percent(Percentual), y=Percentual+0.07), position = position_dodge(width = 0.9), size=3) +
   scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
   coord_flip() +
   theme(legend.position="bottom",
@@ -952,8 +946,7 @@ grafico<-tabela %>%
         axis.ticks = element_blank(),
         axis.text.x = element_blank(),
         axis.line.y = element_line(),
-        panel.background = element_blank(),
-        plot.background = element_rect(colour = "black"))+
+        panel.background = element_blank()) +
   guides(fill=guide_legend(nrow=1, byrow=TRUE, reverse=TRUE))
 
 grafico
@@ -1030,8 +1023,7 @@ grafico <- gm_secretaria_exclusiva_2010 %>%
         axis.ticks = element_blank(),
         axis.text.y = element_blank(),
         axis.line.x = element_line(),
-        panel.background = element_blank(),
-        plot.background = element_rect(colour = "black")) +
+        panel.background = element_blank()) +
   guides(fill=guide_legend(nrow=1,byrow=TRUE))
 
 grafico
@@ -1089,6 +1081,7 @@ ordenado<-factor(ordenado, levels = ordenado$Categoria)
 grafico<-tabela %>% 
   ungroup() %>% 
   mutate(Categoria = factor(Categoria, levels = levels(ordenado))) %>% 
+  mutate(Nível=str_wrap(Nível,width=22)) %>% 
   ggplot(aes(x = Categoria, y = Percentual)) +
   geom_col(aes(fill = Nível), position = position_stack(reverse = TRUE)) +
   geom_text(aes(y=Posição, label = percent(Percentual))) +
@@ -1100,8 +1093,7 @@ grafico<-tabela %>%
         axis.ticks = element_blank(),
         axis.text.x = element_blank(),
         axis.line.y = element_line(),
-        panel.background = element_blank(),
-        plot.background = element_rect(colour = "black"))
+        panel.background = element_blank())
 
 grafico
 grafico %>% 
@@ -1178,8 +1170,7 @@ grafico <- gm_2017 %>%
         axis.ticks = element_blank(),
         axis.text.y = element_blank(),
         axis.line.x = element_line(),
-        panel.background = element_blank(),
-        plot.background = element_rect(colour = "black")) +
+        panel.background = element_blank()) +
   guides(fill=guide_legend(nrow=2,byrow=TRUE))
 
 grafico
@@ -1250,8 +1241,7 @@ grafico <- gm_cofinanciamento_2013 %>%
         axis.ticks = element_blank(),
         axis.text.y = element_blank(),
         axis.line.x = element_line(),
-        panel.background = element_blank(),
-        plot.background = element_rect(colour = "black"))+
+        panel.background = element_blank()) +
   guides(fill=guide_legend(nrow=1,byrow=TRUE))
 
 #grafico
@@ -1324,8 +1314,7 @@ grafico<-tabela %>%
         axis.ticks = element_blank(),
         axis.text.x = element_blank(),
         axis.line.y = element_line(),
-        panel.background = element_blank(),
-        plot.background = element_rect(colour = "black"))+
+        panel.background = element_blank()) +
   guides(fill=guide_legend(nrow=2,byrow=TRUE))
 
 grafico
@@ -1357,10 +1346,11 @@ grafico <- gm_2017 %>%
                            resposta == "Sim, com recursos do FMAS e de outras fontes"~"Realiza com recursos do FMAS e de outras fontes",
                            TRUE ~ resposta)) %>% 
   filter(!is.na(Nível)) %>% 
-  mutate(Nível = factor(Nível, levels = c("Não realiza",
+  mutate(Nível=str_wrap(Nível,width=38)) %>% 
+  mutate(Nível = factor(Nível, levels = str_wrap(c("Não realiza",
                                           "Realiza com recursos do Fundo Municipal de Assistência Social (FMAS)",
                                           "Realiza com recursos de outras fontes",
-                                          "Realiza com recursos do FMAS e de outras fontes"))) %>% 
+                                          "Realiza com recursos do FMAS e de outras fontes"),width=38))) %>% 
   group_by(Região, Nível) %>% 
   summarise(n=n()) %>% 
   spread(Região, n, fill = 0) %>% 
@@ -1377,12 +1367,12 @@ grafico <- gm_2017 %>%
   scale_y_continuous(expand = expand_scale(mult = c(0, .1))) +
   theme(legend.position="bottom",
         legend.title = element_blank(),
+        legend.key.size = unit(2, 'lines'),
         axis.title = element_blank(),
         axis.ticks = element_blank(),
         axis.text.y = element_blank(),
         axis.line.x = element_line(),
-        panel.background = element_blank(),
-        plot.background = element_rect(colour = "black")) +
+        panel.background = element_blank()) +
   guides(fill=guide_legend(nrow=2,byrow=TRUE))
 
 grafico
@@ -1441,8 +1431,7 @@ grafico <- gm_visita_tecnicos_2013 %>%
         axis.ticks = element_blank(),
         axis.text.y = element_blank(),
         axis.line.x = element_line(),
-        panel.background = element_blank(),
-        plot.background = element_rect(colour = "black"))+
+        panel.background = element_blank()) +
   guides(fill=guide_legend(nrow=1,byrow=TRUE))
 
 grafico
@@ -1483,7 +1472,7 @@ tabela<-gm_2017 %>%
 #-------------------
   mutate(Região = str_replace(Região, "Região ", "")) %>% 
   gather("Categoria","Valor", -Região) %>% 
-  mutate(Categoria=str_wrap(Categoria,width=51)) %>% 
+  mutate(Categoria=str_wrap(Categoria,width=36)) %>% 
   group_by(Região, Categoria, Valor) %>% 
   summarise(n=n()) %>% 
   spread(Região, n, fill = 0) %>%
@@ -1525,8 +1514,7 @@ grafico<-tabela %>%
         axis.ticks = element_blank(),
         axis.text.x = element_blank(),
         axis.line.y = element_line(),
-        panel.background = element_blank(),
-        plot.background = element_rect(colour = "black"))+
+        panel.background = element_blank()) +
   guides(fill=guide_legend(nrow=1, byrow=TRUE, reverse=TRUE))
 
 grafico
@@ -1582,8 +1570,7 @@ grafico <- gm_2017 %>%
         axis.ticks = element_blank(),
         axis.text.y = element_blank(),
         axis.line.x = element_line(),
-        panel.background = element_blank(),
-        plot.background = element_rect(colour = "black")) +
+        panel.background = element_blank()) +
   guides(fill=guide_legend(nrow=2,byrow=TRUE))
 
 grafico
@@ -1622,8 +1609,7 @@ grafico <- selecao_regiao_ano_2015 %>%
         axis.ticks = element_blank(),
         axis.text.y = element_blank(),
         axis.line.x = element_line(),
-        panel.background = element_blank(),
-        plot.background = element_rect(colour = "black")) +
+        panel.background = element_blank()) +
   guides(fill=guide_legend(nrow=1,byrow=TRUE))
 
 grafico
